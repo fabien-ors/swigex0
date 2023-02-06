@@ -1,0 +1,10 @@
+build*
+python/setup.py
+tests/*/main.out
+.RData
+.Rhistory
+.project
+.cproject
+.pydevproject
+.settings
+*.Rout

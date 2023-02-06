@@ -1,0 +1,78 @@
+name: non-reg-tests_windows-latest-visual
+
+on:
+  # Deactivate the workflow
+  #push:
+  #  branches-ignore:
+  #    - '**'
+  # Activate the workflow at each push on main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Permit manual trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  BUILD_DIR : build
+  PYTHON_VERSION : "3.11"
+  COMPILE_VERSION : '"Visual Studio 16 2019"' #Because cmake -G needs " "
+  #SWIG_ROOT : ${{github.workspace}}/swig_420b
+
+jobs:
+  
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Python Version
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{env.PYTHON_VERSION}}
+
+    - name: Install Python dependency
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install numpy
+
+# This customized version of SWIG is for R only (not needed when compiling with Visual)
+# This will be useful when compiling swigex0 under windows with RTools (MSYS) (BUILD_R=ON)
+#
+#    - name: Install SWIG dependencies
+#            # See nuget.yml in SWIG github repo
+#      shell: powershell
+#      run: |
+#          nuget install Bison -Version 3.7.4 -OutputDirectory C:\Tools\bison
+#          nuget install PCRE2 -Version 10.39 -OutputDirectory C:\Tools\pcre2
+#
+#    - name: Compile and install [customized] SWIG 4.2.0
+#      shell: powershell
+#      run: |
+#        mkdir swig_src
+#        cd swig_src
+#        git clone https://github.com/fabien-ors/swig.git
+#        cd swig
+#        $env:PATH="C:\Tools\bison\Bison.3.7.4\bin;" + $env:PATH
+#        $PCRE_ROOT="C:\Tools\pcre2\PCRE2.10.39.0"
+#        cmake -Bbuild -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_ROOT/include" -DPCRE2_LIBRARY="$PCRE_ROOT/lib/pcre2-8-static.lib"
+#        cmake --build ${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}}
+#        cmake --install ${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}}
+#
+#    - name: Configure cmake
+#      run: cmake -B${{env.BUILD_DIR}} -DBUILD_PYTHON=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+#
+    - name: Configure cmake
+      run: cmake -B${{env.BUILD_DIR}} -G ${{env.COMPILE_VERSION}} -DBUILD_PYTHON=ON
+
+    - name: Compile, install packages and execute non-regression tests
+      # Execute tests defined by the CMake configuration.
+      run: cmake --build ${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} --target check
