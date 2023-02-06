@@ -11,7 +11,7 @@ Example of a cross-platform C++ library exported in Python and R using SWIG and 
 * Use of typemaps for testing *arguments* wrapping (see testArgs):
   * For C++ types: int, double, std::string
   * Passed by input value, input reference, input pointers and output pointers
-  * Possibly having C++ default values (argument naming is not yet possible in R)
+  * Possibly having C++ default values
 * *Inheritance* in target language (see testPolymorph) (still in development)
 
 A lot of CMake and SWIG instructions in this project have been used to solve issues I encountered. There certainly exist smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications in order to make swigex0 as simple as possible!

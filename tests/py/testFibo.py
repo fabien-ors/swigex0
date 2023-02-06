@@ -1,4 +1,4 @@
-import swigex
+import swigex0
 
 f1 = swigex.Fibo(50)
 f1.display(False)
