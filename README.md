@@ -139,6 +139,7 @@ sudo make install
 
 Notes:
 
+* If you don't have sudo permissions, you may have to install swig in a folder of your choice. In that case, use `-DCMAKE_INSTALL_PREFIX:PATH=/home/user/Programs` (adapt installation folder) in the `cmake` command above.
 * Under Linux, the GCC compiler and GNU make is already installed
 * If your Linux distribution repositories don't provide minimum required versions, please install the tools manually (see provider website)
 
@@ -165,11 +166,12 @@ cd swig
 cmake -Bbuild
 cd build
 make
-make install
+sudo make install
 ````
 
 Notes:
 
+* If you don't have sudo permissions, you may have to install swig in a folder of your choice. In that case, use `-DCMAKE_INSTALL_PREFIX:PATH=/home/user/Programs` (adapt installation folder) in the `cmake` command above.
 * Under MacOS, the GCC (or Clang) compiler and GNU make is already installed
 * If your MacOS repositories don't provide minimum required versions, please install the tools manually (see provider website)
   
