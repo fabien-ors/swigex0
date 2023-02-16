@@ -1,5 +1,4 @@
 #include "fibo.hpp"
-#include "stdoutredirect.hpp"
 
 #include <iostream>
 #include <vector>

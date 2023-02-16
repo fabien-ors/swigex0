@@ -6,10 +6,8 @@
 // Put low level headers in first positions (otherwise Syntax error in input(1).)
 
 %include swigex0_export.hpp // Do not forget this file in priority (for SWIG preprocessor)
-%include swigex0_define.hpp
 
 %include fibo.hpp
-%include stdoutredirect.hpp
 
 // For suppressing SWIG warning due to -keyword option (if used)
 #pragma SWIG nowarn=511

@@ -1,10 +1,12 @@
 #pragma once
 
 #include "swigex0_export.hpp"
-#include "swigex0_define.hpp"
 #include <vector>
+#include <string>
+#include <fstream>
 
 /// Global functions
+
 SWIGEX0_EXPORT int fibn(int n);
 SWIGEX0_EXPORT std::vector<int> fib(int n);
 
@@ -13,19 +15,41 @@ SWIGEX0_EXPORT std::vector<int> fib(int n);
  */
 class SWIGEX0_EXPORT Fibo
 {
-  public:
-    Fibo (int n, const String& title = "");
-    virtual ~Fibo();
+public:
+  Fibo (int n, const std::string& title = "");
+  virtual ~Fibo();
 
-    void resetFromFiboVal(Fibo fib);        // In order to test class argument as value
-    void resetFromFiboRef(const Fibo& fib); //  In order to test class argument as reference
+  void resetFromFiboVal(Fibo fib);        // In order to test class argument as value
+  void resetFromFiboRef(const Fibo& fib); //  In order to test class argument as reference
 
-    void display(bool showTitle = true) const;
+  void display(bool showTitle = true) const;
 
-    std::vector<int> get() const;
+  std::vector<int> get() const;
 
-  protected:
-    int    _n;     /// Maximum integer of the list
-    String _title; /// Title to be shown when displaying the list
+protected:
+  int         _n;     /// Maximum integer of the list
+  std::string _title; /// Title to be shown when displaying the list
 };
 
+/**
+ * Standard output stream redirection
+ */
+class SWIGEX0_EXPORT StdoutRedirect {
+public:
+  StdoutRedirect(const std::string& file = "");
+  ~StdoutRedirect();
+  StdoutRedirect(const StdoutRedirect&) = delete;
+  StdoutRedirect& operator=(const StdoutRedirect&) = delete;
+
+  void start(const std::string& file);
+  void stop();
+
+private:
+#if defined(_WIN32) || defined(_WIN64)
+  // HANDLE _old_stdout;
+  void* _old_stdout;
+#else
+  std::streambuf* _coutbuf;
+  std::ofstream _out;
+#endif
+};

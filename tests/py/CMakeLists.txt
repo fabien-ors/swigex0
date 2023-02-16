@@ -9,7 +9,7 @@ set(TEST_SOURCES testFibo.py)
 find_package(Python3 REQUIRED)
 
 # Generation folder
-if (CMAKE_CONFIGURATION_TYPES)
+if (IS_MULTI_CONFIG)
   cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR $<CONFIG>
              OUTPUT_VARIABLE TEST_DST_DIR)
 else()

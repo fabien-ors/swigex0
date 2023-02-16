@@ -1,5 +1,5 @@
 # Make Release version the default (only for single configuration generators)
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+if(NOT CMAKE_BUILD_TYPE AND NOT IS_MULTI_CONFIG)
   message(STATUS "Setting build type to 'Release' as none was specified")
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
   # Set the possible values of build type for cmake-gui
@@ -25,15 +25,13 @@ set(INCLUDES
     ${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCES
-    ${PROJECT_SOURCE_DIR}/src/fibo.cpp
-    ${PROJECT_SOURCE_DIR}/src/stdoutredirect.cpp)
+    ${PROJECT_SOURCE_DIR}/src/fibo.cpp)
 
 # Generation folder (into Release or Debug)
-if (NOT CMAKE_CONFIGURATION_TYPES)
-  # TODO : use cmake_path
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+if (NOT IS_MULTI_CONFIG)
+  cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR CMAKE_BUILD_TYPE OUTPUT_VARIABLE CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+  cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR CMAKE_BUILD_TYPE OUTPUT_VARIABLE CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+  cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR CMAKE_BUILD_TYPE OUTPUT_VARIABLE CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
 endif()
 
 # Change the name of the output file (to distinguish lib files under Windows)
