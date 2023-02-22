@@ -114,8 +114,8 @@ Here are swigex0 adaptation instructions (See also shortcuts for 'make' users in
 2. Rename swigex0 root folder with your project name (i.e. let's call it 'myproject')
 3. Update the root Readme.md file to your needs
 4. In the root CMakeLists.txt file:
-  1. Adapt the header comment to your needs
-  2. Adapt the project name, the VERSION, DESCRIPTION and HOMEPAGE_URL (line 45)
+   1. Adapt the header comment to your needs
+   2. Adapt the project name, the VERSION, DESCRIPTION and HOMEPAGE_URL (line 45)
 5. In version.h.in file: Replace swigex0 by the name of your projet 
 6. Replace the content of 'include' directory with your C++ header files
 7. Replace the content of 'src' directory with your C++ body files
@@ -144,20 +144,20 @@ Note:
 ### For generating python and R Packages:
 
 1. In swig/swig_exp.i:
-  1. Adapt the C++ header files list with the headers you want to export to python and R
-  2. Replace swigex0 by the name of your project (in swigex0_export.hpp)
+   1. Adapt the C++ header files list with the headers you want to export to python and R
+   2. Replace swigex0 by the name of your project (in swigex0_export.hpp)
 2. In swig/swig_inc.i:
-  1. Adapt the C++ header files list with the headers needed for compiling (bigger list than in 9a)
-  2. Replace swigex0 by the name of your project (in swigex0_export.hpp)
-  3. Add SWIG typemaps needed
+   1. Adapt the C++ header files list with the headers needed for compiling (bigger list than in 9a)
+   2. Replace swigex0 by the name of your project (in swigex0_export.hpp)
+   3. Add SWIG typemaps needed
 3. In python folder:
-  1. Rename interface file pyswigex0.i file into pymyproject.i
-  2. In file pymyproject.i, rename module swigex0 to myproject (without 'py' prefix)
-  3. In file CMakeLists.txt, change interface filename to pymyproject.i (line 24)
+   1. Rename interface file pyswigex0.i file into pymyproject.i
+   2. In file pymyproject.i, rename module swigex0 to myproject (without 'py' prefix)
+   3. In file CMakeLists.txt, change interface filename to pymyproject.i (line 24)
 4. In r folder:
-  1. Rename interface file rswigex0.i file into rmyproject.i
-  2. In file rmyproject.i, rename module swigex0 to myproject (without 'r' prefix)
-  3. In file CMakeLists.txt, change interface filename to rmyproject.i (line 28)
+   1. Rename interface file rswigex0.i file into rmyproject.i
+   2. In file rmyproject.i, rename module swigex0 to myproject (without 'r' prefix)
+   3. In file CMakeLists.txt, change interface filename to rmyproject.i (line 28)
 
 => you already can test the following targets (on windows, linux or mac) :
   - python_install
@@ -167,23 +167,23 @@ Note:
 ### For adding non-regression tests:
 
 1. In tests/cpp folder:
-  1. Ensure that your C++ test executables are able to generate an output log file (see example in testFibo.cpp)
-  2. Remove testFibo.cpp and paste here your source files for C++ test that link to myproject library
-  3. Update test files list in CMakeLists.txt (line 2)
-  4. Run check_cpp target and verify the generated log files in 'build' directory (in build/tests/cpp/Release)
-  5. Remove testFibo.ref file and copy generated logs into the tests/cpp folder (replace 'out' extension to 'ref')
+   1. Ensure that your C++ test executables are able to generate an output log file (see example in testFibo.cpp)
+   2. Remove testFibo.cpp and paste here your source files for C++ test that link to myproject library
+   3. Update test files list in CMakeLists.txt (line 2)
+   4. Run check_cpp target and verify the generated log files in 'build' directory (in build/tests/cpp/Release)
+   5. Remove testFibo.ref file and copy generated logs into the tests/cpp folder (replace 'out' extension to 'ref')
 2. In tests/py folder:
-  1. Ensure that your python scripts print some useful information
-  2. Remove testFibo.py and paste here your python scripts that import myproject python module
-  3. Update test files list in CMakeLists.txt (line 6)
-  4. Run check_py target and verify the generated log files in 'build' directory (in build/tests/py/Release)
-  5. Remove testFibo.ref file and copy generated logs into the tests/py folder (replace 'out' extension to 'ref')
+   1. Ensure that your python scripts print some useful information
+   2. Remove testFibo.py and paste here your python scripts that import myproject python module
+   3. Update test files list in CMakeLists.txt (line 6)
+   4. Run check_py target and verify the generated log files in 'build' directory (in build/tests/py/Release)
+   5. Remove testFibo.ref file and copy generated logs into the tests/py folder (replace 'out' extension to 'ref')
 3. In tests/r folder:
-  1. Ensure that your R scripts print some useful information
-  2. Remove testFibo.r and paste here your R scripts that load myproject R package
-  3. Update test files list in CMakeLists.txt (line 6)
-  4. Run check_r target and verify the generated log files in 'build' directory (in build/tests/r/Release)
-  5. Remove testFibo.ref file and copy generated logs into the tests/r folder (replace 'out' extension to 'ref')
+   1. Ensure that your R scripts print some useful information
+   2. Remove testFibo.r and paste here your R scripts that load myproject R package
+   3. Update test files list in CMakeLists.txt (line 6)
+   4. Run check_r target and verify the generated log files in 'build' directory (in build/tests/r/Release)
+   5. Remove testFibo.ref file and copy generated logs into the tests/r folder (replace 'out' extension to 'ref')
 
 => you can test the following targets (on Widows, linux or mac):
   - build_tests
