@@ -20,10 +20,10 @@ else()
   add_compile_options(-Wall -Wextra)
 endif()
 
-# C++ code location
+# C++ header location (keep the trailing '/')
 set(INCLUDES 
-    ${PROJECT_SOURCE_DIR}/include)
-
+    ${PROJECT_SOURCE_DIR}/include/)
+# C++ source path (prevent using GLOB)
 set(SOURCES
     ${PROJECT_SOURCE_DIR}/src/fibo.cpp)
 

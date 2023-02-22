@@ -29,7 +29,7 @@ add_custom_target(check_py
 add_dependencies(check_py python_install)
 
 # Python script test runner path
-cmake_path(APPEND PROJECT_SOURCE_DIR python run_test.py
+cmake_path(APPEND CMAKE_CURRENT_SOURCE_DIR run_test.py
            OUTPUT_VARIABLE RUN_TEST_SCRIPT)
 
 # Display test output in case of failure

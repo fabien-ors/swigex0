@@ -6,7 +6,6 @@
 # C++ Library:
 #  - shared         Build shared library
 #  - static         Build static library
-#  - build_tests    Build non-regression tests executables
 #  - install        Install shared library
 #  - uninstall      Uninstall shared library
 #
@@ -15,14 +14,15 @@
 #  - python_install Install python package
 #
 # R wrapper:
-#  - r_build        Build R wrapper [and its documentation]
-#  - r_install      Install R package [and its documentation]
+#  - r_build        Build R wrapper
+#  - r_install      Install R package
 #
 # Non-regression tests:
-#  - check_cpp      Execute non-regression tests (cpp)
+#  - build_tests    Build non-regression tests C++ executables
+#  - check_cpp      Execute non-regression tests (C++)
 #  - check_py       Execute non-regression tests (python)
 #  - check_r        Execute non-regression tests (R)
-#  - check          Execute non-regression tests (cpp + python + R)
+#  - check          Execute non-regression tests (C++ + python + R)
 #
 # Clean:
 #  - clean          Clean generated files
