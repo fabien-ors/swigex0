@@ -214,7 +214,6 @@ sudo apt install python3-pip
 sudo apt install bison
 sudo apt install pcre2-devel # Ubuntu 18
 sudo apt install libpcre2-dev # Ubuntu 20
-python3 -m ensurepip --upgrade
 ````
 
 3. In a folder of your own, compile and install SWIG 4.2.0 [customized] by executing following commands:
