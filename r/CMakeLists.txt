@@ -85,9 +85,6 @@ target_link_libraries(r_build PUBLIC ${PROJECT_NAME}::static)
 
 # Transmit the fact that we are linking to static ${PROJECT_NAME} library
 set(COMP_FLAGS "-D${PROJECT_NAME_UP}_STATIC_DEFINE -Wno-unused-parameter -Wno-unused-variable -Wno-cast-function-type")
-if ("${FLAVOR}" STREQUAL "Debug")
-  set(COMP_FLAGS "${COMP_FLAGS} -g")
-endif()
 
 # Set some properties on SWIG target
 set_target_properties(r_build PROPERTIES

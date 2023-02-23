@@ -38,9 +38,6 @@
 # For recent UseSWIG
 cmake_minimum_required(VERSION 3.20)
 
-# Verbose makefiles
-#set(CMAKE_VERBOSE_MAKEFILE ON)
-
 # Define project here
 project(swigex0
         VERSION      0.1.0

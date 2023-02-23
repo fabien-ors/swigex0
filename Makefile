@@ -48,9 +48,9 @@ else
 endif
 
 ifeq ($(DEBUG), 1)
-  FLAVOR = Debug
+  BUILD_TYPE = Debug
  else
-  FLAVOR = Release 
+  BUILD_TYPE = Release 
 endif
 
 ifndef BUILD_DIR
@@ -80,16 +80,16 @@ endif
 all: shared install
 
 cmake:
-	@cmake -DCMAKE_BUILD_TYPE=$(FLAVOR) -B$(BUILD_DIR) -H. $(GENERATOR)
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -H. $(GENERATOR)
 
 cmake-python:
-	@cmake -DCMAKE_BUILD_TYPE=$(FLAVOR) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_PYTHON=ON
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_PYTHON=ON
 
 cmake-r:
-	@cmake -DCMAKE_BUILD_TYPE=$(FLAVOR) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_R=ON
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_R=ON
 
 cmake-python-r:
-	@cmake -DCMAKE_BUILD_TYPE=$(FLAVOR) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_PYTHON=ON -DBUILD_R=ON
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_PYTHON=ON -DBUILD_R=ON
 
 static: cmake
 	@cmake --build $(BUILD_DIR) --target static -- --no-print-directory $(N_PROC_OPT)

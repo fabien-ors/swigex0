@@ -84,9 +84,6 @@ if (MSVC)
 else()
   set(COMP_FLAGS "${COMP_FLAGS} -Wno-unused-parameter -Wno-unused-variable")
 endif()
-if ("${FLAVOR}" STREQUAL "Debug")
-  set(COMP_FLAGS "${COMP_FLAGS} -g")
-endif()
 
 # Set some properties on SWIG target
 set_target_properties(python_build PROPERTIES
