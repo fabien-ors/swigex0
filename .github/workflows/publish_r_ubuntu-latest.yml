@@ -50,6 +50,6 @@ jobs:
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
         source: ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*
-        target: /home/${{ secrets.CG_USR }}/swigex0/
+        target: /home/${{ secrets.CG_USR }}/swigex0/*
 
 
