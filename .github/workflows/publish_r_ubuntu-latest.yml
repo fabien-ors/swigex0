@@ -1,4 +1,4 @@
-name: publish_r_ubuntu-16
+name: publish_r_ubuntu-latest
 
 on:
   workflow_dispatch:
@@ -11,14 +11,11 @@ on:
 env:
   BUILD_TYPE: Release
   BUILD_DIR : build
-  BUILD_PLAT: manylinux1_x86_64
   SWIG_ROOT : ${{github.workspace}}/swig_420b
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ndesassis/test_ubuntu-16
 
     steps:
     - uses: actions/checkout@v3
