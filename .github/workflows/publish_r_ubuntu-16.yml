@@ -1,0 +1,62 @@
+name: publish_r_ubuntu-16
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+env:
+  BUILD_TYPE: Release
+  BUILD_DIR : build
+  BUILD_PLAT: manylinux1_x86_64
+  SWIG_ROOT : ${{github.workspace}}/swig_420b
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ndesassis/test_ubuntu-16
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -yq r-base
+
+    - name: Compile and install [customized] SWIG 4.2.0
+      run: |
+        mkdir swig_src
+        cd swig_src
+        git clone https://github.com/fabien-ors/swig.git
+        cd swig
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
+        cd build
+        make
+        make install
+
+    - name: Setup personal R libraries directory
+      # Beware : ~/ is Linux only. For a potential windows a solution must be found
+      run: mkdir -p ~/r_libs & echo ".libPaths('~/r_libs')" > ~/.Rprofile
+
+    - name : Create Package
+      #  export PATH=/opt/python/${{matrix.python}}/bin:$PATH
+      run : |
+        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON
+        cmake --build ${{env.BUILD_DIR}} --target r_install
+        cd ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}
+        
+
+    - name : Upload
+      run : |
+        export PATH=/opt/python/${{matrix.python}}/bin:$PATH
+        python3 -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
+        TWINE_REPOSITORY: pypi
+
+   
+
