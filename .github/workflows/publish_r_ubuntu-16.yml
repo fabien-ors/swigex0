@@ -42,21 +42,17 @@ jobs:
       run: mkdir -p ~/r_libs & echo ".libPaths('~/r_libs')" > ~/.Rprofile
 
     - name : Create Package
-      #  export PATH=/opt/python/${{matrix.python}}/bin:$PATH
       run : |
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON
         cmake --build ${{env.BUILD_DIR}} --target r_install
-        cd ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}
-        
 
-    - name : Upload
-      run : |
-        export PATH=/opt/python/${{matrix.python}}/bin:$PATH
-        python3 -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
-        TWINE_REPOSITORY: pypi
+    - name: Upload R packages to CG repo (OVH)
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.CG_HOST }}
+        username: ${{ secrets.CG_USR }}
+        password: ${{ secrets.CG_PWD }}
+        source: ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*
+        target: /home/${{ secrets.CG_USR }}/swigex0/
 
-   
 
