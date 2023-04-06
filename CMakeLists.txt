@@ -40,7 +40,7 @@ cmake_minimum_required(VERSION 3.20)
 
 # Define project here
 project(swigex0
-        VERSION      0.1.0
+        VERSION      0.1.1
         DESCRIPTION  "C++ library and SWIG wrappers (R & Python)"
         HOMEPAGE_URL "https://github.com/fabien-ors/swigex"
         LANGUAGES    C CXX) # Enable C language for third party libraries
@@ -62,6 +62,8 @@ get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 
 # Activate verbose mode
 #set(CMAKE_VERBOSE_MAKEFILE ON)
+# Debug find package instruction
+#set(CMAKE_FIND_DEBUG_MODE TRUE)
 
 # Options
 option(BUILD_PYTHON "Build Python package" OFF)

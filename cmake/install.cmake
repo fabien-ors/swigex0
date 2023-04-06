@@ -19,31 +19,32 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   endif()
 endif()
 
-# Install the shared library in DESTINATION/lib folder
-install(TARGETS shared
-  EXPORT ${PROJECT_NAME}_corelibs
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib
-)
-
 # Include directories
 target_include_directories(shared PUBLIC
   # Installed includes are made PUBLIC for client who links the shared library
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
-# Install the includes
+# Install the shared library
 install(
-  DIRECTORY   ${INCLUDES}             # Install library headers (From binary directory)
-  DESTINATION include/${PROJECT_NAME} # in DESTINATION/include/${PROJECT_NAME}
+  TARGETS shared
+  EXPORT ${PROJECT_NAME}_corelibs
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib
 )
 
-# Install the export file
+# Install the includes
+install(
+  DIRECTORY   ${INCLUDES}
+  DESTINATION include/${PROJECT_NAME}
+)
+
+# Install the export header file
 install(FILES ${PROJECT_BINARY_DIR}/${PROJECT_NAME}_export.hpp
         DESTINATION include/${PROJECT_NAME}
 )
 
-# Install the version file
+# Install the version header file
 install(
   FILES ${PROJECT_BINARY_DIR}/version.h
   DESTINATION include/${PROJECT_NAME}

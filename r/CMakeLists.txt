@@ -140,7 +140,7 @@ add_custom_target(r_install
   COMMAND ${CMAKE_COMMAND} -E touch ${R_PACKAGE_SRC_FOLDER}/Makevars
   COMMAND ${CMAKE_COMMAND} -E touch ${R_PACKAGE_SRC_FOLDER}/Makevars.win
   COMMAND ${CMAKE_COMMAND} -E touch ${R_PACKAGE_SRC_FOLDER}/Makevars.ucrt
-  COMMAND ${R_EXECUTABLE} CMD INSTALL --no-multiarch ${R_PACKAGE_DESTINATION_FOLDER}
+  COMMAND ${R_EXECUTABLE} CMD INSTALL --build --no-multiarch ${R_PACKAGE_DESTINATION_FOLDER}
   COMMENT "Installing R package"
   VERBATIM
 )

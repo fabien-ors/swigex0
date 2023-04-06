@@ -53,6 +53,7 @@ foreach(FLAVOR ${FLAVORS})
   add_library(${PROJECT_NAME}::${FLAVOR} ALIAS ${FLAVOR})
 
   # Include directories
+  # PUBLIC is mandatory for tests and packages (no need to install)
   target_include_directories(${FLAVOR} PUBLIC
     # Add includes path for compiling the library
     $<BUILD_INTERFACE: ${INCLUDES}>
