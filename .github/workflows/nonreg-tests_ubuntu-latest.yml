@@ -1,4 +1,4 @@
-name: non-reg-tests_ubuntu-latest
+name: nonreg-tests_ubuntu-latest
 
 on:
   # Deactivate the workflow

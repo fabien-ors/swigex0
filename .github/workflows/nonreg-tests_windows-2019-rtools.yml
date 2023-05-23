@@ -1,4 +1,4 @@
-name: non-reg-tests_windows-latest-visual
+name: nonreg-tests_windows-2019-msvc
 
 on:
   # Deactivate the workflow

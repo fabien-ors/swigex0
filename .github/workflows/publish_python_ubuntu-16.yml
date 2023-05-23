@@ -37,7 +37,7 @@ jobs:
     - name : Upload
       run : |
         export PATH=/opt/python/${{matrix.python}}/bin:$PATH
-        python3 -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
+        python3 -m twine upload --verbose ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
