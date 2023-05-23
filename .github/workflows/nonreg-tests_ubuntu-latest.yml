@@ -58,7 +58,7 @@ jobs:
         make install
 
     - name: Setup personal R libraries directory
-      # Beware : ~/ is Linux only. For a potential windows a solution must be found
+      # Beware : ~/ is Linux only. For a potential windows a solution must be found yet
       run: mkdir -p ~/r_libs & echo ".libPaths('~/r_libs')" > ~/.Rprofile
 
     - name: Configure cmake

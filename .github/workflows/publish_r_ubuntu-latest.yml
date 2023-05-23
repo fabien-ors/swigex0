@@ -43,13 +43,20 @@ jobs:
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
 
-    - name: Upload R packages to CG repo (OVH)
+    - name: Upload to CG CRAN-like (OVH)
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        source: ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*
-        target: /home/${{ secrets.CG_USR }}/swigex0/*
+        source: ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*.tar.gz
+        target: /var/www/html/cran/src/contrib/
+        strip_components: 3
 
-
+    - name: Updating CG CRAN-like index
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.CG_HOST }}
+        username: ${{ secrets.CG_USR }}
+        password: ${{ secrets.CG_PWD }}
+        script: Rscript cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("src/contrib/", type="source")'
