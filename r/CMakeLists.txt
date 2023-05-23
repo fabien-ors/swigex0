@@ -137,7 +137,7 @@ file(GENERATE
 # Add a custom target for R package installation
 # TODO: Do also installation each time NAMESPACE.in or DESCRIPTION.in is modified
 if (MINGW)
-  set(ARCHIVE_FILE_NAME     "${PROJECT_NAME}_${PROJECT_VERSION}_R_x86_64-pc-win64.zip") #TODO
+  set(ARCHIVE_FILE_NAME     "${PROJECT_NAME}_${PROJECT_VERSION}.zip")
   set(DST_ARCHIVE_FILE_NAME "${PROJECT_NAME}_${PROJECT_VERSION}.zip")
 else()
   set(ARCHIVE_FILE_NAME "${PROJECT_NAME}_${PROJECT_VERSION}_R_x86_64-pc-linux-gnu.tar.gz")

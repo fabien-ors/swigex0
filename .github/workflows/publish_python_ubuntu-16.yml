@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ndesassis/test_ubuntu-16
+      image: fabienors/test_ubuntu-16
     strategy :
       matrix:
         python: ["py38","py39","py310","py311"]
@@ -40,6 +40,8 @@ jobs:
         python3 -m twine upload --verbose ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
       env:
         TWINE_USERNAME: __token__
+        #TWINE_PASSWORD: ${{secrets.TWINE_TEST_TOKEN}}
+        #TWINE_REPOSITORY: testpypi
         TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
         TWINE_REPOSITORY: pypi
 

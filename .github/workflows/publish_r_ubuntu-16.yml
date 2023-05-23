@@ -46,4 +46,4 @@ jobs:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        script: Rscript cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("src/contrib/", type="source")'
+        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("src/contrib/", type="source")'
