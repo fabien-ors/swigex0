@@ -1,4 +1,4 @@
-name: nonreg-tests_windows-2019-msvc
+name: nonreg-tests_windows-2019-rtools
 
 on:
   # Deactivate the workflow
@@ -44,8 +44,8 @@ jobs:
             # See nuget.yml in SWIG github repo
       shell: powershell
       run: |
-          nuget install Bison -Version 3.7.4 -OutputDirectory ${{BISON_ROOT}}
-          nuget install PCRE2 -Version 10.39 -OutputDirectory ${{PCRE2_ROOT}}
+          nuget install Bison -Version 3.7.4 -OutputDirectory ${{env.BISON_ROOT}}
+          nuget install PCRE2 -Version 10.39 -OutputDirectory ${{env.PCRE2_ROOT}}
 
     - name: Compile and install [customized] SWIG 4.2.0b
       shell: powershell
@@ -54,8 +54,8 @@ jobs:
         cd swig_src
         git clone https://github.com/fabien-ors/swig.git
         cd swig
-        $env:PATH="${{BISON_ROOT}}\Bison.3.7.4\bin;" + $env:PATH
-        $PCRE_PATH="${{PCRE2_ROOT}}\PCRE2.10.39.0"
+        $env:PATH="${{env.BISON_ROOT}}\Bison.3.7.4\bin;" + $env:PATH
+        $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.10.39.0"
         cmake -B${{env.BUILD_DIR}} -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
         cmake --build ${{env.BUILD_DIR}} --config Release
         cmake --install ${{env.BUILD_DIR}} --config Release
