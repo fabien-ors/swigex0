@@ -136,11 +136,19 @@ file(GENERATE
 
 # Add a custom target for R package installation
 # TODO: Do also installation each time NAMESPACE.in or DESCRIPTION.in is modified
+if (MINGW)
+  set(ARCHIVE_FILE_NAME     "${PROJECT_NAME}_${PROJECT_VERSION}_R_x86_64-pc-win64.zip") #TODO
+  set(DST_ARCHIVE_FILE_NAME "${PROJECT_NAME}_${PROJECT_VERSION}.zip")
+else()
+  set(ARCHIVE_FILE_NAME "${PROJECT_NAME}_${PROJECT_VERSION}_R_x86_64-pc-linux-gnu.tar.gz")
+  set(DST_ARCHIVE_FILE_NAME "${PROJECT_NAME}_${PROJECT_VERSION}.tar.gz")
+endif()
 add_custom_target(r_install
   COMMAND ${CMAKE_COMMAND} -E touch ${R_PACKAGE_SRC_FOLDER}/Makevars
   COMMAND ${CMAKE_COMMAND} -E touch ${R_PACKAGE_SRC_FOLDER}/Makevars.win
   COMMAND ${CMAKE_COMMAND} -E touch ${R_PACKAGE_SRC_FOLDER}/Makevars.ucrt
   COMMAND ${R_EXECUTABLE} CMD INSTALL --build --no-multiarch ${R_PACKAGE_DESTINATION_FOLDER}
+  COMMAND ${CMAKE_COMMAND} -E copy ${ARCHIVE_FILE_NAME} ${R_PACKAGE_ROOT_FOLDER}/${DST_ARCHIVE_FILE_NAME}
   COMMENT "Installing R package"
   VERBATIM
 )
