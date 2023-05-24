@@ -39,7 +39,8 @@ jobs:
     - name : Update CRAN-like (using drat)
       run : |
         echo "Trying to insert ${{ env.MY_PKG }}"
-        Rscript -e 'drat::insertPackage("${{ env.MY_PKG }}")'
+        ls ~
+        Rscript -e 'library(drat); cat("wd=",getwd(),"\n"); drat::insertPackage("${{ env.MY_PKG }}")'
         ls docs/src/contrib
 
 #    - name: Upload to CG CRAN-like (OVH)
