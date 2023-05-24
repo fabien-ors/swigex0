@@ -33,14 +33,13 @@ jobs:
       run : |
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF
         cmake --build ${{env.BUILD_DIR}} --target r_install
+        ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tar.gz)" >> "$GITHUB_ENV"
 
     - name : Update CRAN-like (using drat)
-# https://stackoverflow.com/questions/57968497/how-do-i-set-an-env-var-with-a-bash-expression-in-github-actions
       run : |
-        ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}
-        echo "PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tar.gz)" >> $GITHUB_ENV
-        echo "Trying to insert ${{ env.PKG }}"
-        Rscript -e 'drat::insertPackage("${{ env.PKG }}")'
+        echo "Trying to insert ${{ env.MY_PKG }}"
+        Rscript -e 'drat::insertPackage("${{ env.MY_PKG }}")'
         ls docs/src/contrib
 
 #    - name: Upload to CG CRAN-like (OVH)
