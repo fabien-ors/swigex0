@@ -1,26 +1,46 @@
 # swigex0 C++ Library and Wrappers
 
 * Author: Fabien Ors (MINES PARIS - PSL University) 
-* Date: Feb. 2023
+* Date: May 2023
 
-Example of a cross-platform C++ library exported in Python and R using SWIG and CMake. Following features are tested:
+*swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
+* Simple C++ class export (Fibonacci list - see Fibo class )
+* C++ static and shared library compilation and local installation
+* Python and R packages local installation through CMake and SWIG
 * Non regression tests in C++, Python and R (using CTest and automatic github actions)
-* Python and R packages local installation through CMake
-* Python and R packages deployment on TestPyPi and CRAN (not yet available) (using manual github actions)
-* Simple C++ class export (see testFibo)
-* Use of typemaps for testing *arguments* wrapping (see testArgs):
-  * For C++ types: int, double, std::string
-  * Passed by input value, input reference, input pointers and output pointers
-  * Possibly having C++ default values
-* *Inheritance* in target language (see testPolymorph) (still in development)
+* Python and R packages deployment on PyPi and CRAN-like (using manual github actions)
 
-A lot of CMake and SWIG instructions in this project have been used to solve issues I encountered. There certainly exist smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications in order to make swigex0 as simple as possible!
+A lot of CMake and SWIG instructions in this project have been used to solve issues I encountered. There certainly exist smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications in order to make *swigex0* as simple as possible!
 
 Look for 'TODO' keyword for remaining issues.
 
-## Prerequisites
+## Install
 
-This library has been successfully tested with Ubuntu 16/18/20 LTS and Windows 10 (MacOS: not tested).
+### Python Package
+From a shell command prompt:
+
+    pip install swigex0
+    
+### R Package
+From an R command prompt:
+
+    install.package("swigex0", repos="http://51.83.45.127/cran")
+
+## Usage
+This library implements a Fibonacci list C++ object exported to Python and R via SWIG. Here is an example usage in Python:
+
+    import swigex0
+    swigex0.Fibo(150).display()
+
+But the main goal of *swigex0* is to provide a **complete cross-platform CMake/SWIG project template**... Feel free to adapt:
+* First, check that you can compile / test / install *swigex0* in the [next session](#install-from-source)
+* Then, look at how to adapt this project to your needs in the [derivative section](#derivative-usage)
+
+## Install from source
+
+### Prerequisites
+
+This library has been successfully compiled with Ubuntu 16/18/20/22 LTS and Windows 10 (MacOS: not tested).
 
 For compiling and installing *swigex0* C++ Library, the following tools must be available (See [required tools installation](#required-tools-installation) instructions below):
 
@@ -46,37 +66,18 @@ The following tools must be available for compiling and installing R package:
 
 See [required tools installation](#required-tools-installation) instructions below.
 
-## Get the sources
-
+### Get the sources
 For getting the sources files, just clone the github repository:
 
     git clone https://github.com/fabien-ors/swigex0
     cd swigex0
 
-Notes:
-
-* In the following, all instructions must be executed from a command prompt inside this *root* directory (thus the last command `cd swigex0` above)
-
-## Usage
-
-First, check that you can compile / test / install... swigex0. Then, look at how to adapt this project to your needs in the [next section](#derivative-usage)
-
 ### Configure project
-Depending on the package you want to build you must adapt the command below:
+Depending on the package you want to build/install, you must adapt the first command below:
 #### GCC / MinGW / CLang
     cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=ON -DBUILD_R=ON
 #### MSVC (Visual)
     cmake -Bbuild -H. -DBUILD_PYTHON=ON -DBUILD_R=ON
-
-### Important Notes
-
-* Using MingGW on a Windows where Visual Studio is also installed may need to add `-G "MSYS Makefiles"` in the command above.
-* The default installation directory named *swigex0_install* is located in your *Home*. If you want to change it, you can either:
-    * Define the `swigex0_INSTALL_DIR` environment variable or
-    * Add `-Dswigex0_INSTALL_DIR=<path/of/swigex0/install/dir>` to the first cmake command above
-* If you want to build and install the *Debug* version, you must replace `Release` by `Debug` above (GCC/MinGW) and below (MSVC)
-* The *static* version of the library is mandatory for creating Python and R packages
-* Only the *shared* library (built by default) is installed by the 'install' target
 
 ### Build static library (and install Python package)
 #### GCC / MinGW / CLang
@@ -102,28 +103,38 @@ Depending on the package you want to build you must adapt the command below:
 ##### MSVC (Visual)
     cmake --build build --target check --config Release
 
+### Important Notes
+
+* Using MingGW on a Windows where Visual Studio is also installed may need to add `-G "MSYS Makefiles"` in the first cmake command above.
+* The default installation directory named *swigex0_install* is located in your *Home*. If you want to change it, you can either:
+    * Define the `swigex0_INSTALL_DIR` environment variable or
+    * Add `-Dswigex0_INSTALL_DIR=<path/of/swigex0/install/dir>` to the first cmake command above
+* If you want to build and install the *Debug* version, you must replace `Release` by `Debug` above
+* The *static* version of the library is mandatory for creating Python and R packages
+* Only the *shared* library (built by default) is installed by the 'install' target
+
 
 ## Derivative Usage
 
 The objective of this package is to provide an example of wrapping a C++ library in R and Python using CMake and SWIG.
-Here are swigex0 adaptation instructions (See also shortcuts for 'make' users in *Makefile* file):
+Here are *swigex0* adaptation instructions:
 
-### For generating your C++ library:
+### Generating your own C++ library:
 
-1. Clone the repository
+1. Clone the *swigex0* repository
 2. Rename swigex0 root folder with your project name (i.e. let's call it 'myproject')
 3. Update the root Readme.md file to your needs
 4. In the root CMakeLists.txt file:
    - Adapt the header comment to your needs
-   - Adapt the project name, the VERSION, DESCRIPTION and HOMEPAGE_URL (line 45)
-5. In version.h.in file: Replace swigex0 by the name of your projet 
+   - Adapt the project name, the VERSION, DESCRIPTION and HOMEPAGE_URL (line 42)
+5. In version.h.in file: Replace swigex0 by the name of your project 
 6. Replace the content of 'include' directory with your C++ header files
 7. Replace the content of 'src' directory with your C++ body files
 8. In cmake/cpp.cmake file:
    - Adapt C++ body files list (line 27)
    - If needed, adapt include directories (line 24)
 
-=> you already can test the following targets (on windows, linux or mac, with or without DEBUG=1) :
+=> You already can test the following targets (on windows, linux or mac, with or without DEBUG=1) :
   - static
   - shared
   - install
@@ -132,24 +143,24 @@ Here are swigex0 adaptation instructions (See also shortcuts for 'make' users in
   - clean_all
   
 Note:
- - You may need to adapt cmake/cpp.cmake to add external library dependencies or compilator options. Please refer to CMake user guide.
+ - You may need to adapt cmake/cpp.cmake to add external library dependencies or compiler options. Please refer to CMake user guide.
 
 
 ### Adapting your C++ code:
 
-1. Include myproject_export.hpp file and export symbols using MYPROJECT_EXPORT macro
+1. Include myproject_export.hpp file and export symbols using MYPROJECT_EXPORT macro (see Fibo class in swigex0)
 2. Include version.h file for accessing to MYPROJECT_RELEASE and MYPROJECT_DATE macros
 
 
-### For generating python and R Packages:
+### Generating Python and R Packages:
 
 1. In swig/swig_exp.i:
-   - Adapt the C++ header files list with the headers you want to export to python and R
-   - Replace swigex0 by the name of your project (in swigex0_export.hpp)
+   - Adapt the C++ header files list with the headers you want to export to Python and R
+   - Replace swigex0 by the name of your project (e.g. swigex0_export.hpp => myproject_export.hpp)
 2. In swig/swig_inc.i:
    - Adapt the C++ header files list with the headers needed for compiling (bigger list than in 9a)
-   - Replace swigex0 by the name of your project (in swigex0_export.hpp)
-   - Add SWIG typemaps needed
+   - Replace swigex0 by the name of your project (e.g. swigex0_export.hpp => myproject_export.hpp)
+   - Add SWIG typemaps needed (see [SWIG documentation](https://www.swig.org/Doc4.0/SWIGDocumentation.html#Typemaps))
 3. In python folder:
    - Rename interface file pyswigex0.i file into pymyproject.i
    - In file pymyproject.i, rename module swigex0 to myproject (without 'py' prefix)
@@ -159,12 +170,12 @@ Note:
    - In file rmyproject.i, rename module swigex0 to myproject (without 'r' prefix)
    - In file CMakeLists.txt, change interface filename to rmyproject.i (line 28)
 
-=> you already can test the following targets (on windows, linux or mac) :
+=> You already can test the following targets (on windows, linux or mac) :
   - python_install
   - r_install
   
 
-### For adding non-regression tests:
+### Adding non-regression tests:
 
 1. In tests/cpp folder:
    - Ensure that your C++ test executables are able to generate an output log file (see example in testFibo.cpp)
@@ -185,7 +196,7 @@ Note:
    - Run check_r target and verify the generated log files in 'build' directory (in build/tests/r/Release)
    - Remove testFibo.ref file and copy generated logs into the tests/r folder (replace 'out' extension to 'ref')
 
-=> you can test the following targets (on Widows, linux or mac):
+=> You can test the following targets (on windows, linux or mac):
   - build_tests
   - check_cpp
   - check_py
@@ -194,10 +205,11 @@ Note:
  
 Note:
  - Output logs must be reproducible. For example, if you use some random numbers generation, you will have to set a seed.
- 
+
+
 ## Required tools installation
 
-Depending on the package you want to build, all dependencies are not mandatory (R and Python)
+Depending on the package you want to build, all dependencies are not compulsory (R and Python)
 
 ### Linux (Ubuntu)
 
@@ -212,8 +224,8 @@ sudo apt install r-base
 sudo apt install python3
 sudo apt install python3-pip
 sudo apt install bison
-sudo apt install pcre2-devel # Ubuntu 18
-sudo apt install libpcre2-dev # Ubuntu 20
+sudo apt install pcre2-devel # Ubuntu 16/18
+sudo apt install libpcre2-dev # Ubuntu 20+
 ````
 
 3. In a folder of your own, compile and install SWIG 4.2.0 [customized] by executing following commands:
@@ -230,8 +242,7 @@ sudo make install
 Notes:
 
 * If you don't have sudo permissions, you may have to install swig in a folder of your choice. In that case, use `-DCMAKE_INSTALL_PREFIX:PATH=/home/user/Programs` (adapt installation folder) in the `cmake` command above.
-* Under Linux, the GCC compiler and GNU make is already installed
-* If your Linux distribution repositories don't provide minimum required versions, please install the tools manually (see provider website)
+* If your Linux distribution repositories doesn't provide minimum required versions, please install the tools manually (see provider website)
 
 ### MacOS
 
@@ -262,8 +273,7 @@ sudo make install
 Notes:
 
 * If you don't have sudo permissions, you may have to install swig in a folder of your choice. In that case, use `-DCMAKE_INSTALL_PREFIX:PATH=/home/user/Programs` (adapt installation folder) in the `cmake` command above.
-* Under MacOS, the GCC (or Clang) compiler and GNU make is already installed
-* If your MacOS repositories don't provide minimum required versions, please install the tools manually (see provider website)
+* If your MacOS repositories doesn't provide minimum required versions, please install the tools manually (see provider website)
   
 ### Windows - Microsoft Visual Studio
 

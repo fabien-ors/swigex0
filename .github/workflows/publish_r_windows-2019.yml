@@ -1,0 +1,75 @@
+name: publish_r_windows-2019
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+env:
+  # Customize the CMake build type here (Release, Debug)
+  BUILD_TYPE: Release
+  BUILD_DIR : build
+  R_VERSION  : 4.1.0
+  SWIG_ROOT  : ${{github.workspace}}/swig_420b
+  PCRE2_ROOT : ${{github.workspace}}/pcre2
+  BISON_ROOT : ${{github.workspace}}/bison
+
+jobs:
+  
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup R Version
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: ${{env.R_VERSION}}
+
+    - name: Install SWIG dependencies
+            # See nuget.yml in SWIG github repo
+      shell: powershell
+      run: |
+          nuget install Bison -Version 3.7.4 -OutputDirectory ${{env.BISON_ROOT}}
+          nuget install PCRE2 -Version 10.39 -OutputDirectory ${{env.PCRE2_ROOT}}
+
+    - name: Compile and install [customized] SWIG 4.2.0b
+      shell: powershell
+      run: |
+        mkdir swig_src
+        cd swig_src
+        git clone https://github.com/fabien-ors/swig.git
+        cd swig
+        $env:PATH="${{env.BISON_ROOT}}\Bison.3.7.4\bin;" + $env:PATH
+        $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.10.39.0"
+        cmake -B${{env.BUILD_DIR}} -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
+        cmake --build ${{env.BUILD_DIR}} --config Release
+        cmake --install ${{env.BUILD_DIR}} --config Release
+
+    - name : Create Package
+      run : |
+        cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+        cmake --build ${{env.BUILD_DIR}} --target r_install
+
+    - name: Upload to CG CRAN-like (OVH)
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.CG_HOST }}
+        username: ${{ secrets.CG_USR }}
+        password: ${{ secrets.CG_PWD }}
+        source: ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*.zip
+        target: /var/www/html/cran/src/contrib/
+        strip_components: 3
+
+    - name: Updating CG CRAN-like index
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.CG_HOST }}
+        username: ${{ secrets.CG_USR }}
+        password: ${{ secrets.CG_PWD }}
+        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("src/contrib/", type="source")'
+
