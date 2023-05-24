@@ -37,7 +37,7 @@ jobs:
     - name : Update CRAN-like (using drat)
       run : |
         ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}
-        $PKG=$(basename ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*.tar.gz)
+        PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tar.gz)
         echo "Trying to insert $PKG"
         Rscript -e 'drat::insertPackage("$PKG")'
         ls docs/src/contrib
