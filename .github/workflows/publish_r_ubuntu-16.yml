@@ -39,7 +39,7 @@ jobs:
         ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}
         PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tar.gz)
         echo "Trying to insert ${PKG}"
-        Rscript -e 'drat::insertPackage("${PKG}")'
+        Rscript -e drat::insertPackage("${PKG}")
         ls docs/src/contrib
 
 #    - name: Upload to CG CRAN-like (OVH)
