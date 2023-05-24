@@ -8,7 +8,7 @@
 * C++ static and shared library compilation and local installation
 * Python and R packages local installation through CMake and SWIG
 * Non regression tests in C++, Python and R (using CTest and automatic github actions)
-* Python and R packages deployment on PyPi and CRAN-like (using manual github actions)
+* Python and R packages deployment on PyPi and CRAN-like (using manual github actions and [drat](https://dirk.eddelbuettel.com/code/drat.html))
 
 A lot of CMake and SWIG instructions in this project have been used to solve issues I encountered. There certainly exist smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications in order to make *swigex0* as simple as possible!
 
@@ -24,7 +24,7 @@ From a shell command prompt:
 ### R Package
 From an R command prompt:
 
-    install.package("swigex0", repos="http://51.83.45.127/cran")
+    install.package("swigex0", repos="https://fabien-ors.github.io/drat/")
 
 ## Usage
 This library implements a Fibonacci list C++ object exported to Python and R via SWIG. Here is an example usage in Python:

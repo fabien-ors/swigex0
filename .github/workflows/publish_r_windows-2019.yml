@@ -55,6 +55,7 @@ jobs:
         cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
 
+    # TODO : This doesn't work with windows => Look at 'drat' package?
     - name: Upload to CG CRAN-like (OVH)
       uses: appleboy/scp-action@master
       with:
