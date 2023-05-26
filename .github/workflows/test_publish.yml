@@ -31,7 +31,13 @@ jobs:
       with:
         name: win-package
         
-    - run: |
+    - name: ls 1
+      run: |
        ls
-       test_val="$(ls)"
-       echo "File read: $test_val"
+       echo "test_val=$(ls *.txt)" >> "$GITHUB_ENV"
+       echo "File read: ${{ env.test_val }}"
+
+    - name: ls 2
+      run: |
+       ls
+       echo "Environment variable is: ${{ env.test_val }}"
