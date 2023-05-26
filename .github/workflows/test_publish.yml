@@ -1,4 +1,4 @@
-name: test_publish_ubuntu
+name: test_publish
 
 on:
   workflow_dispatch:
@@ -11,17 +11,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
 
     steps:
-    - run: mkdir -p path/to/artifact
-
-    - run: echo hello > path/to/artifact/world.txt
-    
+    - run: Set-Content -Path world_win.txt -Value "hello"
+      shell: pwsh
+      
     - uses: actions/upload-artifact@v3 
       with:
-        name: ubuntu-package
-        path: path/to/artifact/world.txt
+        name: win-package
+        path: world_win.txt
 
   publish:
     needs: build
@@ -30,6 +29,6 @@ jobs:
     steps:
     - uses: actions/download-artifact@v2
       with:
-        name: ubuntu-package
+        name: win-package
         
     - run: ls
