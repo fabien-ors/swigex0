@@ -50,9 +50,8 @@ jobs:
     
     - name: Retrieve generated file name
       run: |
-        ls
-        echo "MY_PKG=$(ls *.tar.gz)" >> "$GITHUB_ENV"
-        echo "Updating CRAN with ${{ env.MY_PKG }}"
+        MY_PKG=$(ls *.tar.gz)
+        echo "Updating CRAN with $MY_PKG"
     
     - name: Upload to CG CRAN-like (OVH)
       uses: appleboy/scp-action@master
@@ -60,7 +59,7 @@ jobs:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        source: ${{ env.MY_PKG }}
+        source: $MY_PKG
         target: /var/www/html/cran/src/contrib/
         strip_components: 3
 
