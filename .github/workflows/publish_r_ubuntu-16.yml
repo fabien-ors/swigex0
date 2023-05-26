@@ -59,7 +59,7 @@ jobs:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        source: $MY_PKG
+        source: $(ls *.tar.gz)
         target: /var/www/html/cran/src/contrib/
         strip_components: 3
 
