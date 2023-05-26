@@ -48,10 +48,9 @@ jobs:
       with:
         name: ubuntu-package
     
-    - name: Retrieve generated file name
+    - name: Save artefact name in the environment
       run: |
-        MY_PKG=$(ls *.tar.gz)
-        echo "Updating CRAN with $MY_PKG"
+        echo "MY_PKG=$(ls *.tar.gz)" >> "$GITHUB_ENV"
     
     - name: Upload to CG CRAN-like (OVH)
       uses: appleboy/scp-action@master
@@ -59,7 +58,7 @@ jobs:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        source: $(ls *.tar.gz)
+        source: ${{ env.MY_PKG }}
         target: /var/www/html/cran/src/contrib/
         strip_components: 3
 
