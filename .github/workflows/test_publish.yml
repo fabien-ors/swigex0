@@ -1,0 +1,35 @@
+name: test_publish_ubuntu
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - run: mkdir -p path/to/artifact
+
+    - run: echo hello > path/to/artifact/world.txt
+    
+    - uses: actions/upload-artifact@v3 
+      with:
+        name: ubuntu-package
+        path: path/to/artifact/world.txt
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: ubuntu-package
+        
+    - run: ls
