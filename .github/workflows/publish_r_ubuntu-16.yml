@@ -49,7 +49,7 @@ jobs:
         name: ubuntu-package
     
     - name: Retrieve generated file name
-    - run: |
+      run: |
         ls
         echo "MY_PKG=$(ls *.tar.gz)" >> "$GITHUB_ENV"
         echo "Updating CRAN with ${{ env.MY_PKG }}"
