@@ -33,5 +33,5 @@ jobs:
         
     - run: |
        ls
-       $test_val=$(ls)
+       $test_val="$(ls)"
        echo "File read: $test_val"
