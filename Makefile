@@ -23,6 +23,7 @@
 #  - check_py       Execute non-regression tests (python)
 #  - check_r        Execute non-regression tests (R)
 #  - check          Execute non-regression tests (C++ + python + R)
+#  - check_test     Execute a single test (set $TEST variable)
 #
 # Clean:
 #  - clean          Clean generated files
@@ -33,6 +34,7 @@
 #  - DEBUG=1            Build the debug version of the library and tests (default =0)
 #  - N_PROC=N           Use more CPUs for building procedure (default =1)
 #  - BUILD_DIR=<path>   Define a specific build directory (default =build[_msys])
+#  - TEST=<test-target> Name of the test target to be launched (e.g. test_Model_py)
 #
 # Usage example:
 #
@@ -126,7 +128,7 @@ r_install: r_build
 	@cmake --build $(BUILD_DIR) --target r_install -- --no-print-directory $(N_PROC_OPT)
 
 
-.PHONY: check_cpp check_py check_r check
+.PHONY: check_cpp check_py check_r check check_test
 
 check_cpp: cmake
 	@CTEST_OUTPUT_ON_FAILURE=1 cmake --build $(BUILD_DIR) --target check_cpp -- --no-print-directory $(N_PROC_OPT)
@@ -140,7 +142,8 @@ check_r: cmake-r
 check: cmake-python-r
 	@CTEST_OUTPUT_ON_FAILURE=1 cmake --build $(BUILD_DIR) --target check -- --no-print-directory $(N_PROC_OPT)
 
-
+check_test: cmake-python-r
+	@cd $(BUILD_DIR); ctest -R $(TEST)
 
 .PHONY: clean clean_all
 

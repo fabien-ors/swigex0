@@ -48,6 +48,7 @@ jobs:
       with:
         name: ubuntu-package
     
+    - name: Retrieve generated file name
     - run: |
         ls
         echo "MY_PKG=$(ls *.tar.gz)" >> "$GITHUB_ENV"
