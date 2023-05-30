@@ -15,15 +15,15 @@ jobs:
 
     steps:
     - run: |
-          Set-Content -Path world_win.txt -Value "hello"
-          $myfile = Get-ChildItem -Path "./" -File
-          $myfile = $myfile.Name
+        Set-Content -Path world_win.txt -Value "hello"
+        $file_list = Get-ChildItem -Path "./" -File
+        echo "myfile=$file_list.Name" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
       shell: pwsh
       
     - uses: actions/upload-artifact@v3 
       with:
         name: win-package
-        path: $myfile
+        path: ${{ env.myfile }}
 
   publish:
     needs: build
