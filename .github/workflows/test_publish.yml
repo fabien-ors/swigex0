@@ -14,13 +14,16 @@ jobs:
     runs-on: windows-2019
 
     steps:
-    - run: Set-Content -Path world_win.txt -Value "hello"
+    - run: |
+        Set-Content -Path world_win.txt -Value "hello"
+        $dir = .txt
+        $myfile = Get-ChildItem -Path $dir -File
       shell: pwsh
       
     - uses: actions/upload-artifact@v3 
       with:
         name: win-package
-        path: world_win.txt
+        path: $myfile
 
   publish:
     needs: build
