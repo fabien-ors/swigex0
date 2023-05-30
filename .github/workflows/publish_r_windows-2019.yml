@@ -64,15 +64,6 @@ jobs:
 
     - name: Result message
       run: echo "Built ${{ env.MY_PKG }}"
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: windows-package
     
   publish:
     needs: build
