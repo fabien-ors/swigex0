@@ -55,15 +55,16 @@ jobs:
         cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
         $PKG_PATH = Get-ChildItem -Path "./swigex0_*.zip" -File
+        echo "$PKG_PATH"
         echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Result message
+      run: echo "Built ${{ env.MY_PKG }}"
 
     - uses: actions/upload-artifact@v3 
       with:
         name: windows-package
         path: ${{ env.MY_PKG }}
-
-    - name: Result message
-      run: echo "Built ${{ env.MY_PKG }}"
     
   publish:
     needs: build
