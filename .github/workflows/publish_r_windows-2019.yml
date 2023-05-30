@@ -54,17 +54,49 @@ jobs:
       run : |
         cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.zip)" >> "$GITHUB_ENV"
 
-    # TODO : This doesn't work with windows => Look at 'drat' package?
+    - uses: actions/upload-artifact@v3 
+      with:
+        name: windows-package
+        path: ${{ env.MY_PKG }}
+        
+
+    - name: Result message
+      run: echo "Built ${{ env.MY_PKG }}"
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: windows-package
+    
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: windows-package
+    
+    - name: Save artefact name in the environment
+      run: |
+        PKG_NAME=$(ls *.zip)
+        echo "Artefact retrieved: $PKG_NAME"
+        echo "MY_PKG=$PKG_NAME" >> "$GITHUB_ENV"
+    
     - name: Upload to CG CRAN-like (OVH)
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        source: ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0*.zip
-        target: /var/www/html/cran/src/contrib/
-        strip_components: 3
+        source: ${{ env.MY_PKG }}
+        target: /var/www/html/cran/bin/windows/contrib/
 
     - name: Updating CG CRAN-like index
       uses: appleboy/ssh-action@v0.1.10
@@ -72,5 +104,5 @@ jobs:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("src/contrib/", type="source")'
+        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("bin/windows/contrib/", type="binary")'
 
