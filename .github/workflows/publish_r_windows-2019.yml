@@ -96,5 +96,5 @@ jobs:
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("bin/windows/contrib/", type="binary")'
+        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("bin/windows/contrib/", type="win.binary")'
 
