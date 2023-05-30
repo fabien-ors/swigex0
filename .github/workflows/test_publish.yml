@@ -17,7 +17,7 @@ jobs:
     - run: |
         Set-Content -Path world_win.txt -Value "hello"
         $file_list = Get-ChildItem -Path "./" -File
-        echo "myfile=$file_list.Name" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+        echo "myfile=$file_list" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
       shell: pwsh
       
     - uses: actions/upload-artifact@v3 
