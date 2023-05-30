@@ -16,7 +16,7 @@ jobs:
     steps:
     - run: |
         Set-Content -Path world_win.txt -Value "hello"
-        $dir = .txt
+        $dir = "./"
         $myfile = Get-ChildItem -Path $dir -File
       shell: pwsh
       
