@@ -50,7 +50,9 @@ jobs:
     
     - name: Save artefact name in the environment
       run: |
-        echo "MY_PKG=$(ls *.tar.gz)" >> "$GITHUB_ENV"
+        PKG_NAME=$(ls *.tar.gz)
+        echo "Artefact retrieved: $PKG_NAME"
+        echo "MY_PKG=$PKG_NAME" >> "$GITHUB_ENV"
     
     - name: Upload to CG CRAN-like (OVH)
       uses: appleboy/scp-action@master
