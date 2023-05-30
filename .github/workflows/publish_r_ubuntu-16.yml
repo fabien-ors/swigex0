@@ -62,7 +62,6 @@ jobs:
         password: ${{ secrets.CG_PWD }}
         source: ${{ env.MY_PKG }}
         target: /var/www/html/cran/src/contrib/
-        strip_components: 3
 
     - name: Updating CG CRAN-like index
       uses: appleboy/ssh-action@v0.1.10
