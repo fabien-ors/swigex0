@@ -15,9 +15,9 @@ jobs:
 
     steps:
     - run: |
-        Set-Content -Path world_win.txt -Value "hello"
-        $dir = "./"
-        $myfile = Get-ChildItem -Path $dir -File
+          Set-Content -Path world_win.txt -Value "hello"
+          $myfile = Get-ChildItem -Path "./" -File
+          $myfile = $myfile.Name
       shell: pwsh
       
     - uses: actions/upload-artifact@v3 
