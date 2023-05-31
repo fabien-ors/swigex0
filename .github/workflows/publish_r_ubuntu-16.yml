@@ -17,15 +17,22 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: fabienors/test_ubuntu-16
+    strategy :
+      matrix:
+        r: ["r40","r41","r42","r43"]
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup personal R libraries directory
-      run: mkdir -p ~/r_libs & echo ".libPaths('~/r_libs')" > ~/.Rprofile
+#    - name: Setup personal R libraries directory
+#      run: |
+#        export PATH=/opt/r/${{matrix.r}}/bin:$PATH
+#        mkdir -p ~/${{matrix.r}}/r_libs
+#        echo ".libPaths('~/${{matrix.r}}/r_libs')" > ~/.Rprofile
 
     - name: Build the package and save generated file name in the environment
       run: |
+        export PATH=/opt/r/${{matrix.r}}/bin:$PATH
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF
         cmake --build ${{env.BUILD_DIR}} --target r_install
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tar.gz)" >> "$GITHUB_ENV"
@@ -35,7 +42,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3 
       with:
-        name: ubuntu-package
+        name: cran-package
         path: ${{ env.MY_PKG }}
 
   publish:
@@ -43,29 +50,37 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/cran-publish-action@v1
       with:
-        name: ubuntu-package
-    
-    - name: Save artefact name in the environment
-      run: |
-        PKG_NAME=$(ls *.tar.gz)
-        echo "Artefact retrieved: $PKG_NAME"
-        echo "MY_PKG=$PKG_NAME" >> "$GITHUB_ENV"
-    
-    - name: Upload to CG CRAN-like (OVH)
-      uses: appleboy/scp-action@master
-      with:
+        package-id: cran-package
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
-        source: ${{ env.MY_PKG }}
-        target: /var/www/html/cran/src/contrib/
+        repo-path: "/var/www/html/cran"
 
-    - name: Updating CG CRAN-like index
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.CG_HOST }}
-        username: ${{ secrets.CG_USR }}
-        password: ${{ secrets.CG_PWD }}
-        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("src/contrib/", type="source")'
+#    - uses: actions/download-artifact@v3
+#      with:
+#        name: cran-package
+#    
+#    - name: Save artefact name in the environment
+#      run: |
+#        PKG_NAME=$(ls)
+#        echo "Artefact retrieved: $PKG_NAME"
+#        echo "MY_PKG=$PKG_NAME" >> "$GITHUB_ENV"
+#    
+#    - name: Upload to the CRAN-like server
+#      uses: appleboy/scp-action@master
+#      with:
+#        host: ${{ secrets.CG_HOST }}
+#        username: ${{ secrets.CG_USR }}
+#        password: ${{ secrets.CG_PWD }}
+#        source: ${{ env.MY_PKG }}
+#        target: ~/
+#
+#    - name: Updating the packages index of the CRAN-like server
+#      uses: appleboy/ssh-action@v0.1.10
+#      with:
+#        host: ${{ secrets.CG_HOST }}
+#        username: ${{ secrets.CG_USR }}
+#        password: ${{ secrets.CG_PWD }}
+#        script: Rscript -e 'drat::insertPackages(${{ env.MY_PKG }}, repodir="/var/www/html/cran")'
