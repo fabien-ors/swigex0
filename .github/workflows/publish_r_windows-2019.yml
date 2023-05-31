@@ -68,7 +68,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3 
       with:
-        name: cran-package
+        name: cran-package-${{matrix.r_version}}
         path: ${{ env.MY_PKG }}
     
   publish:
@@ -78,7 +78,7 @@ jobs:
     steps:
     - uses: fabien-ors/cran-publish-action@v2
       with:
-        package-id: cran-package
+        package-id: cran-package-${{matrix.r_version}}
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
