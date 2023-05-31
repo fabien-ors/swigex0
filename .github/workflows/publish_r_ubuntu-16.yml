@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/cran-publish-action@v1
+    - uses: fabien-ors/cran-publish-action@v1
       with:
         package-id: cran-package
         host: ${{ secrets.CG_HOST }}
