@@ -16,19 +16,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
+      # Corresponding docker file comes from:
+      # https://github.com/fabien-ors/docker-generate
       image: fabienors/test_ubuntu-16
-    strategy :
-      matrix:
-        r: ["r40","r41","r42","r43"]
 
     steps:
     - uses: actions/checkout@v3
-
-#    - name: Setup personal R libraries directory
-#      run: |
-#        export PATH=/opt/r/${{matrix.r}}/bin:$PATH
-#        mkdir -p ~/${{matrix.r}}/r_libs
-#        echo ".libPaths('~/${{matrix.r}}/r_libs')" > ~/.Rprofile
 
     - name: Build the package and save generated file name in the environment
       run: |
@@ -42,45 +35,19 @@ jobs:
 
     - uses: actions/upload-artifact@v3 
       with:
-        name: cran-package
+        name: ubuntu-package
         path: ${{ env.MY_PKG }}
 
   publish:
     needs: build
+    # Only ubuntu can upload to CRAN easily (ssh)
     runs-on: ubuntu-latest
     
     steps:
-    - uses: fabien-ors/cran-publish-action@v2
+    - uses: fabien-ors/cran-publish-action@v6
       with:
-        package-id: cran-package
+        package-id: ubuntu-package
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
         repo-path: "/var/www/html/cran"
-
-#    - uses: actions/download-artifact@v3
-#      with:
-#        name: cran-package
-#    
-#    - name: Save artefact name in the environment
-#      run: |
-#        PKG_NAME=$(ls)
-#        echo "Artefact retrieved: $PKG_NAME"
-#        echo "MY_PKG=$PKG_NAME" >> "$GITHUB_ENV"
-#    
-#    - name: Upload to the CRAN-like server
-#      uses: appleboy/scp-action@master
-#      with:
-#        host: ${{ secrets.CG_HOST }}
-#        username: ${{ secrets.CG_USR }}
-#        password: ${{ secrets.CG_PWD }}
-#        source: ${{ env.MY_PKG }}
-#        target: ~/
-#
-#    - name: Updating the packages index of the CRAN-like server
-#      uses: appleboy/ssh-action@v0.1.10
-#      with:
-#        host: ${{ secrets.CG_HOST }}
-#        username: ${{ secrets.CG_USR }}
-#        password: ${{ secrets.CG_PWD }}
-#        script: Rscript -e 'drat::insertPackages(${{ env.MY_PKG }}, repodir="/var/www/html/cran")'

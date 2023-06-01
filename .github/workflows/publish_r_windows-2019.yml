@@ -35,7 +35,7 @@ jobs:
         r-version: ${{matrix.r_version}}
 
     - name: Install SWIG dependencies
-            # See nuget.yml in SWIG github repo
+      # See nuget.yml in SWIG github repo
       shell: powershell
       run: |
           nuget install Bison -Version 3.7.4 -OutputDirectory ${{env.BISON_ROOT}}
@@ -43,6 +43,7 @@ jobs:
 
     - name: Compile and install [customized] SWIG 4.2.0b
       shell: powershell
+      # TODO : Use a tagged realease (not the master branch)
       run: |
         mkdir swig_src
         cd swig_src
@@ -59,7 +60,6 @@ jobs:
         cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
         $PKG_PATH = Get-ChildItem -Path "${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.zip" -File
-        echo "$PKG_PATH"
         echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Result message
@@ -67,46 +67,19 @@ jobs:
 
     - uses: actions/upload-artifact@v3 
       with:
-        name: win-package
+        name: windows-package
         path: ${{ env.MY_PKG }}
     
   publish:
     needs: build
+    # Only ubuntu can upload to CRAN easily (ssh)
     runs-on: ubuntu-latest
     
     steps:
-    - uses: fabien-ors/cran-publish-action@v5
+    - uses: fabien-ors/cran-publish-action@v6
       with:
-        package-id: win-package
+        package-id: windows-package
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
         repo-path: "/var/www/html/cran"
-        
-#    - uses: actions/download-artifact@v3
-#      with:
-#        name: windows-package
-#    
-#    - name: Save artefact name in the environment
-#      run: |
-#        PKG_NAME=$(ls *.zip)
-#        echo "Artefact retrieved: $PKG_NAME"
-#        echo "MY_PKG=$PKG_NAME" >> "$GITHUB_ENV"
-#    
-#    - name: Upload to CG CRAN-like (OVH)
-#      uses: appleboy/scp-action@master
-#      with:
-#        host: ${{ secrets.CG_HOST }}
-#        username: ${{ secrets.CG_USR }}
-#        password: ${{ secrets.CG_PWD }}
-#        source: ${{ env.MY_PKG }}
-#        target: /var/www/html/cran/bin/windows/contrib/
-#
-#    - name: Updating CG CRAN-like index
-#      uses: appleboy/ssh-action@v0.1.10
-#      with:
-#        host: ${{ secrets.CG_HOST }}
-#        username: ${{ secrets.CG_USR }}
-#        password: ${{ secrets.CG_PWD }}
-#        script: cd /var/www/html/cran && Rscript -e 'tools::write_PACKAGES("bin/windows/contrib/", type="win.binary")'
-
