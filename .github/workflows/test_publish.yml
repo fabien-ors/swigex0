@@ -25,7 +25,7 @@ jobs:
       
     - uses: actions/upload-artifact@v3 
       with:
-        name: win-package-${{matrix.who-to-greet}}
+        name: win-package
         path: ${{ env.myfile }}
 
   publish:
@@ -43,7 +43,7 @@ jobs:
        ls -ls download_artifacts/*
        flist=$(ls download_artifacts/*/*.txt)
        echo "flist is: $flist"
-       echo "test_val=$flist" >> "$GITHUB_ENV"
+       echo "test_val='$flist'" >> "$GITHUB_ENV"
        echo "Environment variable is: ${{ env.test_val }} (nothing display here)"
 
     - name: Show environment variable
