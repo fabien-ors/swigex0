@@ -41,7 +41,7 @@ jobs:
     - name: ls
       run: |
        ls
-       echo "test_val=$(ls *.txt)" >> "$GITHUB_ENV"
+       echo "test_val=$(ls download_artifacts/*.txt)" >> "$GITHUB_ENV"
        echo "File read: ${{ env.test_val }} (nothing display here)"
 
     - name: ls 2
