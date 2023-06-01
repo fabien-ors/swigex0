@@ -12,17 +12,20 @@ on:
 jobs:
   build:
     runs-on: windows-2019
+    strategy :
+      matrix:
+        who-to-greet: ["Joe","Peter"]
 
     steps:
     - run: |
-        Set-Content -Path world_win.txt -Value "hello"
+        Set-Content -Path world_win_${{matrix.who-to-greet}}.txt -Value "hello ${{matrix.who-to-greet}}"
         $file_list = Get-ChildItem -Path "./" -File
         echo "myfile=$file_list" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
       shell: pwsh
       
     - uses: actions/upload-artifact@v3 
       with:
-        name: win-package
+        name: win-package-${{matrix.who-to-greet}}
         path: ${{ env.myfile }}
 
   publish:
@@ -30,11 +33,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
-        name: win-package
+#        name: win-package
+        path: download_artifacts
         
-    - name: ls 1
+    - name: ls
       run: |
        ls
        echo "test_val=$(ls *.txt)" >> "$GITHUB_ENV"

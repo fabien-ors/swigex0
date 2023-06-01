@@ -12,7 +12,6 @@ env:
   # Customize the CMake build type here (Release, Debug)
   BUILD_TYPE: Release
   BUILD_DIR : build
-  R_VERSION  : 4.1.0
   SWIG_ROOT  : ${{github.workspace}}/swig_420b
   PCRE2_ROOT : ${{github.workspace}}/pcre2
   BISON_ROOT : ${{github.workspace}}/bison
