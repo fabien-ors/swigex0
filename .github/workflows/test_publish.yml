@@ -34,15 +34,19 @@ jobs:
     
     steps:
     - uses: actions/download-artifact@v3
+      # For downloading several artifacts: https://github.com/actions/download-artifact/issues/103#issuecomment-1290368250
       with:
-#        name: win-package
         path: download_artifacts
         
     - name: List artifacts and create environment variable
+      # For join_by function: https://stackoverflow.com/a/17841619/3952924
       run: |
-       ls -ls download_artifacts/*
-       flist=$(ls download_artifacts/*/*.txt)
-       echo "flist is: $flist"
+       ls -ls download_artifacts/win-package
+       flist=$(ls download_artifacts/win-package/*.txt)
+       function join_by { local IFS="$1"; shift; echo "$*"; }
+       flist=$(join_by , $flist)
+       echo "flist is:"
+       echo "$flist"
        echo "test_val='$flist'" >> "$GITHUB_ENV"
        echo "Environment variable is: ${{ env.test_val }} (nothing display here)"
 
