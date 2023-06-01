@@ -44,9 +44,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: fabien-ors/cran-publish-action@v6
+    - uses: fabien-ors/cran-publish-action@v7
       with:
-        package-id: ubuntu-package
+        artifact-id: ubuntu-package
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
