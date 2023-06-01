@@ -67,7 +67,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3 
       with:
-        name: cran-package-${{matrix.r_version}}
+        name: win-package
         path: ${{ env.MY_PKG }}
     
   publish:
@@ -75,9 +75,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: fabien-ors/cran-publish-action@v2
+    - uses: fabien-ors/cran-publish-action@v3
       with:
-        package-id: cran-package-${{matrix.r_version}}
+        package-id: win-package
         host: ${{ secrets.CG_HOST }}
         username: ${{ secrets.CG_USR }}
         password: ${{ secrets.CG_PWD }}
