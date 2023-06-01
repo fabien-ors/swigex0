@@ -35,15 +35,18 @@ jobs:
     steps:
     - uses: actions/download-artifact@v3
       with:
+#        name: win-package
         path: download_artifacts
         
     - name: List artifacts and create environment variable
       run: |
        ls -ls download_artifacts/*
-       echo "file_list=$(ls download_artifacts/*/*.txt)" >> "$GITHUB_ENV"
-       echo "File read: ${{ env.file_list }} (nothing display here)"
+       flist=$(ls download_artifacts/*/*.txt)
+       echo "flist is: $flist"
+       echo "test_val=$flist" >> "$GITHUB_ENV"
+       echo "Environment variable is: ${{ env.test_val }} (nothing display here)"
 
     - name: Show environment variable
       run: |
-        echo "Environment variable is: ${{ env.file_list }}"
+        echo "Environment variable is: ${{ env.test_val }}"
       
