@@ -65,9 +65,10 @@ jobs:
     - name: Result message
       run: echo "Built ${{ env.MY_PKG }}"
 
-    - uses: actions/upload-artifact@v3 
+    - uses: actions/upload-artifact@v3
+      # Use specific artifact identifier for publishing all R versions
       with:
-        name: windows-package
+        name: windows-package-${{matrix.r_version}}
         path: ${{ env.MY_PKG }}
     
   publish:
