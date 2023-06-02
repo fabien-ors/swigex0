@@ -86,7 +86,7 @@ Depending on the package you want to build/install, you must adapt the first com
 #### GCC / MinGW / CLang
     cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=ON -DBUILD_R=ON
 #### MSVC (Visual)
-    cmake -Bbuild -H. -DBUILD_PYTHON=ON -DBUILD_R=ON
+    cmake -Bbuild -H. -DBUILD_PYTHON=ON -DBUILD_R=OFF
 
 ### Build static library (and install Python package)
 #### GCC / MinGW / CLang
@@ -98,7 +98,7 @@ Depending on the package you want to build/install, you must adapt the first com
 #### GCC / MinGW / CLang
     cmake --build build --target r_install
 #### MSVC (Visual)
-    cmake --build build --target r_install --config Release
+R packages under Windows are compiled using RTools only (MinGW)
 
 ### Build and install shared library (and don't build Python and R packages)
 #### GCC / MinGW / CLang
