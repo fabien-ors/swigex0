@@ -4,6 +4,6 @@ Example of a cross-platform C++ library exported in Python and R using SWIG and 
 
 * Author: Fabien Ors (MINES PARIS - PSL University) 
 * License: MIT
-* Date: Feb. 2023
+* Date: June 2023
 
 See official README here : https://github.com/fabien-ors/swigex0

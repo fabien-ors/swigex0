@@ -4,7 +4,7 @@
 #
 #                   Author: Fabien Ors (MINES PARIS - PSL) 
 #                   License: MIT
-#                   Date: Feb. 2023
+#                   Date: June 2023
 #
 #
 # 1. Configure project :
@@ -40,9 +40,9 @@ cmake_minimum_required(VERSION 3.20)
 
 # Define project here
 project(swigex0
-        VERSION      0.1.3
+        VERSION      0.1.4
         DESCRIPTION  "C++ library and SWIG wrappers (R & Python)"
-        HOMEPAGE_URL "https://github.com/fabien-ors/swigex"
+        HOMEPAGE_URL "https://github.com/fabien-ors/swigex0"
         LANGUAGES    C CXX) # Enable C language for third party libraries
 
 ####################################################
