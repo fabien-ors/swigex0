@@ -24,7 +24,8 @@ public:
 
   void display(bool showTitle = true) const;
 
-  std::vector<int> get() const;
+  std::vector<int> getVector() const;
+  std::string getTitle() const;
 
 protected:
   int         _n;     /// Maximum integer of the list

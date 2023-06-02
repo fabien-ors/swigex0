@@ -18,6 +18,8 @@
 //       Add target language additional features below      //
 //////////////////////////////////////////////////////////////
 
+// TODO : Redirection of std::cout for windows RGui.exe users
+
 %insert(s) %{
 
 %}

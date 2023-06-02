@@ -128,7 +128,7 @@ void Fibo::display(bool showTitle) const
 {
   if (showTitle)
     std::cout << _title << ": ";
-  std::vector<int> res = get();
+  std::vector<int> res = getVector();
   for (const auto& i: res)
     std::cout << i << ' ';
   std::cout << std::endl;
@@ -139,9 +139,19 @@ void Fibo::display(bool showTitle) const
  *
  * @return Fibonacci integer vector
  */
-std::vector<int> Fibo::get() const
+std::vector<int> Fibo::getVector() const
 {
   return fib(_n);
+}
+
+/**
+ * Return the Fibo object title (including version and date by default)
+ *
+ * @return title
+ */
+std::string Fibo::getTitle() const
+{
+  return _title;
 }
 
 #if defined(_WIN32) || defined(_WIN64)

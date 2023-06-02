@@ -8,9 +8,9 @@
 * C++ static and shared library compilation and local installation
 * Python and R packages local installation through CMake and SWIG
 * Non regression tests in C++, Python and R (using CTest and automatic github actions)
-* Python and R packages deployment on PyPi and CRAN-like (using manual github actions and [drat](https://dirk.eddelbuettel.com/code/drat.html))
+* Python and R packages deployment on PyPi and CRAN-like (using manual github actions)
 
-A lot of CMake and SWIG instructions in this project have been used to solve issues I encountered. There certainly exist smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications in order to make *swigex0* as simple as possible!
+A lot of CMake, SWIG and github actions instructions in this project have been used to solve issues I encountered. There certainly exists smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications or bug fixed in order to make *swigex0* as simple and robust as possible!
 
 Look for 'TODO' keyword for remaining issues.
 
@@ -22,25 +22,34 @@ From a shell command prompt:
     pip install swigex0
     
 ### R Package
-From an R command prompt:
+From an R command prompt (CRAN URL will change soon):
 
-    install.package("swigex0", repos="https://fabien-ors.github.io/drat/")
+    install.packages("swigex0", repos="http://51.83.45.127/cran")
 
 ## Usage
 This library implements a Fibonacci list C++ object exported to Python and R via SWIG. Here is an example usage in Python:
 
     import swigex0
-    swigex0.Fibo(150).display()
+    f = swigex0.Fibo(150)
+    f.getTitle()
+    f.getVector()
 
-But the main goal of *swigex0* is to provide a **complete cross-platform CMake/SWIG project template**... Feel free to adapt:
-* First, check that you can compile / test / install *swigex0* in the [next session](#install-from-source)
+And here is an example usage in R:
+
+    library(swigex0)
+    f = Fibo(150)
+    f$getTitle()
+    f$getVector()
+    
+But the main goal of *swigex0* is to provide a **complete cross-platform CMake/SWIG project template**... Feel free to adapt!
+* First, check that you can compile / test / install *swigex0* (see [next section](#install-from-source))
 * Then, look at how to adapt this project to your needs in the [derivative section](#derivative-usage)
 
 ## Install from source
 
 ### Prerequisites
 
-This library has been successfully compiled with Ubuntu 16/18/20/22 LTS and Windows 10 (MacOS: not tested).
+This library/packages has been successfully compiled with Ubuntu 18/20/22 LTS and Windows 10 (MacOS: not yet tested).
 
 For compiling and installing *swigex0* C++ Library, the following tools must be available (See [required tools installation](#required-tools-installation) instructions below):
 
@@ -52,7 +61,7 @@ For compiling and installing *swigex0* C++ Library, the following tools must be 
   * Windows:
     * Microsoft Visual Studio C++ 14 or higher
     * MinGW 7 or higher (we propose the one provided with RTools)
-  * MacOS (not tested):
+  * MacOS (not yet tested):
     * Clang 12 or higher
 
 The following tools must be available for compiling and installing Python package:
@@ -105,6 +114,7 @@ Depending on the package you want to build/install, you must adapt the first com
 
 ### Important Notes
 
+* For 'make' users, a **Makefile** provides shortcuts for these commands.
 * Using MingGW on a Windows where Visual Studio is also installed may need to add `-G "MSYS Makefiles"` in the first cmake command above.
 * The default installation directory named *swigex0_install* is located in your *Home*. If you want to change it, you can either:
     * Define the `swigex0_INSTALL_DIR` environment variable or
@@ -116,8 +126,7 @@ Depending on the package you want to build/install, you must adapt the first com
 
 ## Derivative Usage
 
-The objective of this package is to provide an example of wrapping a C++ library in R and Python using CMake and SWIG.
-Here are *swigex0* adaptation instructions:
+The objective of this package is to provide an example of wrapping a C++ library in R and Python using CMake and SWIG. Here are *swigex0* adaptation instructions:
 
 ### Generating your own C++ library:
 
@@ -248,7 +257,7 @@ Notes:
 
 1. (For R users only) - Remove any previous installation of SWIG (if any)
 
-2. Then, execute the following commands (Not tested):
+2. Then, execute the following commands (Not yet tested):
 
 ````
 brew install git
