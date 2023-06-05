@@ -24,9 +24,9 @@ From a shell command prompt:
     pip install swigex0
     
 ### R Package
-From an R command prompt (CRAN URL will change soon):
+From an R command prompt:
 
-    install.packages("swigex0", repos="http://51.83.45.127/cran")
+    install.packages("swigex0", repos="https://soft.mines-paristech.fr/cran")
 
 ## Usage
 This library implements a Fibonacci list C++ object exported to Python and R via SWIG. Here is an example usage in Python:
