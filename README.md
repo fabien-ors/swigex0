@@ -10,6 +10,8 @@
 * Non regression tests in C++, Python and R (using CTest and automatic github actions)
 * Python and R packages deployment on PyPi and CRAN-like (using manual github actions)
 
+The aim of this project is to provide a template to be adapted to your needs. When using **swigex0**, please, cite the github URL: https://github.com/fabien-ors/swigex0.
+
 A lot of CMake, SWIG and github actions instructions in this project have been used to solve issues I encountered. There certainly exists smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications or bug fixed in order to make *swigex0* as simple and robust as possible!
 
 Look for 'TODO' keyword for remaining issues.
