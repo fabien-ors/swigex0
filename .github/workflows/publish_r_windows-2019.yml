@@ -54,7 +54,7 @@ jobs:
         cmake --build ${{env.BUILD_DIR}} --config Release
         cmake --install ${{env.BUILD_DIR}} --config Release
 
-    - name : Create Package
+    - name : Build the package and save generated file name in the environment
       run : |
         cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
