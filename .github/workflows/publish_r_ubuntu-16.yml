@@ -29,9 +29,6 @@ jobs:
         cmake --build ${{env.BUILD_DIR}} --target r_install
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tar.gz)" >> "$GITHUB_ENV"
 
-    - name: Result message
-      run: echo "Built ${{ env.MY_PKG }}"
-
     - uses: actions/upload-artifact@v3 
       with:
         name: ubuntu-package
