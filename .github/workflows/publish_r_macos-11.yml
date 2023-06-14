@@ -1,4 +1,4 @@
-name: publish_r_macos-10-11
+name: publish_r_macos-11
 
 on:
   workflow_dispatch:
@@ -31,11 +31,6 @@ jobs:
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{matrix.r_version}}
-
-    - name: Install SWIG dependencies
-      run: |
-       brew install bison
-       brew install pcre2-devel
 
     - name: Compile and install [customized] SWIG 4.2.0b
       # TODO : Use a tagged realease (not the master branch)
