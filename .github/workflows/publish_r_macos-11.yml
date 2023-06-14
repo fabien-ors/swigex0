@@ -47,8 +47,7 @@ jobs:
       run : |
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
-        $PKG_PATH = Get-ChildItem -Path "${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz" -File
-        echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all R versions
