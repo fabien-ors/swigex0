@@ -5,8 +5,6 @@
 #include <string>
 #include <fstream>
 
-/// Global functions
-
 SWIGEX0_EXPORT int fibn(int n);
 SWIGEX0_EXPORT std::vector<int> fib(int n);
 
@@ -19,8 +17,8 @@ public:
   Fibo (int n, const std::string& title = "");
   virtual ~Fibo();
 
-  void resetFromFiboVal(Fibo fib);        // In order to test class argument as value
-  void resetFromFiboRef(const Fibo& fib); //  In order to test class argument as reference
+  void resetFromFiboVal(Fibo fib);
+  void resetFromFiboRef(const Fibo& fib);
 
   void display(bool showTitle = true) const;
 
@@ -28,8 +26,8 @@ public:
   std::string getTitle() const;
 
 protected:
-  int         _n;     /// Maximum integer of the list
-  std::string _title; /// Title to be shown when displaying the list
+  int         _n;     ///< Maximum integer of the list
+  std::string _title; ///< Title to be shown when displaying the list
 };
 
 /**

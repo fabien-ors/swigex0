@@ -56,7 +56,7 @@ jobs:
     
   publish:
     needs: build
-    # Only ubuntu can upload to CRAN easily (ssh)
+    # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
     
     steps:
