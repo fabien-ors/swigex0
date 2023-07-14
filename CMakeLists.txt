@@ -83,6 +83,7 @@ message(STATUS "BUILD_R="      ${BUILD_R})
 ####################################################
 ## BUILD & INSTALL
 
+include(cmake/version.cmake)
 include(cmake/cpp.cmake)
 include(cmake/install.cmake)
 

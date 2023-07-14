@@ -2,6 +2,9 @@
 # for make users (Linux-GCC, MacOS-clang or Windows-Rtools)
 #
 # Call 'make' with one of this target:
+#
+# Information:
+#  - print_version  Display project name, version and date
 # 
 # C++ Library:
 #  - shared         Build shared library
@@ -77,7 +80,7 @@ endif
 
 
 
-.PHONY: all cmake cmake-python cmake-r cmake-python-r static shared build_tests doxygen install uninstall
+.PHONY: all cmake cmake-python cmake-r cmake-python-r print_version static shared build_tests doxygen install uninstall
 
 all: shared install
 
@@ -93,21 +96,11 @@ cmake-r:
 cmake-python-r:
 	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -H. $(GENERATOR) -DBUILD_PYTHON=ON -DBUILD_R=ON
 
-static: cmake
-	@cmake --build $(BUILD_DIR) --target static -- --no-print-directory $(N_PROC_OPT)
+print_version: cmake
+	@cmake --build $(BUILD_DIR) --target print_version -- --no-print-directory
 
-shared: cmake
-	@cmake --build $(BUILD_DIR) --target shared -- --no-print-directory $(N_PROC_OPT)
-
-build_tests: cmake
-	@cmake --build $(BUILD_DIR) --target build_tests -- --no-print-directory $(N_PROC_OPT)
-
-install: cmake
-	@cmake --build $(BUILD_DIR) --target install -- --no-print-directory $(N_PROC_OPT)
-
-uninstall: 
-	@cmake --build $(BUILD_DIR) --target uninstall -- --no-print-directory $(N_PROC_OPT)
-
+static shared build_tests install uninstall: cmake
+	@cmake --build $(BUILD_DIR) --target $@ -- --no-print-directory $(N_PROC_OPT)
 
 
 .PHONY: python_build python_install
