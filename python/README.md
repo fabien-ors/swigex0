@@ -2,7 +2,7 @@
 
 Example of a cross-platform C++ library exported in Python and R using SWIG and CMake
 
-* Author: Fabien Ors (MINES PARIS - PSL University) 
+* Author: Fabien Ors (MINES Paris - PSL University) 
 * License: MIT
 * Date: June 2023
 

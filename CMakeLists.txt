@@ -2,7 +2,7 @@
 #
 #                      SWIGEX0 C++ Library and Wrappers
 #
-#                   Author: Fabien Ors (MINES PARIS - PSL) 
+#                   Author: Fabien Ors (MINES Paris - PSL) 
 #                   License: MIT
 #                   Date: June 2023
 #
