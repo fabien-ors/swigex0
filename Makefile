@@ -80,7 +80,7 @@ endif
 
 
 
-.PHONY: all cmake cmake-python cmake-r cmake-python-r print_version static shared build_tests doxygen install uninstall
+.PHONY: all cmake cmake-python cmake-r cmake-python-r print_version static shared build_tests install uninstall
 
 all: shared install
 
