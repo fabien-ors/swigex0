@@ -86,9 +86,9 @@ For getting the sources files, just clone the github repository:
 ### Configure project
 Depending on the package you want to build/install, you must adapt the first command below:
 #### GCC / MinGW / CLang
-    cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=ON -DBUILD_R=ON
+    cmake -Bbuild -S. -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON=ON -DBUILD_R=ON
 #### MSVC (Visual)
-    cmake -Bbuild -H. -DBUILD_PYTHON=ON -DBUILD_R=OFF
+    cmake -Bbuild -S. -DBUILD_PYTHON=ON -DBUILD_R=OFF
 
 ### Build static library (and install Python package)
 #### GCC / MinGW / CLang
