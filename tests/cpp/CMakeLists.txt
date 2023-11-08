@@ -52,9 +52,12 @@ foreach(TARGET_EXE ${TARGETS_EXE})
              COMMAND ${TARGET_EXE}
              WORKING_DIRECTORY ${TEST_DST_DIR})
     # Compare the output result (diff output is shown when CTEST_OUTPUT_ON_FAILURE=1)
-    # Use git diff (cross-platform) with no-index (no need to have files under git control) and ignore whitespaces (-w)
+    # Use git diff (cross-platform) with:
+    # - no-index (no need to have files under git control)
+    # - ignore lines starting with #NO_DIFF#
+    # - ignore whitespaces (-w) and blanck lines (-b) TODO : doesn't work ?
     add_test(NAME ${TARGET_EXE}_cmp
-             COMMAND git diff --no-index -w ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_EXE}.ref ${TEST_DST_DIR}/${TARGET_EXE}.out)
+             COMMAND git diff --no-index -I "#NO_DIFF#" -b -w ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_EXE}.ref ${TEST_DST_DIR}/${TARGET_EXE}.out)
 endforeach(TARGET_EXE ${TARGETS_EXE})
 
 # Create the check target to launch the tests
