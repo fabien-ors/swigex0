@@ -25,8 +25,6 @@ env:
   BUILD_DIR : build
   R_VERSION  : 4.1.0
   SWIG_ROOT  : ${{github.workspace}}/swig_420b
-  PCRE2_ROOT : ${{github.workspace}}/pcre2
-  BISON_ROOT : ${{github.workspace}}/bison
 
 jobs:
   
@@ -43,6 +41,8 @@ jobs:
 
     - name: "Install the customized SWIG for R under windows"
       uses: ./.github/workflows/install-swig-r-windows
+      with:
+        swig-root: ${{env.SWIG_ROOT}}
 
     - name: Configure cmake
       run: cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig

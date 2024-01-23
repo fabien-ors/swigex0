@@ -1,5 +1,29 @@
 name: install-swig-r-windows
 description: "Install the customized SWIG used for swigex0 R package under windows"
+author: 'Fabien Ors'
+
+inputs:
+  bison-version:
+    description: 'Version for Bison library'
+    default: "3.7.4"
+  pcre2-version:
+    description: 'Version for PCRE2 library'
+    default: "10.39.0"
+  swig-tag:
+    description: 'SWIG tag on the customized repo'
+    default: "4.2.0b"
+  swig-root:
+    description: 'SWIG installation directory'
+    default: "${{github.workspace}}/bison"
+  generator:
+    description: 'Generator used to compile SWIG'
+    default: "Visual Studio 16 2019"
+    
+env:
+  PCRE2_ROOT : ${{github.workspace}}/pcre2
+  BISON_ROOT : ${{github.workspace}}/bison
+  BUILD_DIR : build
+  
 runs:
   using: "composite"
   steps:
@@ -9,19 +33,20 @@ runs:
     # See nuget.yml in SWIG github repo
     shell: powershell
     run: |
-        nuget install Bison -Version 3.7.4 -OutputDirectory ${{env.BISON_ROOT}}
-        nuget install PCRE2 -Version 10.39 -OutputDirectory ${{env.PCRE2_ROOT}}
+        nuget install Bison -Version ${{inputs.bison-version}} -OutputDirectory ${{env.BISON_ROOT}}
+        nuget install PCRE2 -Version ${{inputs.pcre2-version}} -OutputDirectory ${{env.PCRE2_ROOT}}
 
-  - name: Compile and install [customized] SWIG 4.2.0b
+  - name: Compile and install [customized] SWIG
     shell: powershell
-    # TODO : Use a tagged realease (not the master branch)
+    # TODO : Use swig-tag variable (not the master branch)
+    # TODO : Does pcre2-8-static.lib in cmake command valid?
     run: |
       mkdir swig_src
       cd swig_src
       git clone https://github.com/fabien-ors/swig.git
       cd swig
-      $env:PATH="${{env.BISON_ROOT}}\Bison.3.7.4\bin;" + $env:PATH
-      $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.10.39.0"
-      cmake -B${{env.BUILD_DIR}} -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
+      $env:PATH="${{env.BISON_ROOT}}\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
+      $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.${{inputs.pcre2-version}}"
+      cmake -B${{env.BUILD_DIR}} -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{input.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
       cmake --build ${{env.BUILD_DIR}} --config Release
       cmake --install ${{env.BUILD_DIR}} --config Release
