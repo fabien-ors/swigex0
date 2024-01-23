@@ -3,6 +3,8 @@ description: "Install the customized SWIG used for swigex0 R package under windo
 runs:
   using: "composite"
   steps:
+  - uses: actions/checkout@v3
+  
   - name: Install SWIG dependencies
     # See nuget.yml in SWIG github repo
     shell: powershell
