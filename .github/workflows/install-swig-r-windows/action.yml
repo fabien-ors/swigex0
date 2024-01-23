@@ -20,8 +20,8 @@ inputs:
     default: "Visual Studio 16 2019"
     
 env:
-  PCRE2_ROOT : ${{github.workspace}}/pcre2
-  BISON_ROOT : ${{github.workspace}}/bison
+  PCRE2_ROOT : pcre2
+  BISON_ROOT : bison
   BUILD_DIR : build
   
 runs:
@@ -47,6 +47,6 @@ runs:
       cd swig
       $env:PATH="${{env.BISON_ROOT}}\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
       $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.${{inputs.pcre2-version}}"
-      cmake -B${{env.BUILD_DIR}} -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{input.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
+      cmake -B${{env.BUILD_DIR}} -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
       cmake --build ${{env.BUILD_DIR}} --config Release
       cmake --install ${{env.BUILD_DIR}} --config Release
