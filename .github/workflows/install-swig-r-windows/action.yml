@@ -1,4 +1,4 @@
-name: install_swig_r_windows
+name: install-swig-r-windows
 description: "Install the customized SWIG used for swigex0 R package under windows"
 runs:
   using: "composite"

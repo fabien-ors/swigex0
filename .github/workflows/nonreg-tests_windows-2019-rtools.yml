@@ -41,25 +41,8 @@ jobs:
       with:
         r-version: ${{env.R_VERSION}}
 
-    - name: Install SWIG dependencies
-            # See nuget.yml in SWIG github repo
-      shell: powershell
-      run: |
-          nuget install Bison -Version 3.7.4 -OutputDirectory ${{env.BISON_ROOT}}
-          nuget install PCRE2 -Version 10.39 -OutputDirectory ${{env.PCRE2_ROOT}}
-
-    - name: Compile and install [customized] SWIG 4.2.0b
-      shell: powershell
-      run: |
-        mkdir swig_src
-        cd swig_src
-        git clone https://github.com/fabien-ors/swig.git
-        cd swig
-        $env:PATH="${{env.BISON_ROOT}}\Bison.3.7.4\bin;" + $env:PATH
-        $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.10.39.0"
-        cmake -B${{env.BUILD_DIR}} -G "Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
-        cmake --build ${{env.BUILD_DIR}} --config Release
-        cmake --install ${{env.BUILD_DIR}} --config Release
+    # Install the customized SWIG for R under windows
+    - uses: ./.github/workspace/install-swig-r-windows
 
     - name: Configure cmake
       run: cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
