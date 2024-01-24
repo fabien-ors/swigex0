@@ -41,12 +41,13 @@ runs:
     shell: powershell
     # TODO : Use swig-tag variable (not the master branch)
     # TODO : Does pcre2-8-static.lib in cmake command valid?
+      #cmake -Bbuild -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
     run: |
       cd swig_src
       git clone https://github.com/fabien-ors/swig.git
       cd swig
       $env:PATH="..\bison\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
       $PCRE_PATH="..\pcre2\PCRE2.${{inputs.pcre2-version}}"
-      cmake -Bbuild -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
+      cmake -Bbuild -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC"
       cmake --build build --config Release
       cmake --install build --config Release

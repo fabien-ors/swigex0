@@ -39,7 +39,7 @@ jobs:
       with:
         r-version: ${{env.R_VERSION}}
 
-    - name: "Install the customized SWIG for R under windows"
+    - name: Install the customized SWIG for R under windows
       uses: ./.github/workflows/install-swig-r-windows
       with:
         swig-root: ${{env.SWIG_ROOT}}
