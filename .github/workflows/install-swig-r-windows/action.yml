@@ -3,18 +3,18 @@ description: "Install the customized SWIG used for swigex0 R package under windo
 author: 'Fabien Ors'
 
 inputs:
+  swig-root:
+    description: 'SWIG installation directory'
+  swig-tag:
+    description: 'SWIG tag on the customized repo'
+    default: "4.2.0b"
   bison-version:
     description: 'Version for Bison library'
     default: "3.7.4"
   pcre2-version:
     description: 'Version for PCRE2 library'
     default: "10.39.0"
-  swig-tag:
-    description: 'SWIG tag on the customized repo'
-    default: "4.2.0b"
-  swig-root:
-    description: 'SWIG installation directory'
-    default: "${{github.workspace}}/bison"
+
   generator:
     description: 'Generator used to compile SWIG'
     default: "Visual Studio 16 2019"
@@ -33,9 +33,9 @@ runs:
     # See nuget.yml in SWIG github repo
     shell: powershell
     run: |
-        cd swig_src
-        nuget install Bison -Version ${{inputs.bison-version}} -OutputDirectory .\bison
-        nuget install PCRE2 -Version ${{inputs.pcre2-version}} -OutputDirectory .\pcre2
+      cd swig_src
+      nuget install Bison -Version ${{inputs.bison-version}} -OutputDirectory .\bison
+      nuget install PCRE2 -Version ${{inputs.pcre2-version}} -OutputDirectory .\pcre2
 
   - name: Compile and install [customized] SWIG
     shell: powershell
@@ -45,8 +45,8 @@ runs:
       cd swig_src
       git clone https://github.com/fabien-ors/swig.git
       cd swig
-      $env:PATH=".\bison\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
-      $PCRE_PATH=".\pcre2\PCRE2.${{inputs.pcre2-version}}"
+      $env:PATH="..\bison\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
+      $PCRE_PATH="..\pcre2\PCRE2.${{inputs.pcre2-version}}"
       cmake -Bbuild -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
       cmake --build build --config Release
       cmake --install build --config Release
