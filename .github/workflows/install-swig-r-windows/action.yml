@@ -18,35 +18,35 @@ inputs:
   generator:
     description: 'Generator used to compile SWIG'
     default: "Visual Studio 16 2019"
-    
-env:
-  PCRE2_ROOT : pcre2
-  BISON_ROOT : bison
-  BUILD_DIR : build
   
 runs:
   using: "composite"
   steps:
   - uses: actions/checkout@v3
-  
+
+  - name: Create a folder for compiing SWIG and installing dependencies
+    shell: powershell
+    run: |
+      mkdir swig_src
+
   - name: Install SWIG dependencies
     # See nuget.yml in SWIG github repo
     shell: powershell
     run: |
-        nuget install Bison -Version ${{inputs.bison-version}} -OutputDirectory ${{env.BISON_ROOT}}
-        nuget install PCRE2 -Version ${{inputs.pcre2-version}} -OutputDirectory ${{env.PCRE2_ROOT}}
+        cd swig_src
+        nuget install Bison -Version ${{inputs.bison-version}} -OutputDirectory .\bison
+        nuget install PCRE2 -Version ${{inputs.pcre2-version}} -OutputDirectory .\pcre2
 
   - name: Compile and install [customized] SWIG
     shell: powershell
     # TODO : Use swig-tag variable (not the master branch)
     # TODO : Does pcre2-8-static.lib in cmake command valid?
     run: |
-      mkdir swig_src
       cd swig_src
       git clone https://github.com/fabien-ors/swig.git
       cd swig
-      $env:PATH="${{env.BISON_ROOT}}\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
-      $PCRE_PATH="${{env.PCRE2_ROOT}}\PCRE2.${{inputs.pcre2-version}}"
-      cmake -B${{env.BUILD_DIR}} -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
-      cmake --build ${{env.BUILD_DIR}} --config Release
-      cmake --install ${{env.BUILD_DIR}} --config Release
+      $env:PATH=".\bison\Bison.${{inputs.bison-version}}\bin;" + $env:PATH
+      $PCRE_PATH=".\pcre2\PCRE2.${{inputs.pcre2-version}}"
+      cmake -Bbuild -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX:PATH=${{inputs.swig-root}} -DCMAKE_C_FLAGS="/DPCRE2_STATIC" -DCMAKE_CXX_FLAGS="/DPCRE2_STATIC" -DPCRE2_INCLUDE_DIR="$PCRE_PATH/include" -DPCRE2_LIBRARY="$PCRE_PATH/lib/pcre2-8-static.lib"
+      cmake --build build --config Release
+      cmake --install build --config Release
