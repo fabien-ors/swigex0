@@ -14,7 +14,6 @@ inputs:
   pcre2-version:
     description: 'Version for PCRE2 library'
     default: "10.39.0"
-
   generator:
     description: 'Generator used to compile SWIG'
     default: "Visual Studio 16 2019"
@@ -22,7 +21,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - uses: actions/checkout@v3
 
   - name: Create a folder for compiing SWIG and installing dependencies
     shell: powershell
@@ -40,7 +38,6 @@ runs:
   - name: Compile and install [customized] SWIG
     shell: powershell
     # TODO : Use swig-tag variable (not the master branch)
-    # TODO : Does pcre2-8-static.lib in cmake command valid?
     run: |
       cd swig_src
       git clone https://github.com/fabien-ors/swig.git
