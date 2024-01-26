@@ -12,9 +12,7 @@ env:
   # Customize the CMake build type here (Release, Debug)
   BUILD_TYPE: Release
   BUILD_DIR : build
-  SWIG_ROOT  : ${{github.workspace}}/swig_420b
-  PCRE2_ROOT : ${{github.workspace}}/pcre2
-  BISON_ROOT : ${{github.workspace}}/bison
+  SWIG_ROOT : ${{github.workspace}}\swig_420b
 
 jobs:
   
@@ -33,8 +31,10 @@ jobs:
       with:
         r-version: ${{matrix.r_version}}
 
-    # Install the customized SWIG version
-    - uses: ./.github/workflows/install-swig-r-windows
+    - name: Install the customized SWIG from source under windows
+      uses: fabien-ors/install-swig-windows-action@v2
+      with:
+        swig-root: ${{env.SWIG_ROOT}}
 
     - name : Build the package and save generated file name in the environment
       run : |
