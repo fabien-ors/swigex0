@@ -25,7 +25,6 @@ env:
   BUILD_DIR : build
   PYTHON_VERSION : "3.11"
   COMPILE_VERSION : '"Visual Studio 16 2019"' #Because cmake -G needs " "
-  #SWIG_ROOT : ${{github.workspace}}/swig_420b
 
 jobs:
   
