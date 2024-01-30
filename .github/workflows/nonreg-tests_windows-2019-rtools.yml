@@ -1,10 +1,6 @@
 name: nonreg-tests_windows-2019-rtools
 
 on:
-  # Deactivate the workflow
-  push:
-    branches-ignore:
-      - '**'
   # Activate the workflow at each push on main branch
   push:
     branches: [ main ]
