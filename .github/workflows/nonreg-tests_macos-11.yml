@@ -1,0 +1,68 @@
+name: nonreg-tests_macos-11
+
+on:
+  # Deactivate the workflow
+  #push:
+  #  branches-ignore:
+  #    - '**'
+  # Activate the workflow at each push on main branch
+  push:
+    branches: [ main ]
+  # Activate the workflow at each pull request on main branch
+  pull_request:
+    branches: [ main ]
+  # Permit manual trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  BUILD_DIR : build
+  PYTHON_VERSION : "3.11"
+  SWIG_ROOT : ${{github.workspace}}\swig_420b
+  
+jobs:
+  build:
+    runs-on: macos-11
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Python Version
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{env.PYTHON_VERSION}}
+
+    - name: Install Python dependency
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install numpy=="1.23.5"
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -yq r-base
+
+    - name: Compile and install [customized] SWIG 4.2.0
+      run: |
+        mkdir swig_src
+        cd swig_src
+        git clone https://github.com/fabien-ors/swig.git
+        cd swig
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
+        cd build
+        make
+        make install
+
+    - name: Setup personal R libraries directory
+      # Beware : ~/ is Linux only. For a potential windows a solution must be found yet
+      run: mkdir -p ~/r_libs & echo ".libPaths('~/r_libs')" > ~/.Rprofile
+
+    - name: Configure cmake
+      run: cmake -B ${{github.workspace}}/${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+
+    - name: Compile, install packages and execute non-regression tests
+      run: cmake --build ${{github.workspace}}/${{env.BUILD_DIR}} --target check
