@@ -44,7 +44,9 @@ jobs:
         python -m pip install numpy=="1.23.5"
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -yq r-base
+      run: |
+        brew install bison
+        brew install pcre2-devel
 
     - name: Compile and install [customized] SWIG 4.2.0
       run: |
