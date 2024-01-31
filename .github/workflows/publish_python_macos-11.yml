@@ -23,7 +23,8 @@ jobs:
           - ["3.10", "1.21.6"]
           - ["3.11", "1.23.5"]
         os:
-          - [macos-11, "macosx_11_0_arm64"]
+          - [macos-11, "arm64",  "macosx_11_0_arm64"]
+          - [macos-10, "x86_64", "macosx_10_0_x86_64"]
 
     steps:
     - uses: actions/checkout@v3
@@ -41,11 +42,11 @@ jobs:
     - name : Create Wheels
       run : |
         # Error locating python on MacOS : https://github.com/actions/setup-python/issues/121
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
+        cmake -B${{env.BUILD_DIR}} -A ${{matrix.os[1]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
         cmake --build ${{env.BUILD_DIR}} --target python_build
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
         # Note: wheel must be declared pure (see setup.py)
-        python setup.py bdist_wheel --plat-name=${{matrix.os[1]}}
+        python setup.py bdist_wheel --plat-name=${{matrix.os[2]}}
 
     - name : Upload
       run : python -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
