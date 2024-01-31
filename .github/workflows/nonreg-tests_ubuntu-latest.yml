@@ -57,7 +57,7 @@ jobs:
         make
         make install
 
-    - name: Configure cmake
+    - name: Configure CMake
       run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
 
     - name: Compile, install packages and execute non-regression tests
