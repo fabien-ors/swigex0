@@ -44,5 +44,4 @@ jobs:
       run: cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
 
     - name: Compile, install packages and execute non-regression tests
-      # Execute tests defined by the CMake configuration.
       run: cmake --build ${{env.BUILD_DIR}} --target check
