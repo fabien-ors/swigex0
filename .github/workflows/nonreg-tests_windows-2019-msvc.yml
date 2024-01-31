@@ -2,11 +2,11 @@ name: nonreg-tests_windows-2019-msvc
 
 on:
   # Activate the workflow at each push on main branch
-  push:
-    branches: [ main ]
+  #push:
+  #  branches: [ main ]
   # Activate the workflow at each pull request on main branch
-  pull_request:
-    branches: [ main ]
+  #pull_request:
+  #  branches: [ main ]
   # Permit manual trigger
   workflow_dispatch:
     inputs:
