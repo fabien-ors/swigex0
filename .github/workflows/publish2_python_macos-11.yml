@@ -1,0 +1,54 @@
+name: publish2_python_macos-11
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+env:
+  BUILD_TYPE: Release
+  BUILD_DIR : build
+
+jobs:
+  build:
+    runs-on: macos-11
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # Needed for macos-13 runner
+    - name : Install SWIG
+      run: brew install swig
+      
+    - name: Setup Python Version
+      uses: actions/setup-python@v4
+#      with:
+#        python-version: ${{matrix.python[0]}}
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install numpy==${{matrix.python[1]}} twine wheel setuptools
+        python -m pip install cibuildwheel==2.16.5
+
+    - name : Create Wheels
+      run : |
+        # Error locating python on MacOS : https://github.com/actions/setup-python/issues/121
+        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
+        cmake --build ${{env.BUILD_DIR}} --target python_build
+
+    - name: Build wheels
+      run: |
+        cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
+        python -m cibuildwheel --output-dir wheelhouse
+        ls wheelhouse
+#
+#    - name : Upload
+#      run : python -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
+#      env:
+#        TWINE_USERNAME: __token__
+#        TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
+#        TWINE_REPOSITORY: pypi
