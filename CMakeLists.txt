@@ -43,7 +43,7 @@ set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build arm64 architecture for M
 
 # Define project here
 project(swigex0
-        VERSION      0.1.6
+        VERSION      0.1.7
         DESCRIPTION  "C++ library and SWIG wrappers (R & Python)"
         HOMEPAGE_URL "https://github.com/fabien-ors/swigex0"
         LANGUAGES    C CXX) # Enable C language for third party libraries

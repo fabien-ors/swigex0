@@ -1,0 +1,25 @@
+name: dry-test_macos-11
+
+on:
+  # Permit manual trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    runs-on: macos-11
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install swigex0
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install swigex0
+
+    - name: Run the python test
+      run: python tests/py/testFibo.py
