@@ -10,7 +10,6 @@ on:
 
 env:
   BUILD_TYPE: Release
-  BUILD_DIR : build-${{ matrix.os }}
 
 jobs:
   build:
@@ -42,17 +41,17 @@ jobs:
     - name : Compile python package
       run : |
         # Error locating python on MacOS : https://github.com/actions/setup-python/issues/121
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
-        cmake --build ${{env.BUILD_DIR}} --target python_build --config ${{env.BUILD_TYPE}}
+        cmake -Bbuild-${{ matrix.os }} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
+        cmake --build build-${{ matrix.os }} --target python_build --config ${{env.BUILD_TYPE}}
 
     - name: Build wheels
       run: |
-        cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
+        cd build-${{ matrix.os }}/python/${{env.BUILD_TYPE}}
         python -m cibuildwheel --output-dir wheelhouse
         ls wheelhouse
 #
 #    - name : Upload
-#      run : python -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
+#      run : python -m twine upload build-${{ matrix.os }}/python/${{env.BUILD_TYPE}}/dist/*
 #      env:
 #        TWINE_USERNAME: __token__
 #        TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
