@@ -14,13 +14,16 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         os: [ubunut-20.04, windows-2019, macos-11]
 
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup Python version
+    - name: Setup Python
       uses: actions/setup-python@v4
+      with:
+        python-version: ${{matrix.python[0]}}
 
     - name: Install swigex0
       run: |
@@ -29,3 +32,4 @@ jobs:
 
     - name: Run the python test
       run: python tests/py/testFibo.py
+      
