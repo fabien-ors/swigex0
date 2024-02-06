@@ -25,8 +25,8 @@ jobs:
       
     - name: Setup Python Version
       uses: actions/setup-python@v4
-#      with:
-#        python-version: ${{matrix.python[0]}}
+      with:
+        python-version: 3.12
 
     - name: Install Python dependencies
       run: |
@@ -34,7 +34,7 @@ jobs:
         python -m pip install numpy==1.26.4
         python -m pip install cibuildwheel==2.16.5
 
-    - name : Create Wheels
+    - name : Compile python package
       run : |
         # Error locating python on MacOS : https://github.com/actions/setup-python/issues/121
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
