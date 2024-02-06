@@ -51,7 +51,7 @@ jobs:
         ls wheelhouse
 
     - name : Upload
-      run : python -m twine upload build-${{matrix.os}}/python/${{env.BUILD_TYPE}}/dist/*
+      run : python -m twine upload build-${{matrix.os}}/python/${{env.BUILD_TYPE}}/wheelhouse/*
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
