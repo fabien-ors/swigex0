@@ -18,22 +18,22 @@ jobs:
     strategy :
       matrix:
         python:
-          - ["3.8",  "1.20.3"]
-          - ["3.9",  "1.20.3"]
-          - ["3.10", "1.21.6"]
-          - ["3.11", "1.23.5"]
+#          - ["3.8",  "1.20.3"]
+#          - ["3.9",  "1.20.3"]
+#          - ["3.10", "1.21.6"]
+#          - ["3.11", "1.23.5"]
           - ["3.12", "1.26.3"]
         os:
-          #- [macos-11, "arm64", "macosx_11_0_arm64"]
-          #- [macos-12, "arm64", "macosx_12_0_arm64"]
-          - [macos-13, "arm64", "macosx_13_0_arm64"]
+          - [macos-11, "x86_64", "macosx_11_0_x86_64"]
+#          - [macos-12, "arm64", "macosx_12_0_arm64"]
+#          - [macos-13, "arm64", "macosx_13_0_arm64"]
 
     steps:
     - uses: actions/checkout@v3
 
     # Needed for macos-13 runner
-    - name : Install SWIG
-      run: brew install swig
+#    - name : Install SWIG
+#      run: brew install swig
       
     - name: Setup Python Version
       uses: actions/setup-python@v4
@@ -52,8 +52,8 @@ jobs:
         cmake --build ${{env.BUILD_DIR}} --target python_build
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
         # Note: wheel must be declared pure (see setup.py)
-        python setup.py bdist_wheel
-        #python setup.py bdist_wheel --plat-name=${{matrix.os[2]}}
+        #python setup.py bdist_wheel
+        python setup.py bdist_wheel --plat-name=${{matrix.os[2]}}
 
     - name : Upload
       run : python -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*
