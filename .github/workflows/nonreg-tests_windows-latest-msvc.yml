@@ -1,4 +1,4 @@
-name: nonreg-tests_windows-2019-msvc
+name: nonreg-tests_windows-latest-msvc
 
 on:
   # Activate the workflow at each push on main branch
@@ -26,7 +26,7 @@ env:
 jobs:
   
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3

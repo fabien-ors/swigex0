@@ -1,4 +1,4 @@
-name: nonreg-tests_windows-2019-rtools
+name: nonreg-tests_windows-latest-rtools
 
 on:
   # Activate the workflow at each push on main branch
@@ -19,13 +19,13 @@ env:
   # Customize the CMake build type here (Release, Debug)
   BUILD_TYPE: Release
   BUILD_DIR : build
-  R_VERSION : 4.1.0
+  R_VERSION : "4.3.2"
   SWIG_ROOT : ${{github.workspace}}\swig_420b
 
 jobs:
   
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3

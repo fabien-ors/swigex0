@@ -11,7 +11,7 @@ on:
 env:
   BUILD_TYPE: Release
   BUILD_DIR : build
-  R_VERSION : 4.3.2 # Last release from here https://cran.r-project.org/src/base/R-4/
+  R_VERSION : "4.3.2" # Last release from here https://cran.r-project.org/src/base/R-4/
   SWIG_ROOT : ${{github.workspace}}/swig_420b
 
 jobs:
