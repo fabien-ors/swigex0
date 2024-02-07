@@ -1,4 +1,4 @@
-name: publish_r_macos-14
+name: publish_r_macos
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         arch:
-          - [x86_64, macos-14-large]
+          - [x86_64, macos-12]
           - [arm64,  macos-14]
         
     steps:
@@ -28,7 +28,7 @@ jobs:
 
 # Cannot install R (arm64) on macos-12 (x86-64)
 #    - name: Update arch in environment for setup-r action
-#      run: echo "SETUP_R_ARCH=${{matrix.arch}}" >> "$GITHUB_ENV"
+#      run: echo "SETUP_R_ARCH=${{matrix.arch[0]}}" >> "$GITHUB_ENV"
 
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
