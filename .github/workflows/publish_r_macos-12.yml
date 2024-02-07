@@ -23,6 +23,11 @@ jobs:
         
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Print system information
+      run: |
+        sw_vers
+        xcodebuild -version -sdk
 
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -51,7 +56,7 @@ jobs:
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v3
-      # Use specific artifact identifier for publishing all R versions
+      # Use specific artifact identifier for publishing all versions
       with:
         name: macos-package-${{matrix.arch}}
         path: ${{env.MY_PKG}}
