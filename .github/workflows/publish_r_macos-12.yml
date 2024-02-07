@@ -35,7 +35,7 @@ jobs:
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
       with:
-        r-version: ${{env.R_VERSION}}
+        r-version: ${{env.R_VERSION}}-${{matrix.arch}}
 
     - name: Compile and install [customized] SWIG 4.2.0b
       # TODO : Use a tagged realease (not the master branch)
@@ -44,7 +44,7 @@ jobs:
         cd swig_src
         git clone https://github.com/fabien-ors/swig.git
         cd swig
-        cmake -Bbuild -G "Xcode" -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch}} -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}}
+        cmake -Bbuild -G "Xcode" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}}
         cd build
         make
         make install
