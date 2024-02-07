@@ -54,13 +54,13 @@ jobs:
         cd swig_src
         git clone https://github.com/fabien-ors/swig.git
         cd swig
-        cmake -Bbuild -G Xcode -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
+        cmake -Bbuild -G "Xcode" -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
         cd build
         make
         make install
 
     - name: Configure CMake
-      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+      run: cmake -B ${{env.BUILD_DIR}} -G "Xcode" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
 
     - name: Compile, install packages and execute non-regression tests
       run: cmake --build ${{env.BUILD_DIR}} --target check

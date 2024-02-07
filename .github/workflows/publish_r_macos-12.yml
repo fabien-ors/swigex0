@@ -44,14 +44,14 @@ jobs:
         cd swig_src
         git clone https://github.com/fabien-ors/swig.git
         cd swig
-        cmake -Bbuild -G Xcode -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch}} -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}}
+        cmake -Bbuild -G "Xcode" -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch}} -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}}
         cd build
         make
         make install
 
     - name : Build the package and save generated file name in the environment
       run : |
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+        cmake -B${{env.BUILD_DIR}} -G "Xcode" -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
 
