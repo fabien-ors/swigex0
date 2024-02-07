@@ -39,7 +39,7 @@ jobs:
         cd swig_src
         git clone https://github.com/fabien-ors/swig.git
         cd swig
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}}
+        cmake -Bbuild -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch}} -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}}
         cd build
         make
         make install
