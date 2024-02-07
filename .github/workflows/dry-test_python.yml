@@ -1,0 +1,35 @@
+name: dry-test_python
+
+on:
+  # Permit manual trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{matrix.python}}
+
+    - name: Install swigex0
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install swigex0
+
+    - name: Run the python test
+      run: python tests/py/testFibo.py
+      
