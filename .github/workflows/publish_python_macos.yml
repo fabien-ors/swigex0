@@ -1,4 +1,4 @@
-name: publish_python_macos-12
+name: publish_python_macos
 
 on:
   workflow_dispatch:
