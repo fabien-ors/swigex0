@@ -14,7 +14,7 @@ env:
 
 jobs:
   build:
-    runs-on: ${{matrix.os[0]}}
+    runs-on: macos-12
     strategy :
       matrix:
         python:
@@ -23,17 +23,20 @@ jobs:
           - ["3.10", "1.21.6"]
           - ["3.11", "1.23.5"]
           - ["3.12", "1.26.3"]
-        os:
-          - [macos-11,        "macosx_11_0_x86_64"]
-#          - [macos-13-xlarge, "macosx_13_0_arm64"]
+        arch:
+          - [x86_64, "macosx_12_0_x86_64"]
+          - [arm64,  "macosx_12_0_arm64"]
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Set up Xcode
+      uses: actions/setup-xcode@v2
 
     # Needed for macos-13 runner
 #    - name : Install SWIG
 #      run: brew install swig
-      
+
     - name: Setup Python Version
       uses: actions/setup-python@v3
       with:
@@ -47,12 +50,11 @@ jobs:
     - name : Create Wheels
       run : |
         # Error locating python on MacOS : https://github.com/actions/setup-python/issues/121
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
+        cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
         cmake --build ${{env.BUILD_DIR}} --target python_build
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
-        # Note: wheel must be declared pure (see setup.py)
-        #python setup.py bdist_wheel
-        python setup.py bdist_wheel --plat-name=${{matrix.os[2]}}
+        # Note: wheel must be declared not pure (see setup.py)
+        python setup.py bdist_wheel --plat-name=${{matrix.arch[1]}}
 
     - name : Upload
       run : python -m twine upload ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*

@@ -12,16 +12,13 @@ env:
   # Customize the CMake build type here (Release, Debug)
   BUILD_TYPE: Release
   BUILD_DIR : build
+  R_VERSION : 4.3.2
   SWIG_ROOT : ${{github.workspace}}\swig_420b
 
 jobs:
   
   build:
     runs-on: windows-2019
-    strategy :
-      matrix:
-        # Last release from here https://cran.r-project.org/src/base/R-4/
-        r_version: ["4.3.2"]
         
     steps:
     - uses: actions/checkout@v3
@@ -29,7 +26,7 @@ jobs:
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
       with:
-        r-version: ${{matrix.r_version}}
+        r-version: ${{env.R_VERSION}}
 
     - name: Install the customized SWIG from source under windows
       uses: fabien-ors/install-swig-windows-action@v2
@@ -44,9 +41,8 @@ jobs:
         echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
     - uses: actions/upload-artifact@v3
-      # Use specific artifact identifier for publishing all R versions
       with:
-        name: windows-package-${{matrix.r_version}}
+        name: windows-package
         path: ${{env.MY_PKG}}
     
   publish:
@@ -65,4 +61,4 @@ jobs:
     # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v2
       with:
-        name: windows-package-*
+        name: windows-package

@@ -1,4 +1,4 @@
-name: nonreg-tests_macos-11
+name: nonreg-tests_macos-12
 
 on:
   # Activate the workflow at each push on main branch
@@ -16,7 +16,6 @@ on:
         default: ''
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   BUILD_DIR : build
   PYTHON_VERSION : "3.11"
@@ -26,10 +25,13 @@ env:
   
 jobs:
   build:
-    runs-on: macos-11
+    runs-on: macos-12
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Set up Xcode
+      uses: actions/setup-xcode@v2
     
     - name: Setup Python Version
       uses: actions/setup-python@v4
@@ -58,7 +60,7 @@ jobs:
         make install
 
     - name: Configure CMake
-      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
 
     - name: Compile, install packages and execute non-regression tests
       run: cmake --build ${{env.BUILD_DIR}} --target check
