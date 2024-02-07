@@ -26,21 +26,14 @@ jobs:
     
 #    - name: Set up Xcode
 #      uses: maxim-lobanov/setup-xcode@v1
-    
-#    - name: Setup R Version
-#      uses: r-lib/actions/setup-r@v2
-#      with:
-#        r-version: ${{env.R_VERSION}}
-#        os: macos
-#        arch: ${{matrix.arch}}
 
-    - name: Install rig
-      run: |
-        brew tap r-lib/rig
-        brew install --cask rig
+    - name: Update arch in environment for setup-r action
+      run: echo "SETUP_R_ARCH=${{matrix.arch}}" >> "$GITHUB_ENV"
 
-    - name: Install and configure R
-      run: rig available
+    - name: Setup R Version
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: ${{env.R_VERSION}}
       
     - name: Compile and install [customized] SWIG 4.2.0b
       # TODO : Use a tagged realease (not the master branch)
