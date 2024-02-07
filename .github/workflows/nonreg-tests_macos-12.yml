@@ -54,7 +54,7 @@ jobs:
         cd swig_src
         git clone https://github.com/fabien-ors/swig.git
         cd swig
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
+        cmake -Bbuild -G Xcode -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
         cd build
         make
         make install

@@ -50,7 +50,7 @@ jobs:
     - name : Create Wheels
       run : |
         # Error locating python on MacOS : https://github.com/actions/setup-python/issues/121
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
+        cmake -B${{env.BUILD_DIR}} -G Xcode -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
         cmake --build ${{env.BUILD_DIR}} --target python_build
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
