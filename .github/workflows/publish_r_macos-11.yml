@@ -15,7 +15,7 @@ env:
 
 jobs:
   build:
-    runs-on: ${{matrix.os[0]}}
+    runs-on: ${{matrix.os}}
     strategy :
       matrix:
         # Last release from here https://cran.r-project.org/src/base/R-4/
@@ -52,7 +52,7 @@ jobs:
       # Use specific artifact identifier for publishing all R versions
       with:
         name: macos-package-${{matrix.r_version}}
-        path: ${{ env.MY_PKG }}
+        path: ${{env.MY_PKG}}
     
   publish:
     needs: build
@@ -62,9 +62,9 @@ jobs:
     steps:
     - uses: fabien-ors/cran-publish-action@v1
       with:
-        host: ${{ secrets.CG_HOST }}
-        username: ${{ secrets.CG_USR }}
-        password: ${{ secrets.CG_PWD }}
+        host: ${{secrets.CG_HOST}}
+        username: ${{secrets.CG_USR}}
+        password: ${{secrets.CG_PWD}}
         repo-path: "/var/www/html/cran"
 
     # Delete the artifacts (for freeing storage space under github)
