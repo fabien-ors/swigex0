@@ -1,4 +1,4 @@
-name: publish_r_macos-11
+name: publish_r_macos-12
 
 on:
   workflow_dispatch:
