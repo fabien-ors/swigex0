@@ -1,6 +1,9 @@
 name: publish_r_ubuntu
 
 on:
+  # Permit calling trigger
+  workflow_call:
+  # Permit manual trigger
   workflow_dispatch:
     inputs:
       logLevel:

@@ -1,6 +1,9 @@
 name: publish_python_macos
 
 on:
+  # Permit calling trigger
+  workflow_call:
+  # Permit manual trigger
   workflow_dispatch:
     inputs:
       logLevel:

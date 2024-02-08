@@ -1,6 +1,8 @@
-name: coverage-test_r
+name: coverage-tests_r
 
 on:
+  # Permit calling trigger
+  workflow_call:
   # Permit manual trigger
   workflow_dispatch:
     inputs:

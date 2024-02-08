@@ -1,6 +1,8 @@
-name: coverage-test_python
+name: coverage-tests_python
 
 on:
+  # Permit calling trigger
+  workflow_call:
   # Permit manual trigger
   workflow_dispatch:
     inputs:

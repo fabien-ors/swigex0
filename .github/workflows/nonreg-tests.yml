@@ -1,6 +1,7 @@
 name: nonreg-tests
 
 on:
+  # Permit manual trigger
   workflow_dispatch:
     inputs:
       logLevel:

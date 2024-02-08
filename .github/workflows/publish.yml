@@ -1,6 +1,7 @@
 name: publish
 
 on:
+  # Permit manual trigger
   workflow_dispatch:
     inputs:
       logLevel:
