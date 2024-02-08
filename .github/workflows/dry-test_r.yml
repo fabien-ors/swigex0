@@ -32,7 +32,7 @@ jobs:
         r-version: ${{matrix.r_version}}
 
     - name: Install swigex0
-      run: Rscript -e "install.packages(c('swigex0'), repos='https://soft.mines-paristech.fr/cran/', dependencies = TRUE)"
+      run: Rscript -e "install.packages(c('swigex0'), repos='${{secrets.CG_HOST}}/cran/', dependencies = TRUE)"
 
     - name: Run the r test
       run: Rscript tests/r/testFibo.r
