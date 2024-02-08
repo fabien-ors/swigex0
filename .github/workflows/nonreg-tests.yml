@@ -10,11 +10,11 @@ on:
         default: ''
 
 jobs:
-  call-nonreg-tests_macos-latest:
+  call-macos-latest:
     uses: ./.github/workflows/nonreg-tests_macos-latest.yml
-  call-nonreg-tests_windows-latest-msvc:
+  call-windows-latest-msvc:
     uses: ./.github/workflows/nonreg-tests_windows-latest-msvc.yml
-  call-nonreg-tests_windows-latest-rtools:
+  call-windows-latest-rtools:
     uses: ./.github/workflows/nonreg-tests_windows-latest-rtools.yml
-  call-nonreg-tests_ubuntu-latest:
+  call-ubuntu-latest:
     uses: ./.github/workflows/nonreg-tests_ubuntu-latest.yml

@@ -10,15 +10,15 @@ on:
         default: ''
 
 jobs:
-  call-publish_python_macos:
+  call-python_macos:
     uses: ./.github/workflows/publish_python_macos.yml
-  call-publish_python_windows:
+  call-python_windows:
     uses: ./.github/workflows/publish_python_windows.yml
-  call-publish_python_ubuntu:
+  call-python_ubuntu:
     uses: ./.github/workflows/publish_python_ubuntu.yml
-  call-publish_r_macos:
+  call-r_macos:
     uses: ./.github/workflows/publish_r_macos.yml
-  call-publish_r_windows:
+  call-r_windows:
     uses: ./.github/workflows/publish_r_windows.yml
-  call-publish_r_ubuntu:
+  call-r_ubuntu:
     uses: ./.github/workflows/publish_r_ubuntu.yml

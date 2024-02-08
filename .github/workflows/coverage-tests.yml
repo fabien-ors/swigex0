@@ -10,8 +10,8 @@ on:
         default: ''
 
 jobs:
-  call-coverage-tests_python:
+  call-python:
     uses: ./.github/workflows/coverage-tests_python.yml
-  call-coverage-tests_r:
+  call-r:
     uses: ./.github/workflows/coverage-tests_r.yml
     
