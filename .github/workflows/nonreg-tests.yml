@@ -1,0 +1,19 @@
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+jobs:
+  call-nonreg-tests_macos-latest:
+    uses: ./.github/workflows/nonreg-tests_macos-latest.yml
+  call-nonreg-tests_windows-latest-msvc:
+    uses: ./.github/workflows/nonreg-tests_windows-latest-msvc.yml
+  call-nonreg-tests_windows-latest-rtools:
+    uses: ./.github/workflows/nonreg-tests_windows-latest-rtools.yml
+  call-nonreg-tests_ubuntu-latest:
+    uses: ./.github/workflows/nonreg-tests_ubuntu-latest.yml

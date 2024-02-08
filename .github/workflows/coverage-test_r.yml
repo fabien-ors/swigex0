@@ -1,4 +1,4 @@
-name: dry-test_r
+name: coverage-test_r
 
 on:
   # Permit manual trigger

@@ -1,0 +1,23 @@
+name: publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+
+jobs:
+  call-publish_python_macos:
+    uses: ./.github/workflows/publish_python_macos.yml
+  call-publish_python_windows:
+    uses: ./.github/workflows/publish_python_windows.yml
+  call-publish_python_ubuntu:
+    uses: ./.github/workflows/publish_python_ubuntu.yml
+  call-publish_r_macos:
+    uses: ./.github/workflows/publish_r_macos.yml
+  call-publish_r_windows:
+    uses: ./.github/workflows/publish_r_windows.yml
+  call-publish_r_ubuntu:
+    uses: ./.github/workflows/publish_r_ubuntu.yml

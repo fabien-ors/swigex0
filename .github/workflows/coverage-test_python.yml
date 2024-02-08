@@ -1,4 +1,4 @@
-name: dry-test_python
+name: coverage-test_python
 
 on:
   # Permit manual trigger
