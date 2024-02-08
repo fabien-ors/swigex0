@@ -14,11 +14,13 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        r_version: ["4.1.3","4.2.3","4.3.2"]
+        r_version: [4.0.5, 4.1.3, 4.2.3, 4.3.2]
         os: [ubuntu-latest, windows-latest, macos-latest, macos-14]
         exclude:
-          - r_version: "4.3.2"
-            os: macos-latest
+          - os: macos-latest
+            r_version: 4.3.2
+          - os: macos-14
+            r_version: 4.0.5
           
     steps:
     - uses: actions/checkout@v3
