@@ -22,7 +22,7 @@ jobs:
       image: fabienors/ubuntu-16-swigex0
     strategy:
       matrix:
-        python: ["py38","py39","py310","py311","py312"]
+        python: [py38, py39, py310, py311, py312]
 
     steps:
     - uses: actions/checkout@v3

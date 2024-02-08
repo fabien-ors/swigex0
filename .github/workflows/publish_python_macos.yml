@@ -18,15 +18,19 @@ jobs:
     strategy:
       matrix:
         python:
-          - ["3.8",  "1.20.3"]
-          - ["3.9",  "1.20.3"]
-          - ["3.10", "1.21.6"]
-          - ["3.11", "1.23.5"]
-          - ["3.12", "1.26.3"]
+          # Double quote for version is needed otherwise 3.10 => 3.1
+          - ["3.8",  1.20.3]
+          - ["3.9",  1.20.3]
+          - ["3.10", 1.21.6]
+          - ["3.11", 1.23.5]
+          - ["3.12", 1.26.3]
         arch:
-          - [x86_64, "macosx_12_0_x86_64"]
-          - [arm64,  "macosx_12_0_arm64"]
-
+          - [x86_64, macosx_12_0_x86_64]
+          - [arm64,  macosx_12_0_arm64]
+        exclude:
+          - arch: [arm64,  macosx_12_0_arm64]
+            python: ["3.8", "3.9"]
+            
     steps:
     - uses: actions/checkout@v3
     
