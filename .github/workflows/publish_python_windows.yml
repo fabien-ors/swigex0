@@ -1,4 +1,4 @@
-name: publish_python_windows-2019
+name: publish_python_windows
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: nonreg-tests_macos
+name: nonreg-tests_macos-latest
 
 on:
   # Activate the workflow at each push on main branch

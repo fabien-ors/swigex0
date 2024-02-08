@@ -21,6 +21,8 @@ jobs:
         exclude:
           - os: macos-12
             r_version: 4.3.2
+          - os: macos-13
+            r_version: 4.3.2
           - os: macos-14
             r_version: 4.0.5
           

@@ -1,4 +1,4 @@
-name: publish_r_ubuntu-16
+name: publish_r_ubuntu
 
 on:
   workflow_dispatch:
