@@ -11,30 +11,32 @@ on:
 
 jobs:
   publish-python:
-    uses: ./.github/workflows/publish_python_macos.yml
-    with:
-      secrets: inherit
-
-    uses: ./.github/workflows/publish_python_windows.yml
-    with:
-      secrets: inherit
-
-    uses: ./.github/workflows/publish_python_ubuntu.yml
-    with:
-      secrets: inherit
+    steps:
+      - uses: ./.github/workflows/publish_python_macos.yml
+        with:
+          secrets: inherit
+  
+      - uses: ./.github/workflows/publish_python_windows.yml
+        with:
+          secrets: inherit
+  
+      - uses: ./.github/workflows/publish_python_ubuntu.yml
+        with:
+          secrets: inherit
 
   build-r:
-    uses: ./.github/workflows/publish_r_macos.yml
-    with:
-      secrets: inherit
-
-    uses: ./.github/workflows/publish_r_windows.yml
-    with:
-      secrets: inherit
-
-    uses: ./.github/workflows/publish_r_ubuntu.yml
-    with:
-      secrets: inherit
+    steps:
+      - uses: ./.github/workflows/publish_r_macos.yml
+        with:
+          secrets: inherit
+  
+      - uses: ./.github/workflows/publish_r_windows.yml
+        with:
+          secrets: inherit
+  
+      - uses: ./.github/workflows/publish_r_ubuntu.yml
+        with:
+          secrets: inherit
       
   publish-r:
     needs: build-r
