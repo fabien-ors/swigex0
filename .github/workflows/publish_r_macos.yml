@@ -81,7 +81,7 @@ jobs:
     
   publish:
     needs: build
-    if: ${{inputs.external_call}} == false
+    if: ${{inputs.external_call == false}}
     
     # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
