@@ -10,39 +10,40 @@ on:
         default: ''
 
 jobs:
-  uses: .github/workflows/publish_python_macos.yml
-  with:
-    secrets: inherit
-
-  uses: .github/workflows/publish_python_windows.yml
-  with:
-    secrets: inherit
-
-  uses: .github/workflows/publish_python_ubuntu.yml
-  with:
-    secrets: inherit
-
-  uses: .github/workflows/publish_r_macos.yml
-  with:
-    secrets: inherit
-
-  uses: .github/workflows/publish_r_windows.yml
-  with:
-    secrets: inherit
-
-  uses: .github/workflows/publish_r_ubuntu.yml
-  with:
-    secrets: inherit
+  call-python-macos:
+    uses: .github/workflows/publish_python_macos.yml
+    with:
+      secrets: inherit
+  call-python-windows:
+    uses: .github/workflows/publish_python_windows.yml
+    with:
+      secrets: inherit
+  call-python-ubuntu:
+    uses: .github/workflows/publish_python_ubuntu.yml
+    with:
+      secrets: inherit
+  call-r-macos:
+    uses: .github/workflows/publish_r_macos.yml
+    with:
+      secrets: inherit
+  call-r-windows:
+    uses: .github/workflows/publish_r_windows.yml
+    with:
+      secrets: inherit
+  call-r-ubuntu:
+    uses: .github/workflows/publish_r_ubuntu.yml
+    with:
+      secrets: inherit
+  call-r-publish:
+    uses: fabien-ors/cran-publish-action@v1
+    with:
+      host: ${{secrets.CG_HOST}}
+      username: ${{secrets.CG_USR}}
+      password: ${{secrets.CG_PWD}}
+      repo-path: "/var/www/html/cran"
   
-  uses: fabien-ors/cran-publish-action@v1
-  with:
-    host: ${{secrets.CG_HOST}}
-    username: ${{secrets.CG_USR}}
-    password: ${{secrets.CG_PWD}}
-    repo-path: "/var/www/html/cran"
-
-  # Delete the artifacts (for freeing storage space under github)
-  uses: geekyeggo/delete-artifact@v2
-  with:
-    name: "*package*"
+    # Delete the artifacts (for freeing storage space under github)
+    uses: geekyeggo/delete-artifact@v2
+    with:
+      name: "*package*"
 
