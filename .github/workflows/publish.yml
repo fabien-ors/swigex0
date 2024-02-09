@@ -10,58 +10,39 @@ on:
         default: ''
 
 jobs:
-  publish-python:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
+  uses: .github/workflows/publish_python_macos.yml
+  with:
+    secrets: inherit
 
-      - uses: ./.github/workflows/publish_python_macos.yml
-        with:
-          secrets: inherit
+  uses: .github/workflows/publish_python_windows.yml
+  with:
+    secrets: inherit
+
+  uses: .github/workflows/publish_python_ubuntu.yml
+  with:
+    secrets: inherit
+
+  uses: .github/workflows/publish_r_macos.yml
+  with:
+    secrets: inherit
+
+  uses: .github/workflows/publish_r_windows.yml
+  with:
+    secrets: inherit
+
+  uses: .github/workflows/publish_r_ubuntu.yml
+  with:
+    secrets: inherit
   
-      - uses: ./.github/workflows/publish_python_windows.yml
-        with:
-          secrets: inherit
-  
-      - uses: ./.github/workflows/publish_python_ubuntu.yml
-        with:
-          secrets: inherit
+  uses: fabien-ors/cran-publish-action@v1
+  with:
+    host: ${{secrets.CG_HOST}}
+    username: ${{secrets.CG_USR}}
+    password: ${{secrets.CG_PWD}}
+    repo-path: "/var/www/html/cran"
 
-  build-r:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: ./.github/workflows/publish_r_macos.yml
-        with:
-          secrets: inherit
-  
-      - uses: ./.github/workflows/publish_r_windows.yml
-        with:
-          secrets: inherit
-  
-      - uses: ./.github/workflows/publish_r_ubuntu.yml
-        with:
-          secrets: inherit
-      
-  publish-r:
-    needs: build-r
-
-    # Only ubuntu can upload to CRAN easily (ssh)
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: fabien-ors/cran-publish-action@v1
-      with:
-        host: ${{secrets.CG_HOST}}
-        username: ${{secrets.CG_USR}}
-        password: ${{secrets.CG_PWD}}
-        repo-path: "/var/www/html/cran"
-
-    # Delete the artifacts (for freeing storage space under github)
-    - uses: geekyeggo/delete-artifact@v2
-      with:
-        name: "*package*"
+  # Delete the artifacts (for freeing storage space under github)
+  uses: geekyeggo/delete-artifact@v2
+  with:
+    name: "*package*"
 
