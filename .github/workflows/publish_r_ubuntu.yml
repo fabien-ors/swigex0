@@ -37,6 +37,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Display external_call
+      run: echo "External call is ${{inputs.external_call}}"
+
     - name: Build the package and save generated file name in the environment
       run: |
         cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF
@@ -56,6 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Display external_call
+      run: echo "External call is ${{inputs.external_call}}"
+
     - uses: fabien-ors/cran-publish-action@v1
       with:
         host: ${{secrets.CG_HOST}}
