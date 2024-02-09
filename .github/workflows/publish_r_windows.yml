@@ -59,7 +59,7 @@ jobs:
     
   publish:
     needs: build
-    if: ${{input.external_call}} == false
+    if: ${{inputs.external_call}} == false
     
     # Only ubuntu can upload to CRAN easily (ssh)
     runs-on: ubuntu-latest
