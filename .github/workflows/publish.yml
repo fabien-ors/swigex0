@@ -11,27 +11,27 @@ on:
 
 jobs:
   call-python-macos:
-    uses: .github/workflows/publish_python_macos.yml
+    uses: ./.github/workflows/publish_python_macos.yml
     with:
       secrets: inherit
   call-python-windows:
-    uses: .github/workflows/publish_python_windows.yml
+    uses: ./.github/workflows/publish_python_windows.yml
     with:
       secrets: inherit
   call-python-ubuntu:
-    uses: .github/workflows/publish_python_ubuntu.yml
+    uses: ./.github/workflows/publish_python_ubuntu.yml
     with:
       secrets: inherit
   call-r-macos:
-    uses: .github/workflows/publish_r_macos.yml
+    uses: ./.github/workflows/publish_r_macos.yml
     with:
       secrets: inherit
   call-r-windows:
-    uses: .github/workflows/publish_r_windows.yml
+    uses: ./.github/workflows/publish_r_windows.yml
     with:
       secrets: inherit
   call-r-ubuntu:
-    uses: .github/workflows/publish_r_ubuntu.yml
+    uses: ./.github/workflows/publish_r_ubuntu.yml
     with:
       secrets: inherit
   call-r-publish:
