@@ -30,7 +30,7 @@ jobs:
     secrets: inherit
 
   call-r-publish:
-    needs: call-r-macos call-r-windows call-r-ubuntu
+    needs: [call-r-macos, call-r-windows, call-r-ubuntu]
     # Only ubuntu can upload to CRAN easily (ssh)
     runs-on: ubuntu-latest
     
