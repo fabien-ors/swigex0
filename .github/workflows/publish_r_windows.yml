@@ -16,6 +16,11 @@ on:
         description: 'Manual'
         required: false
         default: ''
+      external_call:
+        description: 'To distinguish workflow_call from other events'
+        type: boolean
+        required: false
+        default: false
 
 env:
   # Customize the CMake build type here (Release, Debug)
