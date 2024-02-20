@@ -47,13 +47,6 @@ jobs:
             
     steps:
     - uses: actions/checkout@v3
-    
-#    - name: Set up Xcode
-#      uses: maxim-lobanov/setup-xcode@v1
-
-    # Needed for macos-13 runner
-#    - name : Install SWIG
-#      run: brew install swig
 
     - name: Setup Python Version
       uses: actions/setup-python@v3

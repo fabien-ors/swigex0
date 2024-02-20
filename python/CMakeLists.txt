@@ -154,6 +154,6 @@ add_custom_target(python_install
   VERBATIM
 )
 
-# Tell to CMake that python package must be built before installation [python_doc is optional]
+# Tell to CMake that python package must be built before installation
 add_dependencies(python_install python_build)
 

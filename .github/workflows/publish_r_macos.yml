@@ -46,10 +46,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-# Cannot install R (arm64) on macos-12 (x86-64)
-#    - name: Update arch in environment for setup-r action
-#      run: echo "SETUP_R_ARCH=${{matrix.arch[0]}}" >> "$GITHUB_ENV"
-
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
       with:

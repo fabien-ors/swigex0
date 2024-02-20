@@ -58,6 +58,7 @@ jobs:
         echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
     - uses: actions/upload-artifact@v3
+      # Use specific artifact identifier for publishing all R versions
       with:
         name: windows-package-${{matrix.r_version}}
         path: ${{env.MY_PKG}}
