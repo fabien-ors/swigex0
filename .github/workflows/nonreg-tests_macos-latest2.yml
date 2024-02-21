@@ -20,10 +20,6 @@ on:
 env:
   BUILD_TYPE: Release
   BUILD_DIR : build
-  PYTHON_VERSION : "3.11"
-  NUMPY_VERSION : "1.23.5"
-  R_VERSION : "4.3.2"
-  SWIG_ROOT : ${{github.workspace}}/swig_420b
   
 jobs:
   build:
@@ -32,34 +28,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup Python Version
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{env.PYTHON_VERSION}}
-
-    - name: Install numpy
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install numpy==${{env.NUMPY_VERSION}}
-
-    - name: Setup R Version
-      uses: r-lib/actions/setup-r@v2
-      with:
-        r-version: ${{env.R_VERSION}}
-
-    - name: Compile and install [customized] SWIG 4.2.0
-      run: |
-        mkdir swig_src
-        cd swig_src
-        git clone https://github.com/fabien-ors/swig.git
-        cd swig
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX:PATH=${{env.SWIG_ROOT}} -DCMAKE_BUILD_TYPE:STRING=Release 
-        cd build
-        make
-        make install
-
     - name: Configure CMake
-      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Compile, install packages and execute non-regression tests
       run: cmake --build ${{env.BUILD_DIR}} --target check
