@@ -10,12 +10,6 @@ if(NOT IS_MULTI_CONFIG)
   message(STATUS "BUILD_TYPE=" ${CMAKE_BUILD_TYPE})
 endif()
 
-if (APPLE)
-  # Use clang from llvm for OpenMP support : https://stackoverflow.com/a/53889826
-  set(ENV{CC} "/usr/local/opt/llvm/bin/clang")
-  set(ENV{CXX} "/usr/local/opt/llvm/bin/clang++")
-endif()
-
 # Add c++11 support whatever the compiler
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
