@@ -38,10 +38,6 @@
 # For recent UseSWIG
 cmake_minimum_required(VERSION 3.20)
 
-# arm64 (Mac OS 11+) (put it before "project" instruction)
-# TOO : this seems to have no impact!
-#set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build arm64 architecture for Mac OS only" FORCE)
-
 # Define project here
 project(swigex0
         VERSION      0.2.1
