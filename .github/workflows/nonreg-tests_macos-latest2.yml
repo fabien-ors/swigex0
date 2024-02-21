@@ -30,9 +30,12 @@ jobs:
     
     - name: Install dependencies
       run: brew install llvm
+      
+    - name: Run check
+      run: make check
 
-    - name: Configure CMake
-      run: CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-    - name: Compile, install packages and execute non-regression tests
-      run: cmake --build ${{env.BUILD_DIR}} --target check
+#    - name: Configure CMake
+#      run: CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+#
+#    - name: Compile, install packages and execute non-regression tests
+#      run: cmake --build ${{env.BUILD_DIR}} --target check
