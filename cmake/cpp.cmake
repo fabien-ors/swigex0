@@ -43,6 +43,13 @@ if (WIN32)
   set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
 endif()
 
+find_package(OpenMP REQUIRED)
+if (OPENMP_FOUND)
+  message(STATUS "OPENMP found")
+else()
+  message(STATUS "OPENMP not found")
+endif()
+
 # Shared and Static libraries
 add_library(shared                  SHARED ${SOURCES})
 add_library(static EXCLUDE_FROM_ALL STATIC ${SOURCES})
