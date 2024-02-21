@@ -50,12 +50,13 @@ ifeq ($(OS),Windows_NT)
 else
   # Standard GNU UNIX Makefiles otherwise
   GENERATOR = -G"Unix Makefiles"
+  # Set OS also for Linux or Darwin
+  OS := $(shell uname -s)
 endif
 
 ifeq ($(OS),Darwin)
   # Particular clang compiler for supporting OpenMP
-  #CC_CXX = CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++
-  CC_CXX = Toto
+  CC_CXX = CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++
 else
   CC_CXX = 
 endif
