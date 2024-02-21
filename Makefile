@@ -94,18 +94,22 @@ all: shared install
 
 cmake:
 	@echo $(CC_CXX)
+	@echo $(OS)
 	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR)
 
 cmake-python:
 	@echo $(CC_CXX)
+	@echo $(OS)
 	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON
 
 cmake-r:
 	@echo $(CC_CXX)
+	@echo $(OS)
 	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_R=ON
 
 cmake-python-r:
 	@echo $(CC_CXX)
+	@echo $(OS)
 	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON -DBUILD_R=ON
 
 print_version: cmake
