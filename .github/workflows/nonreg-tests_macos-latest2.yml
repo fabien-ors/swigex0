@@ -31,8 +31,8 @@ jobs:
     - name: Install dependencies
       run: brew install llvm
       
-    - name: Run check
-      run: make check
+    - name: Run check from Makefile
+      run: make check_cpp
 
 #    - name: Configure CMake
 #      run: CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
