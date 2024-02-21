@@ -23,18 +23,25 @@ env:
   
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
     
     - name: Install dependencies
-      run: brew install llvm
+      run: |
+        brew install libomp
+        brew install llvm
       
-    - name: Some diagnostics
+    - name: Some diagnostics (bin)
       run: |
         ls /usr/local/opt/llvm/bin/
         ls /usr/local/bin/
+
+    - name: Some diagnostics (lib)
+      run: |
+        ls /usr/local/opt/llvm/lib/
+        ls /usr/local/lib/
 
     - name: Configure CMake
       run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
