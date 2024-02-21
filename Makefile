@@ -54,7 +54,8 @@ endif
 
 ifeq ($(OS),Darwin)
   # Particular clang compiler for supporting OpenMP
-  CC_CXX = CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++
+  #CC_CXX = CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++
+  CC_CXX = Toto
 else
   CC_CXX = 
 endif
