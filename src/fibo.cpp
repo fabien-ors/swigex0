@@ -6,6 +6,43 @@
 #include <cmath> // std::isnan
 
 #define DEFAULT_TITLE "Fibonacci List"
+#define LONG_SIZE 10000
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h> // for CreateDirectory
+#else
+#include <unistd.h> // for readlink
+#endif
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h> // for _NSGetExecutablePath
+#endif
+
+/*!
+ * Cross platform way to get executable directory.
+ * Returned directory contains trailing separator
+ */
+std::string getExecPath()
+{
+  // TODO boost::filesystem::path program_location
+  std::string dir("");
+#if defined(_WIN32) || defined(_WIN64)
+  char buffer[LONG_SIZE] = "";
+  if (GetModuleFileName(NULL, buffer, LONG_SIZE) != 0)
+    dir = String(buffer);
+#elif __APPLE__
+  char buffer[LONG_SIZE] = "";
+  uint32_t bufsize = LONG_SIZE;
+  if(!_NSGetExecutablePath(buffer, &bufsize))
+    puts(buffer);
+#else // __linux__
+  char buffer[LONG_SIZE] = "";
+  if (readlink("/proc/self/exe", buffer, LONG_SIZE) != -1)
+    dir = std::string(buffer);
+#endif
+  return dir;
+}
+
 
 /**
  * Return the Nth Fibonacci number, -1 in case of error
@@ -137,6 +174,7 @@ void Fibo::display(bool showTitle) const
   for (const auto& i: res)
     std::cout << i << ' ';
   std::cout << std::endl;
+  std::cout << "Executable path: " << getExecPath() << std::endl;
 }
 
 /**
