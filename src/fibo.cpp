@@ -29,12 +29,12 @@ std::string getExecPath()
 #if defined(_WIN32) || defined(_WIN64)
   char buffer[LONG_SIZE] = "";
   if (GetModuleFileName(NULL, buffer, LONG_SIZE) != 0)
-    dir = String(buffer);
+    dir = std::string(buffer);
 #elif __APPLE__
   char buffer[LONG_SIZE] = "";
   uint32_t bufsize = LONG_SIZE;
   if(!_NSGetExecutablePath(buffer, &bufsize))
-    dir = String(buffer);
+    dir = std::string(buffer);
 #else // __linux__
   char buffer[LONG_SIZE] = "";
   if (readlink("/proc/self/exe", buffer, LONG_SIZE) != -1)
