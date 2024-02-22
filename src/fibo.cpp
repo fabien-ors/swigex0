@@ -34,7 +34,7 @@ std::string getExecPath()
   char buffer[LONG_SIZE] = "";
   uint32_t bufsize = LONG_SIZE;
   if(!_NSGetExecutablePath(buffer, &bufsize))
-    puts(buffer);
+    dir = String(buffer);
 #else // __linux__
   char buffer[LONG_SIZE] = "";
   if (readlink("/proc/self/exe", buffer, LONG_SIZE) != -1)
