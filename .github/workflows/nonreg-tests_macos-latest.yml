@@ -47,7 +47,6 @@ jobs:
       with:
         r-version: ${{env.R_VERSION}}
 
-
     - name: Install the customized SWIG from source
       uses: fabien-ors/install-swig-unix-action@v1
       with:
