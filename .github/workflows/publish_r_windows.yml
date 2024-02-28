@@ -45,7 +45,7 @@ jobs:
       with:
         r-version: ${{matrix.r_version}}
 
-    - name: Install the customized SWIG from source under windows
+    - name: Install the customized SWIG from source
       uses: fabien-ors/install-swig-windows-action@v2
       with:
         swig-root: ${{env.SWIG_ROOT}}
