@@ -37,12 +37,32 @@
 #  - DEBUG=1            Build the debug version of the library and tests (default =0)
 #  - N_PROC=N           Use more CPUs for building procedure (default =1)
 #  - BUILD_DIR=<path>   Define a specific build directory (default =build[_msys])
+#  - BUILD_PYTHON=1     Configure cmake to build python wrapper (default =0, see target python_*)
+#  - BUILD_R=1          Configure cmake to build R wrapper (default =0, see target r_*)
 #  - TEST=<test-target> Name of the test target to be launched (e.g. test_Model_py)
 #
 # Usage example:
 #
 #  make check N_PROC=2
 #
+
+ifndef BUILD_PYTHON
+  BUILD_PYTHON = 0
+endif
+ifeq ($(BUILD_PYTHON), 1)
+  BUILD_PYTHON = ON
+ else
+  BUILD_PYTHON = OFF 
+endif
+
+ifndef BUILD_R
+  BUILD_R = 0
+endif
+ifeq ($(BUILD_R), 1)
+  BUILD_R = ON
+ else
+  BUILD_R = OFF 
+endif
 
 ifeq ($(OS),Windows_NT)
   # Assume MinGW (via RTools) => so MSYS Makefiles
@@ -94,16 +114,16 @@ endif
 all: shared install
 
 cmake:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR)
+	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=$(BUILD_R)
 
 cmake-python:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON
+	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=$(BUILD_R)
 
 cmake-r:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_R=ON
+	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=ON
 
 cmake-python-r:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON -DBUILD_R=ON
+	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=ON
 
 print_version: cmake
 	@cmake --build $(BUILD_DIR) --target print_version -- --no-print-directory
