@@ -114,22 +114,22 @@ endif
 all: shared install
 
 cmake:
-	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=$(BUILD_R)
+	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=$(BUILD_R)
 
 cmake-python:
-	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=$(BUILD_R)
+	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=$(BUILD_R)
 
 cmake-r:
-	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=ON
+	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=ON
 
 cmake-python-r:
-	@$(CC_CXX) @cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=ON
+	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=ON
 
 print_version: cmake
-	@cmake --build $(BUILD_DIR) --target print_version -- --no-print-directory
+	@$(CC_CXX) cmake --build $(BUILD_DIR) --target print_version -- --no-print-directory
 
 static shared build_tests install uninstall: cmake
-	@cmake --build $(BUILD_DIR) --target $@ -- --no-print-directory $(N_PROC_OPT)
+	@$(CC_CXX) cmake --build $(BUILD_DIR) --target $@ -- --no-print-directory $(N_PROC_OPT)
 
 
 .PHONY: python_build python_install
