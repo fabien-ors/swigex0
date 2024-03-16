@@ -72,8 +72,7 @@ jobs:
         cmake --build build --target install
 
     - name : Create Wheels
-#        CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON -DBUILD_DOXYGEN=ON -DBoost_ROOT=${{env.BOOST_ROOT}} -DEigen3_ROOT=${{env.EIGEN_ROOT}} 
       run : |
-        CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON -DBUILD_DOXYGEN=ON -DEigen3_ROOT=${{env.EIGEN_ROOT}} 
+        CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON -DBUILD_DOXYGEN=ON -DEigen3_ROOT=${{env.EIGEN_ROOT}} 
         cmake --build ${{env.BUILD_DIR}} --target check -- -j 3
 
