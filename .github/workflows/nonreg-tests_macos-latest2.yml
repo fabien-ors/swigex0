@@ -25,7 +25,7 @@ env:
 
 jobs:
   build:
-    runs-on: macos-12
+    runs-on: ${{matrix.arch[1]}}
     strategy:
       matrix:
         python:
@@ -36,10 +36,10 @@ jobs:
           - ["3.11", 1.23.5]
           - ["3.12", 1.26.3]
         arch:
-          - [x86_64, macosx_12_0_x86_64]
-          - [arm64,  macosx_12_0_arm64]
+          - [x86_64, macos-12]
+          - [arm64,  macos-14]
         exclude:
-          - arch: [arm64,  macosx_12_0_arm64]
+          - arch: [arm64,  macos-14]
             python: ["3.8", "3.9"]
             
     steps:
