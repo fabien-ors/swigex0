@@ -44,7 +44,7 @@ jobs:
       with:
         swig-root: ${{env.SWIG_ROOT}}
         generator: "Visual Studio 17 2022"
-        
+
     - name : Download, uncompressed and install Eigen headers
       shell: powershell
       run: |
@@ -57,7 +57,7 @@ jobs:
         cd eigen-*
         cmake -Bbuild  -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
         cmake --build build --target install
-        
+
     - name: Configure CMake
       run: cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig -DEigen3_ROOT=${{env.EIGEN_ROOT}}
 

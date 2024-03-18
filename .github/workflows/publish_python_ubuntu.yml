@@ -26,7 +26,9 @@ env:
   BUILD_TYPE: Release
   BUILD_DIR : build
   BUILD_PLAT: manylinux1_x86_64
-
+  EIGEN_ROOT : ${{github.workspace}}/eigen
+  EIGEN_VERSION : "3.4.0"
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,10 +43,23 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name : Download, uncompressed and install Eigen headers
+      shell: bash
+      run: |
+        EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
+        mkdir ${{env.EIGEN_ROOT}}
+        mkdir eigen_src
+        curl --progress-bar --location --output eigen_src/download.zip $EIGEN_URL
+        7z -oeigen_src x eigen_src/download.zip -y -bd
+        cd eigen_src
+        cd eigen-*
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
+        cmake --build build --target install
+
     - name : Create Wheels
       run : |
         export PATH=/opt/python/${{matrix.python}}/bin:$PATH
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON
+        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DEigen3_ROOT=${{env.EIGEN_ROOT}}
         cmake --build ${{env.BUILD_DIR}} --target python_build
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
