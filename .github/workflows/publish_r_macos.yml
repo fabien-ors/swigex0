@@ -21,7 +21,7 @@ on:
         type: boolean
         required: false
         default: false
-        
+
 env:
   BUILD_TYPE: Release
   BUILD_DIR : build
@@ -31,7 +31,7 @@ env:
   
 jobs:
   build:
-    runs-on: ${{matrix.arch.ar}}
+    runs-on: ${{matrix.arch.os}}
     strategy:
       matrix:
         # Last releases from here https://cran.r-project.org/src/base/R-4/
@@ -86,7 +86,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
       with:
-        name: macos-r-package-${{matrix.arch[0]}}-${{matrix.r_version}}
+        name: macos-r-package-${{matrix.arch.os}}-${{matrix.r_version}}
         path: ${{env.MY_PKG}}
     
   publish:
