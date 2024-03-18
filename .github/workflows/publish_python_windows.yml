@@ -83,10 +83,32 @@ jobs:
         cd ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
         python setup.py bdist_wheel --plat-name=${{matrix.arch.pl}}
+        cd ..\..\..
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}\dist\*)" >> "$GITHUB_ENV"
 
-    - name : Upload
-      run : python -m twine upload ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}\dist\*
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{secrets.TWINE_PYPI_PWD}}
-        TWINE_REPOSITORY: pypi
+    - uses: actions/upload-artifact@v3
+      # Use specific artifact identifier for publishing all versions
+      with:
+        name: windows-python-package-${{matrix.arch.ar}}-${{matrix.python.py}}
+        path: ${{env.MY_PKG}}
+    
+  publish:
+    needs: build
+    if: ${{inputs.external_call == false}}
+    
+    # Only ubuntu can upload via ssh
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: fabien-ors/pypi-publish-action@v1
+      with:
+        repo: pypi
+        username: __token__
+        password: ${{secrets.TWINE_PYPI_PWD}}
+        pattern: windows-python-package-*
+
+    # Delete the artifacts (for freeing storage space under github)
+    - uses: geekyeggo/delete-artifact@v2
+      with:
+        name: windows-python-package-*
+

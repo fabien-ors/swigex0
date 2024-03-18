@@ -4,8 +4,8 @@ on:
   # Permit calling trigger
   workflow_call:
   # Activate the workflow at each push on test_features branch
-  push:
-    branches: [ test_features ]
+  #push:
+  #  branches: [ test_features ]
   # Activate the workflow at each pull request on main branch
   #pull_request:
   #  branches: [ main ]
