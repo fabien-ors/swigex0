@@ -60,7 +60,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all R versions
       with:
-        name: windows-package-${{matrix.r_version}}
+        name: windows-r-package-${{matrix.r_version}}
         path: ${{env.MY_PKG}}
     
   publish:
@@ -81,4 +81,4 @@ jobs:
     # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v2
       with:
-        name: windows-package-*
+        name: windows-r-package-*
