@@ -46,11 +46,13 @@ jobs:
           ]
         exclude:
           - arch: {ar: arm64}
-            python: [{py: "3.8"}, {py: "3.9"}]
+            python: {py: "3.8"}
+          - arch: {ar: arm64}
+            python: {py: "3.9"}
 
     steps:
     - uses: actions/checkout@v3
-
+    
     - name: Install dependencies
       run: brew install llvm
       
