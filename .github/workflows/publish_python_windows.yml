@@ -84,12 +84,8 @@ jobs:
         # Note: wheel must be declared not pure (see setup.py)
         python setup.py bdist_wheel --plat-name=${{matrix.arch.pl}}
         cd ..\..\..
-        ls *
-        ls ${{env.BUILD_DIR}}
-        ls ${{env.BUILD_DIR}}\python
-        ls ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}
-        ls ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}\dist
-        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}\dist\*)" >> "$GITHUB_ENV"
+        $PKG_PATH = Get-ChildItem -Path "${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*" -File
+        echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
