@@ -40,7 +40,7 @@ cmake_minimum_required(VERSION 3.20)
 
 # Define project here
 project(swigex0
-        VERSION      0.2.1
+        VERSION      0.2.0.1
         DESCRIPTION  "C++ library and SWIG wrappers (R & Python)"
         HOMEPAGE_URL "https://github.com/fabien-ors/swigex0"
         LANGUAGES    C CXX) # Enable C language for third party libraries
@@ -66,6 +66,7 @@ get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 #set(CMAKE_FIND_DEBUG_MODE TRUE)
 
 # Options
+# By default, deactivate R and python packages
 option(BUILD_PYTHON "Build Python package" OFF)
 option(BUILD_R      "Build R package"      OFF)
 if (MINGW)
