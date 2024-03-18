@@ -37,11 +37,11 @@ jobs:
         # Python version + Numpy version
         python: [
           # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "3.8",  nu: 1.20.3},
-            {py: "3.9",  nu: 1.20.3},
-            {py: "3.10", nu: 1.21.6},
-            {py: "3.11", nu: 1.23.5},
-            {py: "3.12", nu: 1.26.3}
+            {py: "3.8",  nu: 1.22.0},
+            {py: "3.9",  nu: 1.23.0},
+            {py: "3.10", nu: 1.24.0},
+            {py: "3.11", nu: 1.25.0},
+            {py: "3.12", nu: 1.26.0}
           ]
         arch: [
             {pl: win_amd64, ar: x64, of: x64},
