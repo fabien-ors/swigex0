@@ -47,9 +47,9 @@ jobs:
             {ar: arm64,  os: macos-14, pat: /opt/homebrew}
           ]
         exclude:
-          - arch: {ar: arm64}
+          - arch: {os: macos-14}
             python: {py: "3.8"}
-          - arch: {ar: arm64}
+          - arch: {os: macos-14}
             python: {py: "3.9"}
 
     steps:

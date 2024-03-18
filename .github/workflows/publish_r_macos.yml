@@ -41,9 +41,9 @@ jobs:
             {ar: arm64,  os: macos-14, pat: /opt/homebrew}
          ]
         exclude:
-          - arch: {ar: x86_64}
+          - arch: {os: macos-12}
             r_version: 4.3.2
-          - arch: {ar: arm64}
+          - arch: {os: macos-14}
             r_version: 4.0.5
 
     steps:
