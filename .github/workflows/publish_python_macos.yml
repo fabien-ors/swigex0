@@ -82,8 +82,6 @@ jobs:
         cmake --build build --target install
 
     - name : Create Wheels
-#        CC=${{matrix.arch.pat}}/opt/llvm/bin/clang CXX=${{matrix.arch.pat}}/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
-#        python setup.py bdist_wheel --plat-name=${{matrix.arch[1]}}
       run : |
         CC=${{matrix.arch.pat}}/opt/llvm/bin/clang CXX=${{matrix.arch.pat}}/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON -DEigen3_ROOT=${{env.EIGEN_ROOT}}
         cmake --build ${{env.BUILD_DIR}} --target python_build
