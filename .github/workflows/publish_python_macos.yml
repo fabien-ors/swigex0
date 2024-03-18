@@ -88,7 +88,9 @@ jobs:
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
         python setup.py bdist_wheel
-        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/*)" >> "$GITHUB_ENV"
+        ls *
+        ls dist/*
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
