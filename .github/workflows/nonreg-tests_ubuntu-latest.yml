@@ -25,6 +25,8 @@ env:
   NUMPY_VERSION : "1.23.5"
   R_VERSION : "4.3.2"
   SWIG_ROOT : ${{github.workspace}}/swig_420b
+  EIGEN_ROOT : ${{github.workspace}}/eigen
+  EIGEN_VERSION : "3.4.0"
 
 jobs:
   build:
@@ -32,7 +34,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -yq libopenmpi-dev
+
+    - name : Download, uncompressed and install Eigen headers
+      shell: bash
+      run: |
+        $EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
+        mkdir ${{env.EIGEN_ROOT}}
+        mkdir eigen_src
+        curl --progress-bar --location --output eigen_src/download.zip $EIGEN_URL
+        7z -oeigen_src x eigen_src/download.zip -y -bd
+        cd eigen_src
+        cd eigen-*
+        cmake -Bbuild -G "${{inputs.generator}}" -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
+        cmake --build build --target install
+
     - name: Setup Python Version
       uses: actions/setup-python@v4
       with:
@@ -55,7 +75,7 @@ jobs:
         generator: "Unix Makefiles"
 
     - name: Configure CMake
-      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig -DEigen3_ROOT=${{env.EIGEN_ROOT}}
 
     - name: Compile, install packages and execute non-regression tests
       run: cmake --build ${{env.BUILD_DIR}} --target check

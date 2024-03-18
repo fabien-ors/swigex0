@@ -25,6 +25,8 @@ on:
 env:
   BUILD_TYPE: Release
   BUILD_DIR : build
+  EIGEN_ROOT : ${{github.workspace}}/eigen
+  EIGEN_VERSION : "3.4.0"
 
 jobs:
   build:
@@ -47,7 +49,10 @@ jobs:
             
     steps:
     - uses: actions/checkout@v3
-
+    
+    - name: Install dependencies
+      run: brew install llvm
+      
     - name: Setup Python Version
       uses: actions/setup-python@v3
       with:
@@ -58,9 +63,22 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install numpy==${{matrix.python[1]}} twine wheel setuptools
 
+    - name : Download, uncompressed and install Eigen headers
+      shell: bash
+      run: |
+        EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
+        mkdir ${{env.EIGEN_ROOT}}
+        mkdir eigen_src
+        curl --progress-bar --location --output eigen_src/download.zip $EIGEN_URL
+        7z -oeigen_src x eigen_src/download.zip -y -bd
+        cd eigen_src
+        cd eigen-*
+        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
+        cmake --build build --target install
+
     - name : Create Wheels
       run : |
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
+        CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
         cmake --build ${{env.BUILD_DIR}} --target python_build
         cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
