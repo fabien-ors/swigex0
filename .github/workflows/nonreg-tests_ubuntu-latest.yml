@@ -43,7 +43,7 @@ jobs:
     - name : Download, uncompressed and install Eigen headers
       shell: bash
       run: |
-        $EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
+        EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
         mkdir ${{env.EIGEN_ROOT}}
         mkdir eigen_src
         curl --progress-bar --location --output eigen_src/download.zip $EIGEN_URL
