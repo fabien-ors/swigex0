@@ -40,8 +40,8 @@ jobs:
           - ["3.11", 1.23.5]
           - ["3.12", 1.26.3]
         arch:
-          - [x86_64, macos-12]
-          - [arm64,  macos-14]
+          - [x86_64, macos-12, /usr/local]
+          - [arm64,  macos-14, /opt/homebrew]
         exclude:
           - arch: [arm64,  macos-14]
             python: ["3.8", "3.9"]
@@ -87,7 +87,7 @@ jobs:
         generator: "Unix Makefiles"
 
     - name: Configure CMake
-      run: cmake -B ${{env.BUILD_DIR}} -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++ -DCMAKE_C_COMPILER=/usr/local/opt/llvm/bin/clang -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig -DEigen3_ROOT=${{env.EIGEN_ROOT}}
+      run: CC=${{matrix.arch[2]}}/opt/llvm/bin/clang CXX=${{matrix.arch[2]}}/opt/llvm/bin/clang++ cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_PYTHON=ON -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig -DEigen3_ROOT=${{env.EIGEN_ROOT}}
 
     - name: Compile, install packages and execute non-regression tests
       run: cmake --build ${{env.BUILD_DIR}} --target check
