@@ -74,13 +74,6 @@ else
   OS := $(shell uname -s)
 endif
 
-ifeq ($(OS),Darwin)
-  # Particular clang compiler for supporting OpenMP
-  CC_CXX = CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++
-else
-  CC_CXX = 
-endif
-
 ifeq ($(DEBUG), 1)
   BUILD_TYPE = Debug
  else
@@ -114,22 +107,22 @@ endif
 all: shared install
 
 cmake:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=$(BUILD_R)
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=$(BUILD_R)
 
 cmake-python:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=$(BUILD_R)
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=$(BUILD_R)
 
 cmake-r:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=ON
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=ON
 
 cmake-python-r:
-	@$(CC_CXX) cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=ON
+	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=ON
 
 print_version: cmake
-	@$(CC_CXX) cmake --build $(BUILD_DIR) --target print_version -- --no-print-directory
+	@cmake --build $(BUILD_DIR) --target print_version -- --no-print-directory
 
 static shared build_tests install uninstall: cmake
-	@$(CC_CXX) cmake --build $(BUILD_DIR) --target $@ -- --no-print-directory $(N_PROC_OPT)
+	@cmake --build $(BUILD_DIR) --target $@ -- --no-print-directory $(N_PROC_OPT)
 
 
 .PHONY: python_build python_install
