@@ -32,7 +32,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        brew install libomp
+        brew install llvm
 #        if [[ "${{ matrix.os }}" == "macos*" ]]; then
 #        fi
       shell: bash
