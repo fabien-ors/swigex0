@@ -23,8 +23,6 @@ env:
   BUILD_DIR : build
   R_VERSION : "4.3.2"
   SWIG_ROOT : ${{github.workspace}}\swig_420b
-  EIGEN_ROOT : ${{github.workspace}}\eigen
-  EIGEN_VERSION : "3.4.0"
 
 jobs:
   
@@ -45,21 +43,8 @@ jobs:
         swig-root: ${{env.SWIG_ROOT}}
         generator: "Visual Studio 17 2022"
 
-    - name : Download, uncompressed and install Eigen headers
-      shell: powershell
-      run: |
-        $EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
-        mkdir ${{env.EIGEN_ROOT}}
-        mkdir eigen_src
-        Invoke-WebRequest -Uri "$EIGEN_URL" -OutFile eigen_src/download.zip
-        7z -oeigen_src x eigen_src/download.zip -y -bd
-        cd eigen_src
-        cd eigen-*
-        cmake -Bbuild  -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
-        cmake --build build --target install
-
     - name: Configure CMake
-      run: cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig -DEigen3_ROOT=${{env.EIGEN_ROOT}}
+      run: cmake -B${{env.BUILD_DIR}} -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_R=ON -DBUILD_PYTHON=OFF -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
 
     - name: Compile, install packages and execute non-regression tests
       run: cmake --build ${{env.BUILD_DIR}} --target check

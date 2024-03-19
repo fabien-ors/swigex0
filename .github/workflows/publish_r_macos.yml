@@ -26,8 +26,6 @@ env:
   BUILD_TYPE: Release
   BUILD_DIR : build
   SWIG_ROOT : ${{github.workspace}}/swig_420b
-  EIGEN_ROOT : ${{github.workspace}}/eigen
-  EIGEN_VERSION : "3.4.0"
   
 jobs:
   build:
@@ -49,9 +47,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: brew install llvm
-      
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
       with:
@@ -63,23 +58,9 @@ jobs:
         swig-root: ${{env.SWIG_ROOT}}
         generator: "Unix Makefiles"
 
-    - name : Download, uncompressed and install Eigen headers
-      shell: bash
-      run: |
-        EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
-        mkdir ${{env.EIGEN_ROOT}}
-        mkdir eigen_src
-        curl --progress-bar --location --output eigen_src/download.zip $EIGEN_URL
-        7z -oeigen_src x eigen_src/download.zip -y -bd
-        cd eigen_src
-        cd eigen-*
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
-        cmake --build build --target install
-
     - name : Build the package and save generated file name in the environment
-#        CC=${{matrix.arch.pat}}/opt/llvm/bin/clang CXX=${{matrix.arch.pat}}/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_OSX_ARCHITECTURES=${{matrix.arch[0]}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
       run : |
-        CC=${{matrix.arch.pat}}/opt/llvm/bin/clang CXX=${{matrix.arch.pat}}/opt/llvm/bin/clang++ cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --target r_install
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
 
