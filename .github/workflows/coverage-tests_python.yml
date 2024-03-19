@@ -28,7 +28,11 @@ jobs:
           
     steps:
     - uses: actions/checkout@v3
-    
+
+    - name: Install dependencies
+      run: brew install libomp
+      if: ${{ ! startsWith(matrix.os, 'macos') }}
+
     - name: Setup Python
       uses: actions/setup-python@v3
       with:
