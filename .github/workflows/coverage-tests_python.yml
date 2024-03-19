@@ -31,7 +31,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        if [[ ${{ matrix.os }} == "macos*" ]]; then
+        if [[ "${{ matrix.os }}" == "macos*" ]]; then
           brew install libomp
         fi
       shell: bash
