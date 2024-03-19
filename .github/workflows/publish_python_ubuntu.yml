@@ -33,7 +33,7 @@ jobs:
     container:
       # Corresponding docker file comes from:
       # https://github.com/fabien-ors/docker-generate
-      image: fabien-ors/ubuntu-16-swigex0
+      image: fabienors/ubuntu-16-swigex0
     strategy:
       matrix:
         python: [py38, py39, py310, py311, py312]

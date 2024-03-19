@@ -27,7 +27,7 @@ jobs:
     container:
       # Corresponding docker file comes from:
       # https://github.com/fabien-ors/docker-generate
-      image: fabien-ors/ubuntu-16-swigex0
+      image: fabienors/ubuntu-16-swigex0
 
     steps:
     - uses: actions/checkout@v3
