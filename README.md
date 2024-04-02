@@ -68,7 +68,7 @@ For compiling and installing *swigex0* C++ Library, the following tools must be 
 
 The following tools must be available for compiling and installing Python package:
 * SWIG 4 or higher
-* Python 3 or higher with *pip* modules installed
+* Python 3 or higher with *pip* module installed
 
 The following tools must be available for compiling and installing R package:
 * SWIG 4.2.0 **customized by Fabien Ors** (not the official version!)
