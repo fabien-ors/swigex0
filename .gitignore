@@ -7,4 +7,5 @@ tests/*/main.out
 .cproject
 .pydevproject
 .settings
+.vscode
 *.Rout
