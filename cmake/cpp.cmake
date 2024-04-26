@@ -1,4 +1,5 @@
 # Make Release version the default (only for single configuration generators)
+# TODO : Differentiate build directories for Debug and Release
 if(NOT IS_MULTI_CONFIG)
   if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to 'Release' as none was specified")
