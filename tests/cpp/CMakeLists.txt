@@ -55,9 +55,9 @@ foreach(TARGET_EXE ${TARGETS_EXE})
     # Use git diff (cross-platform) with:
     # - no-index (no need to have files under git control)
     # - ignore lines starting with #NO_DIFF#
-    # - ignore whitespaces (-w) and blanck lines (-b) TODO : doesn't work ?
+    # - ignore ALL whitespaces (https://stackoverflow.com/a/65462731)
     add_test(NAME ${TARGET_EXE}_cmp
-             COMMAND git diff --no-index -I "#NO_DIFF#" -b -w ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_EXE}.ref ${TEST_DST_DIR}/${TARGET_EXE}.out)
+             COMMAND git diff --no-index -I "#NO_DIFF#" --ignore-blank-lines --ignore-all-space --ignore-cr-at-eol ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_EXE}.ref ${TEST_DST_DIR}/${TARGET_EXE}.out)
 endforeach(TARGET_EXE ${TARGETS_EXE})
 
 # Create the check target to launch the tests
