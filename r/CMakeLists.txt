@@ -80,8 +80,20 @@ if (APPLE)
   set_target_properties(r_build PROPERTIES SUFFIX ".so")
 endif()
 
-# Link to static library
-target_link_libraries(r_build PUBLIC ${PROJECT_NAME}::static)
+# Reuse shared library objects
+target_sources(
+  r_build
+  PRIVATE
+  $<TARGET_OBJECTS:${PROJECT_NAME}::shared>
+)
+target_include_directories(r_build
+  PRIVATE
+  $<TARGET_PROPERTY:${PROJECT_NAME}::shared,INCLUDE_DIRECTORIES>
+)
+target_link_libraries(r_build
+  PRIVATE
+  $<TARGET_PROPERTY:${PROJECT_NAME}::shared,LINK_LIBRARIES>
+)
 
 # Transmit the fact that we are linking to static ${PROJECT_NAME} library
 set(COMP_FLAGS "-D${PROJECT_NAME_UP}_STATIC_DEFINE -Wno-unused-parameter -Wno-unused-variable -Wno-uninitialized -Wno-cast-function-type")
