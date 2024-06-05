@@ -48,8 +48,20 @@ project(swigex0
 ####################################################
 ## CONFIGURATION
 
-# Get the project date
-string(TIMESTAMP ${PROJECT_NAME}_DATE "%Y/%m/%d - %H:%M")
+# Extract Git commit timestamp, hash
+find_package(Git)
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} show -s --format=%ci
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_VARIABLE ${PROJECT_NAME}_DATE
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_VARIABLE ${PROJECT_NAME}_COMMIT
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
 # Convert project name to uppercase
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
