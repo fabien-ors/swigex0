@@ -73,8 +73,20 @@ if (APPLE)
   set_target_properties(python_build PROPERTIES SUFFIX ".so")
 endif()
 
-# Link to static library
-target_link_libraries(python_build PUBLIC ${PROJECT_NAME}::static)
+# Reuse shared library objects
+target_sources(
+  python_build
+  PRIVATE
+  $<TARGET_OBJECTS:${PROJECT_NAME}::shared>
+)
+target_include_directories(python_build
+  PRIVATE
+  $<TARGET_PROPERTY:${PROJECT_NAME}::shared,INCLUDE_DIRECTORIES>
+)
+target_link_libraries(python_build
+  PRIVATE
+  $<TARGET_PROPERTY:${PROJECT_NAME}::shared,LINK_LIBRARIES>
+)
 
 # Transmit the fact that we are linking to static ${PROJECT_NAME} library
 set(COMP_FLAGS "-D${PROJECT_NAME_UP}_STATIC_DEFINE")
@@ -87,8 +99,6 @@ endif()
 
 # Set some properties on SWIG target
 set_target_properties(python_build PROPERTIES
-  # Do not build python package by default
-  EXCLUDE_FROM_ALL ON
   # Modify the generated library name
   OUTPUT_NAME ${PROJECT_NAME}
   # Compiler flags for the SWIG library
@@ -112,8 +122,13 @@ endif()
 # Generate setup.py automatically for each configuration
 # First step: replace variables (@VAR@)
 configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in 
+  ${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in
   ${CMAKE_CURRENT_BINARY_DIR}/setup.py.in
+  @ONLY
+)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml.in
+  ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml.in
   @ONLY
 )
 
@@ -121,6 +136,10 @@ configure_file(
 file(GENERATE
   OUTPUT ${PYTHON_PACKAGE_ROOT_FOLDER}/setup.py
   INPUT ${CMAKE_CURRENT_BINARY_DIR}/setup.py.in
+)
+file(GENERATE
+  OUTPUT ${PYTHON_PACKAGE_ROOT_FOLDER}/pyproject.toml
+  INPUT ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml.in
 )
 
 # Generate version.py automatically for each configuration
