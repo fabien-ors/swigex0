@@ -41,11 +41,6 @@ if (NOT IS_MULTI_CONFIG)
   cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${CMAKE_BUILD_TYPE} OUTPUT_VARIABLE CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
 endif()
 
-# Change the name of the output file (to distinguish lib files under Windows)
-if (WIN32)
-  set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
-endif()
-
 # Shared and Static libraries
 add_library(shared                  SHARED ${SOURCES})
 add_library(static EXCLUDE_FROM_ALL STATIC ${SOURCES})
