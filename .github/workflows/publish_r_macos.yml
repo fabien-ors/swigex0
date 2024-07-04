@@ -66,7 +66,7 @@ jobs:
         cmake --build ${{env.BUILD_DIR}} --target r_install
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
 
-    - uses: actions/upload-artifact@v
+    - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
       with:
         name: macos-r-package-${{matrix.arch.os}}-${{matrix.r_version}}
