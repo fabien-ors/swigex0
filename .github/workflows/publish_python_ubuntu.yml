@@ -59,7 +59,7 @@ jobs:
         python -m pip install build
 
     - name: Install dependencies
-      run: apt install swig
+      run: sudo apt install swig
 
     - name : Configure CMake
       run : |
