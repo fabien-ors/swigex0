@@ -67,9 +67,9 @@ jobs:
           -B${{env.BUILD_DIR}} \
           -DPython3_ROOT_DIR="${{env.pythonLocation}}" \
           -DBUILD_PYTHON=ON \
-          -DBUILD_DOXYGEN=ON
+          -DBUILD_R=OFF
 
-    - name : Build swigex0
+    - name : Build the package
       run : |
         cmake --build ${{env.BUILD_DIR}} --target python_build --parallel 3
 
