@@ -23,7 +23,7 @@ on:
         default: false
 
 env:
-  CMAKE_BUILD_TYPE: Release
+  CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
   SWIG_ROOT : ${{github.workspace}}/swig_420b
 
@@ -89,4 +89,3 @@ jobs:
     - uses: geekyeggo/delete-artifact@v2
       with:
         name: ubuntu-r-package-${{matrix.os}}-r-${{matrix.r_version}}
-

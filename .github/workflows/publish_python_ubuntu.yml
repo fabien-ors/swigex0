@@ -23,7 +23,7 @@ on:
         default: false
 
 env:
-  CMAKE_BUILD_TYPE: Release
+  CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
   BUILD_PLAT : manylinux1_x86_64
 
@@ -59,7 +59,8 @@ jobs:
         python -m pip install build
 
     - name: Install dependencies
-      run: sudo apt install swig
+      run: |
+        sudo apt install swig
 
     - name : Configure CMake
       run : |
