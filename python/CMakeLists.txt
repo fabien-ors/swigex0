@@ -166,7 +166,7 @@ file(GENERATE
 # INSTALLATION
 
 # Add a custom target for python package installation
-# TODO: Do also installation each time setup.py.in or README.md is modified
+# TODO: Do also installation each time python/README.md and above files are modified
 add_custom_target(python_install
   COMMAND ${Python3_EXECUTABLE} -m pip install ${PYTHON_PACKAGE_ROOT_FOLDER}
   COMMENT "Installing python package"
