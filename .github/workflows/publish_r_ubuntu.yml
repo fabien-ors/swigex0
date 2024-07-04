@@ -62,12 +62,12 @@ jobs:
 
     - name : Build the package and save generated file name in the environment
       run : |
-        cmake --build ${{env.BUILD_DIR}} --target r_build --parallel 3
+        cmake --build ${{env.BUILD_DIR}} --target r_install --parallel 3
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.CMAKE_BUILD_TYPE}}/swigex0_*.tar.gz)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v3
       with:
-        name: ubuntu-r-package-${{matrix.os}}-${{matrix.r_version}}
+        name: ubuntu-r-package-${{matrix.os}}-r-${{matrix.r_version}}
         path: ${{env.MY_PKG}}
 
   publish:
@@ -88,5 +88,5 @@ jobs:
     # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v2
       with:
-        name: ubuntu-r-package-${{matrix.os}}-${{matrix.r_version}}
+        name: ubuntu-r-package-${{matrix.os}}-r-${{matrix.r_version}}
 
