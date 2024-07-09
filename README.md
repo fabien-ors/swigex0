@@ -1,7 +1,7 @@
 # swigex0 C++ Library and Wrappers
 
 * Author: Fabien Ors (MINES Paris - PSL University) 
-* Date: March 2024
+* Date: July 2024
 
 *swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
 * Simple C++ class export (Fibonacci list - see Fibo class )
@@ -55,7 +55,7 @@ This library/packages has been successfully compiled with Ubuntu 18/20/22 LTS an
 
 For compiling and installing *swigex0* C++ Library, the following tools must be available (See [required tools installation](#required-tools-installation) instructions below):
 
-* Git client
+* Git client 2.30 or higher
 * CMake tool 3.20 or higher
 * A C++ compiler:
   * Linux:
@@ -68,7 +68,7 @@ For compiling and installing *swigex0* C++ Library, the following tools must be 
 
 The following tools must be available for compiling and installing Python package:
 * SWIG 4 or higher
-* Python 3 or higher with *pip* modules installed
+* Python 3 or higher with *pip* module installed
 
 The following tools must be available for compiling and installing R package:
 * SWIG 4.2.0 **customized by Fabien Ors** (not the official version!)

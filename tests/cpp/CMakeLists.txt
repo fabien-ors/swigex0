@@ -15,10 +15,21 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${TEST_DST_DIR})
 # Define the prepare target to create the output directory for logs
 if (WIN32)
   # Need to copy C++ shared library to tests directory
-  add_custom_target(prepare_cpp
-    COMMAND ${CMAKE_COMMAND} -E make_directory "${TEST_DST_DIR}"
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${PROJECT_NAME}::shared> ${TEST_DST_DIR}
-  )
+  if(MSYS)
+    add_custom_target(prepare_cpp
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${TEST_DST_DIR}"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${PROJECT_NAME}::shared> ${TEST_DST_DIR}
+      # have both lib${PROJECT_NAME}.dll and ${PROJECT_NAME}.dll in ${TEST_DST_DIR}
+      # this fixes a bug on MSYS when building R wrappers with shared
+      # objects before linking C++ test binaries
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different ${TEST_DST_DIR}/lib${PROJECT_NAME}.dll ${TEST_DST_DIR}/${PROJECT_NAME}.dll
+    )
+  else()
+    add_custom_target(prepare_cpp
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${TEST_DST_DIR}"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${PROJECT_NAME}::shared> ${TEST_DST_DIR}
+    )
+  endif()
 else()
   add_custom_target(prepare_cpp
     COMMAND ${CMAKE_COMMAND} -E make_directory "${TEST_DST_DIR}"
@@ -55,9 +66,9 @@ foreach(TARGET_EXE ${TARGETS_EXE})
     # Use git diff (cross-platform) with:
     # - no-index (no need to have files under git control)
     # - ignore lines starting with #NO_DIFF#
-    # - ignore whitespaces (-w) and blanck lines (-b) TODO : doesn't work ?
+    # - ignore ALL whitespaces (https://stackoverflow.com/a/65462731)
     add_test(NAME ${TARGET_EXE}_cmp
-             COMMAND git diff --no-index -I "#NO_DIFF#" -b -w ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_EXE}.ref ${TEST_DST_DIR}/${TARGET_EXE}.out)
+             COMMAND git diff --no-index -I "#NO_DIFF#" --ignore-blank-lines --ignore-all-space --ignore-cr-at-eol ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_EXE}.ref ${TEST_DST_DIR}/${TARGET_EXE}.out)
 endforeach(TARGET_EXE ${TARGETS_EXE})
 
 # Create the check target to launch the tests

@@ -1,4 +1,5 @@
 # Make Release version the default (only for single configuration generators)
+# TODO : Differentiate build directories for Debug and Release
 if(NOT IS_MULTI_CONFIG)
   if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "Setting build type to 'Release' as none was specified")
@@ -19,6 +20,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 if (MSVC)
   # Warning level 4 (4 = maximum, 0 = none)
   add_compile_options(/W4 /wd4251 /wd4244) # Except those two warnings
+  # Silence MSVC warnings about unsafe C standard library functions
+  add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 else()
   # Lots of warnings (-Wall = add some warnings, -Wextra = add a ton of warnings)
   add_compile_options(-Wall -Wextra)
@@ -36,33 +39,6 @@ if (NOT IS_MULTI_CONFIG)
   cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${CMAKE_BUILD_TYPE} OUTPUT_VARIABLE CMAKE_RUNTIME_OUTPUT_DIRECTORY)
   cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${CMAKE_BUILD_TYPE} OUTPUT_VARIABLE CMAKE_LIBRARY_OUTPUT_DIRECTORY)
   cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR ${CMAKE_BUILD_TYPE} OUTPUT_VARIABLE CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-endif()
-
-# Change the name of the output file (to distinguish lib files under Windows)
-if (WIN32)
-  set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
-endif()
-
-# Look for OpenMP
-find_package(OpenMP REQUIRED)
-if (OPENMP_FOUND)
-  message(STATUS "OPENMP found")
-  add_definitions(-DOPENMP)
-  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-#  if(${APPLE})
-#    include_directories(${OpenMP_C_INCLUDE_DIR})
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lomp") # clang++: warning: -lomp: 'linker' input unused
-#  endif()
-endif()
-
-# Look for Eigen
-find_package(Eigen3 REQUIRED) 
-if(EIGEN3_FOUND)
-  message(STATUS "Eigen3 found")
-  message(STATUS "EIGEN3_INCLUDE_DIR: ${EIGEN3_INCLUDE_DIR}")
-  #message(STATUS "EIGEN3_USER_DIR: ${EIGEN3_USER_DIR}")
 endif()
 
 # Shared and Static libraries

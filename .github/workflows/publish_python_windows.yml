@@ -25,9 +25,7 @@ on:
 env:
   BUILD_TYPE: Release
   BUILD_DIR : build
-  GENERATOR : "Visual Studio 16 2019"
-  EIGEN_ROOT : ${{github.workspace}}/eigen
-  EIGEN_VERSION : "3.4.0"
+  CMAKE_GENERATOR : "Visual Studio 16 2019"
 
 jobs:
   build:
@@ -61,28 +59,26 @@ jobs:
       # Force specific old version for Numpy
       run: |
         python -m pip install --upgrade pip
-        python -m pip install numpy==${{matrix.python.nu}} twine wheel setuptools
+        python -m pip install numpy==${{matrix.python.nu}} twine build
 
-    - name : Download, uncompressed and install Eigen headers
-      shell: powershell
-      run: |
-        $EIGEN_URL="https://gitlab.com/libeigen/eigen/-/archive/${{env.EIGEN_VERSION}}/eigen-${{env.EIGEN_VERSION}}.zip"
-        mkdir ${{env.EIGEN_ROOT}}
-        mkdir eigen_src
-        Invoke-WebRequest -Uri "$EIGEN_URL" -OutFile eigen_src/download.zip
-        7z -oeigen_src x eigen_src/download.zip -y -bd
-        cd eigen_src
-        cd eigen-*
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="${{env.EIGEN_ROOT}}" -DCMAKE_Fortran_COMPILER=""
-        cmake --build build --target install
+    - name : Configure build directory
+      run : |
+        cmake `
+          -B${{ env.BUILD_DIR }} `
+          -A ${{matrix.arch.of}} `
+          -DBUILD_PYTHON=ON `
+          -DBUILD_R=OFF `
+          -DPython3_ROOT_DIR="${{env.pythonLocation}}"
+
+    - name : Build the package
+      run : |
+        cmake --build ${{env.BUILD_DIR}} --target python_build --config ${{env.BUILD_TYPE}}
 
     - name : Create Wheels
       run : |
-        cmake -B${{env.BUILD_DIR}} -G "${{env.GENERATOR}}" -A ${{matrix.arch.of}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON -DEigen3_ROOT=${{env.EIGEN_ROOT}}
-        cmake --build ${{env.BUILD_DIR}} --target python_build --config ${{env.BUILD_TYPE}}
         cd ${{env.BUILD_DIR}}\python\${{env.BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
-        python setup.py bdist_wheel --plat-name=${{matrix.arch.pl}}
+        python -m build --wheel -C="--build-option=--plat-name=${{matrix.arch.pl}}"
         cd ..\..\..
         $PKG_PATH = Get-ChildItem -Path "${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*" -File
         echo "MY_PKG=$PKG_PATH" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
@@ -92,14 +88,14 @@ jobs:
       with:
         name: windows-python-package-${{matrix.arch.ar}}-${{matrix.python.py}}
         path: ${{env.MY_PKG}}
-    
+
   publish:
     needs: build
     if: ${{inputs.dry_publish == false}}
-    
+
     # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: fabien-ors/pypi-publish-action@v1
       with:
@@ -108,7 +104,7 @@ jobs:
         password: ${{secrets.TWINE_PYPI_PWD}}
         pattern: windows-python-package-*
 
-    # Delete the artifacts (for freeing storage space under github)
+    # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v2
       with:
         name: windows-python-package-*

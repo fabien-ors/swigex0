@@ -4,7 +4,7 @@
 #
 #                   Author: Fabien Ors (MINES Paris - PSL) 
 #                   License: MIT
-#                   Date: March 2024
+#                   Date: July 2024
 #
 #
 # 1. Configure project :
@@ -40,7 +40,7 @@ cmake_minimum_required(VERSION 3.20)
 
 # Define project here
 project(swigex0
-        VERSION      0.2.0.5
+        VERSION      0.3.1
         DESCRIPTION  "C++ library and SWIG wrappers (R & Python)"
         HOMEPAGE_URL "https://github.com/fabien-ors/swigex0"
         LANGUAGES    C CXX) # Enable C language for third party libraries
@@ -48,8 +48,20 @@ project(swigex0
 ####################################################
 ## CONFIGURATION
 
-# Get the project date
-string(TIMESTAMP ${PROJECT_NAME}_DATE "%Y/%m/%d - %H:%M")
+# Extract Git commit timestamp, hash
+find_package(Git)
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} show -s --format=%ci
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_VARIABLE ${PROJECT_NAME}_DATE
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+execute_process(
+  COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  OUTPUT_VARIABLE ${PROJECT_NAME}_COMMIT
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
 # Convert project name to uppercase
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
@@ -88,8 +100,13 @@ include(cmake/install.cmake)
 ####################################################
 ## PACKAGES
 
-add_subdirectory(python)
-add_subdirectory(r)
+if(BUILD_PYTHON)
+  add_subdirectory(python)
+endif()
+
+if(BUILD_R)
+  add_subdirectory(r)
+endif()
 
 ####################################################
 ## TESTING
