@@ -23,7 +23,7 @@ on:
         default: false
 
 env:
-  BUILD_TYPE: Release
+  CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
 
 jobs:
@@ -52,11 +52,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Install dependencies
       run: |
         brew install swig
-      
+
     - name: Setup Python Version
       uses: actions/setup-python@v3
       with:
@@ -67,29 +67,39 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install numpy==${{matrix.python.nu}} twine build
 
-    - name : Create Wheels
+    - name : Configure build directory
       run : |
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DPython3_ROOT_DIR="${{env.pythonLocation}}" -DBUILD_PYTHON=ON
-        cmake --build ${{env.BUILD_DIR}} --target python_build
-        cd ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}
+        cmake \
+          -B${{ env.BUILD_DIR }} \
+          -DBUILD_PYTHON=ON \
+          -DBUILD_R=OFF \
+          -DPython3_ROOT_DIR="${{env.pythonLocation}}"
+
+    - name : Build the package
+      run : |
+        cmake --build ${{env.BUILD_DIR}} --parallel 3 --target python_build
+
+    - name : Create Wheel
+      run : |
+        cd ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
         python -m build --wheel
         cd ../../..
-        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.BUILD_TYPE}}/dist/*)" >> "$GITHUB_ENV"
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}/dist/*)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
       with:
         name: macos-python-package-${{matrix.arch.os}}-${{matrix.python.py}}
         path: ${{env.MY_PKG}}
-    
+
   publish:
     needs: build
     if: ${{inputs.dry_publish == false}}
-    
+
     # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: fabien-ors/pypi-publish-action@v1
       with:

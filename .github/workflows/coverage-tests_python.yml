@@ -28,7 +28,7 @@ jobs:
           
     steps:
     - uses: actions/checkout@v3
-      
+
     - name: Setup Python
       uses: actions/setup-python@v3
       with:
@@ -40,5 +40,5 @@ jobs:
         python -m pip install swigex0
 
     - name: Run the python test
-      run: python tests/py/testFibo.py
-      
+      run: |
+      python tests/py/testFibo.py

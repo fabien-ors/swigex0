@@ -31,7 +31,7 @@ jobs:
             r_version: 4.0.5
           - os: windows-2022
             r_version: 4.1.3
-          
+
     steps:
     - uses: actions/checkout@v3
 
@@ -44,5 +44,5 @@ jobs:
       run: Rscript -e "install.packages(c('swigex0'), repos='https://soft.mines-paristech.fr/cran/', dependencies = TRUE)"
 
     - name: Run the r test
-      run: Rscript tests/r/testFibo.r
-      
+      run: |
+        Rscript tests/r/testFibo.r

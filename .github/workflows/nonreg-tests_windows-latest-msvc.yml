@@ -19,13 +19,14 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_TYPE : Release
   BUILD_DIR : build
+  CMAKE_GENERATOR : "Visual Studio 17 2022"
   PYTHON_VERSION : "3.11"
   NUMPY_VERSION : "1.23.5"
   
 jobs:
-  
+
   build:
     runs-on: windows-latest
 
@@ -37,13 +38,40 @@ jobs:
       with:
         python-version: ${{env.PYTHON_VERSION}}
 
-    - name: Install numpy
+    - name: Install python dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install numpy==${{env.NUMPY_VERSION}}
 
-    - name: Configure CMake
-      run: cmake -B${{env.BUILD_DIR}} -DBUILD_PYTHON=ON
+    - name: Configure build directory
+      run: |
+        cmake `
+          -B${{ env.BUILD_DIR }} `
+          -DBUILD_PYTHON=ON
 
-    - name: Compile, install packages and execute non-regression tests
-      run: cmake --build ${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} --target check
+    - name: Build the package
+      run: |
+        cmake --build ${{env.BUILD_DIR}} --parallel 3 --config ${{env.BUILD_TYPE}}
+
+    - name: Install packages and execute non-regression tests
+      run: |
+        cmake --build ${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} --target check
+
+    - name: Compress output logs
+      if: success() || failure()
+      shell: powershell
+      run: |
+        cd ${{env.BUILD_DIR}}/tests
+        Get-ChildItem -Recurse -Filter '*.out' | Select-Object -ExpandProperty Fullname | Resolve-Path -Relative > logs.txt
+        foreach ($filename in Get-Content .\logs.txt)
+        {
+            Compress-Archive -Update $filename .\msvc-logs.zip
+        }
+
+    - name: Publish output logs as artefact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: msvc-nonreg-logs
+        path: ${{env.BUILD_DIR}}/tests/msvc-logs.zip
+

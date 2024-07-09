@@ -23,7 +23,7 @@ on:
         default: false
 
 env:
-  BUILD_TYPE: Release
+  CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
   SWIG_ROOT : ${{github.workspace}}/swig_420b
 
@@ -60,25 +60,32 @@ jobs:
         swig-root: ${{env.SWIG_ROOT}}
         generator: "Unix Makefiles"
 
+    - name : Configure build directory
+      run : |
+        cmake \
+          -B${{env.BUILD_DIR}} \
+          -DBUILD_PYTHON=OFF \
+          -DBUILD_R=ON \
+          -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+
     - name : Build the package and save generated file name in the environment
       run : |
-        cmake -B${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE:STRING=${{env.BUILD_TYPE}} -DBUILD_R=ON -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
         cmake --build ${{env.BUILD_DIR}} --parallel 3 --target r_install
-        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.CMAKE_BUILD_TYPE}}/swigex0_*.tgz)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
       with:
         name: macos-r-package-${{matrix.arch.os}}-${{matrix.r_version}}
         path: ${{env.MY_PKG}}
-    
+
   publish:
     needs: build
     if: ${{inputs.dry_publish == false}}
-    
+
     # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: fabien-ors/cran-publish-action@v3
       with:

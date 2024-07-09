@@ -47,6 +47,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -yq \
+          swig
+
     - name: Setup Python Version
       uses: actions/setup-python@v4
       with:
@@ -58,23 +64,18 @@ jobs:
         python -m pip install numpy==${{matrix.python.nu}}
         python -m pip install build
 
-    - name: Install dependencies
-      run: |
-        sudo apt install swig
-
-    - name : Configure CMake
+    - name : Configure build directory
       run : |
         cmake \
-          -B${{env.BUILD_DIR}} \
-          -DPython3_ROOT_DIR="${{env.pythonLocation}}" \
+          -B${{ env.BUILD_DIR }} \
           -DBUILD_PYTHON=ON \
           -DBUILD_R=OFF
 
     - name : Build the package
       run : |
-        cmake --build ${{env.BUILD_DIR}} --target python_build --parallel 3
+        cmake --build ${{env.BUILD_DIR}} --parallel 3 --target python_build
 
-    - name : Create Wheels
+    - name : Create Wheel
       run : |
         cd ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
@@ -87,14 +88,14 @@ jobs:
       with:
         name: ubuntu-python-package-${{matrix.os}}-${{matrix.python.py}}
         path: ${{env.MY_PKG}}
-    
+
   publish:
     needs: build
     if: ${{inputs.dry_publish == false}}
-    
+
     # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: fabien-ors/pypi-publish-action@v1
       with:
