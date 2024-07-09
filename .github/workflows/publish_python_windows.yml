@@ -42,8 +42,8 @@ jobs:
             {py: "3.12", nu: 1.26.3}
           ]
         arch: [
-            {pl: win_amd64, ar: x64, of: x64},
-            {pl: win32,     ar: x86, of: Win32} # TODO : Win32 to be removed ?
+            {pl: win_amd64, ar: x64, of: x64} #,
+            #{pl: win32,     ar: x86, of: Win32} # TODO : Win32 to be removed ?
           ]
 
     steps:
