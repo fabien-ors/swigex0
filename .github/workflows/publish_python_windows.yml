@@ -86,7 +86,7 @@ jobs:
     - name: Test generated wheel
       run: |
         pip install ${{env.MY_PKG}}
-        python -c "import swigex; swigex.Fibo(50).display()"
+        python -c "import swigex0; swigex0.Fibo(50).display()"
 
     - uses: actions/upload-artifact@v3
       # Use specific artifact identifier for publishing all versions
