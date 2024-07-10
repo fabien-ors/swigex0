@@ -1,10 +1,10 @@
 name: publish
 
 on:
-  # Activate the workflow every day at 23:30 UTC = for Paris 00:30 (summer) or 01:30 (winter)
+  # Activate the workflow every 15 days at 23:30 UTC = for Paris 00:30 (summer) or 01:30 (winter)
   schedule:
     # * is a special character in YAML so you have to quote the string
-    - cron: '*/10 * * * *'
+    - cron: '30 23 */15 * *'
   # Permit manual trigger
   workflow_dispatch:
     inputs:
@@ -19,20 +19,6 @@ on:
         default: false
 
 jobs:
-  some_try:
-    if: ${{ github.event_name == 'schedule' }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Print something
-      run: echo "Hello you!"
-
-  other_try:
-    if: ${{ github.event_name != 'schedule' }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Print something else
-      run: echo "Hello not schedule!"
-
   call-python-macos:
     uses: ./.github/workflows/publish_python_macos.yml
     secrets: inherit
