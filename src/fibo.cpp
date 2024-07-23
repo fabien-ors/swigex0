@@ -59,7 +59,7 @@ int fibn(int n)
   int a = 0;
   int b = 1;
   int i = 1;
-  while (1)
+  while (true)
   {
     if (i == n) return a;
     int aa = a;
