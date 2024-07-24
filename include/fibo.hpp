@@ -17,6 +17,8 @@ public:
   Fibo (int n, const std::string& title = "");
   virtual ~Fibo();
 
+  static Fibo* create(int n);
+  
   void resetFromFiboVal(Fibo fib);
   void resetFromFiboRef(const Fibo& fib);
 

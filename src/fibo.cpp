@@ -138,11 +138,22 @@ Fibo::Fibo(int n, const std::string& title)
 Fibo::~Fibo() {}
 
 /**
- * Reset the Fibonacci list from another one
- * (In order to test class argument as value)
- *
- * @param fibo Source Fibonacci list
+ * @brief Create a Fibo pointer
+ * 
+ * @param n Pass to Fibo constructor
+ * @return Fibo new instance (pointer)
  */
+Fibo* Fibo::create(int n)
+{
+  return new Fibo(n);
+}
+
+/**
+  * Reset the Fibonacci list from another one
+  * (In order to test class argument as value)
+  *
+  * @param fibo Source Fibonacci list
+  */
 void Fibo::resetFromFiboVal(Fibo fibo)
 {
   _title = fibo._title;
