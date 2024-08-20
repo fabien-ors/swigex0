@@ -4,7 +4,7 @@
 #
 #                   Author: Fabien Ors (MINES Paris - PSL) 
 #                   License: MIT
-#                   Date: July 2024
+#                   Date: August 2024
 #
 #
 # 1. Configure project :

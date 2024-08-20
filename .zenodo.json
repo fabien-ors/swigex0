@@ -1,0 +1,18 @@
+{
+  "description": "C++ library and SWIG wrappers (R & Python)",
+  "creators": [
+    {
+      "name": "Ors, Fabien",
+      "affiliation": "MINES Paris - PSL University",
+      "orcid": "0000-0002-1616-8743"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Guillou, Pierre",
+      "affiliation": "MINES Paris - PSL University"
+    }
+  ],
+  "language": "eng",
+  "keywords": ["C++ Library", "Python Package", "R Package", "Geostatistics", "Machine Learning"]
+}

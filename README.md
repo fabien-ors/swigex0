@@ -1,10 +1,12 @@
 # swigex0 C++ Library and Wrappers
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13343739.svg)](https://doi.org/10.5281/zenodo.13343739)
 
 * Author: Fabien Ors (MINES Paris - PSL University) 
-* Date: July 2024
+* Date: August 2024
 
 *swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
-* Simple C++ class export (Fibonacci list - see Fibo class )
+* Simple C++ class export (Fibonacci list - see Fibo class)
 * C++ static and shared library compilation and local installation
 * Python and R packages local installation through CMake and SWIG
 * Non regression tests in C++, Python and R (using CTest and automatic github actions)
