@@ -22,5 +22,5 @@
     }
   ],
   "language": "eng",
-  "keywords": ["C++ Library", "Python Package", "R Package", "Geostatistics", "Machine Learning"]
+  "keywords": ["C++ Library", "Python Package", "R Package", "CMake", "SWIG"]
 }
