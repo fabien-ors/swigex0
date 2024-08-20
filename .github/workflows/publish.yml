@@ -45,14 +45,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: fabien-ors/pypi-publish-action@v1
+      - uses: fabien-ors/pypi-publish-action@v2
         with:
           repo: pypi
           username: __token__
           password: ${{secrets.TWINE_PYPI_PWD}}
           pattern: "*python-package-*"
   
-      # Delete the artifacts (for freeing storage space under github)
+      # Delete the artifacts (for freeing storage space under github)
       - uses: geekyeggo/delete-artifact@v5
         with:
           name: "*python-package*"
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: fabien-ors/cran-publish-action@v3
+      - uses: fabien-ors/cran-publish-action@v4
         with:
           host: ${{secrets.CG_HOST}}
           username: ${{secrets.CG_USR}}
@@ -73,7 +73,7 @@ jobs:
           repo-path: "/var/www/html/cran"
           pattern: "*r-package*"
   
-      # Delete the artifacts (for freeing storage space under github)
+      # Delete the artifacts (for freeing storage space under github)
       - uses: geekyeggo/delete-artifact@v5
         with:
           name: "*r-package*"
