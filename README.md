@@ -1,9 +1,6 @@
-# swigex0 C++ Library and Wrappers
+# swigex0: C++ Library and Wrappers
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13343739.svg)](https://doi.org/10.5281/zenodo.13343739)
-
-* Author: Fabien Ors (MINES Paris - PSL University) 
-* Date: August 2024
 
 *swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
 * Simple C++ class export (Fibonacci list - see Fibo class)
@@ -12,11 +9,15 @@
 * Non regression tests in C++, Python and R (using CTest and automatic github actions)
 * Python and R packages deployment on PyPi and CRAN-like (using manual github actions)
 
-The aim of this project is to provide a template to be adapted to your needs. When using **swigex0**, please, cite the github URL: https://github.com/fabien-ors/swigex0.
+The aim of this project is to provide a template to be adapted to your needs.
 
 A lot of CMake, SWIG and github actions instructions in this project have been used to solve issues I encountered. There certainly exists smarter and simpler ways to accomplish all the stuff. Feel free to suggest any simplifications or bug fixed in order to make *swigex0* as simple and robust as possible!
 
 Look for 'TODO' keyword for remaining issues.
+
+## How to cite
+
+When using **swigex0**, please, cite us by using our [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13343739.svg)](https://doi.org/10.5281/zenodo.13343739)
 
 ## Install
 
@@ -140,10 +141,11 @@ The objective of this package is to provide an example of wrapping a C++ library
 4. In the root CMakeLists.txt file:
    - Adapt the header comment to your needs
    - Adapt the project name, the VERSION, DESCRIPTION and HOMEPAGE_URL (line 42)
-5. In version.h.in file: Replace swigex0 by the name of your project 
-6. Replace the content of 'include' directory with your C++ header files
-7. Replace the content of 'src' directory with your C++ body files
-8. In cmake/cpp.cmake file:
+5. In version.h.in file: Replace swigex0 by the name of your project
+6. In .zenodo.json file: Adapt the details (or remove the file if you don't want to publish using zenodo)
+7. Replace the content of 'include' directory with your C++ header files
+8. Replace the content of 'src' directory with your C++ body files
+9. In cmake/cpp.cmake file:
    - Adapt C++ body files list (line 27)
    - If needed, adapt include directories (line 24)
 
