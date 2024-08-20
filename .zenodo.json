@@ -7,7 +7,14 @@
       "orcid": "0000-0002-1616-8743"
     }
   ],
+  "license": "MIT",
   "contributors": [
+    {
+      "name": "Ors, Fabien",
+      "type": "Editor",
+      "affiliation": "MINES Paris - PSL University",
+      "orcid": "0000-0002-1616-8743"
+    },
     {
       "name": "Guillou, Pierre",
       "type": "Editor",
