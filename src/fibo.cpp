@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <cmath> // std::isnan
 
 #define DEFAULT_TITLE "Fibonacci List"
 #define LONG_SIZE     10000
@@ -106,8 +105,8 @@ std::vector<int> fib(int n)
  * @param title Title to be printed (optional)
  */
 Fibo::Fibo(int n, const std::string& title)
-  : _n(n)
-  , _title(title)
+: _n(n)
+, _title(title)
 {
   if (_n <= 0)
   {
@@ -117,17 +116,11 @@ Fibo::Fibo(int n, const std::string& title)
     _n = 50;
   }
 
-  // Test static_assert compilation
-  static_assert(true, "Class cannot be cloned as it is abstract");
-  // Test isnan
-  double a = 5.5;
-  if (std::isnan(a)) std::cout << "a is nan" << std::endl;
-
   if (_title.empty())
   {
     std::stringstream sstr;
-    sstr << DEFAULT_TITLE << " (" << SWIGEX0_RELEASE << " - " << SWIGEX0_DATE
-         << ")";
+    sstr << DEFAULT_TITLE << " (" << SWIGEX0_RELEASE
+         << " - " << SWIGEX0_DATE << ")";
     _title = sstr.str();
   }
 }
@@ -135,7 +128,9 @@ Fibo::Fibo(int n, const std::string& title)
 /**
  * Destructor
  */
-Fibo::~Fibo() {}
+Fibo::~Fibo()
+{
+}
 
 /**
  * Reset the Fibonacci list from another one
@@ -168,9 +163,11 @@ void Fibo::resetFromFiboRef(const Fibo& fibo)
  */
 void Fibo::display(bool showTitle) const
 {
-  if (showTitle) std::cout << _title << ": ";
+  if (showTitle)
+    std::cout << _title << ": ";
   std::vector<int> res = getVector();
-  for (const auto& i: res) std::cout << i << ' ';
+  for (const auto& i: res)
+    std::cout << i << ' ';
   std::cout << std::endl;
   // std::cout << "Executable path: " << getExecPath() << std::endl;
 }
@@ -182,6 +179,7 @@ void Fibo::display(bool showTitle) const
  */
 std::vector<int> Fibo::getVector() const
 {
+  // Make a copy of the vector
   return fib(_n);
 }
 
