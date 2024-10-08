@@ -17,6 +17,8 @@ class SWIGEX0_EXPORT Fibo
     Fibo(int n, const std::string& title = "");
     virtual ~Fibo();
 
+    static Fibo* create(int n);
+
     void resetFromFiboVal(Fibo fib);
     void resetFromFiboRef(const Fibo& fib);
 
@@ -29,6 +31,7 @@ class SWIGEX0_EXPORT Fibo
     int         _n;     ///< Maximum integer of the list
     std::string _title; ///< Title to be shown when displaying the list
 };
+
 
 /**
  * Standard output stream redirection

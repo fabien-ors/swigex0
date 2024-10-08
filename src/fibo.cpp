@@ -105,8 +105,8 @@ std::vector<int> fib(int n)
  * @param title Title to be printed (optional)
  */
 Fibo::Fibo(int n, const std::string& title)
-: _n(n)
-, _title(title)
+  : _n(n)
+  , _title(title)
 {
   if (_n <= 0)
   {
@@ -119,8 +119,8 @@ Fibo::Fibo(int n, const std::string& title)
   if (_title.empty())
   {
     std::stringstream sstr;
-    sstr << DEFAULT_TITLE << " (" << SWIGEX0_RELEASE
-         << " - " << SWIGEX0_DATE << ")";
+    sstr << DEFAULT_TITLE << " ("
+         << SWIGEX0_RELEASE << " - " << SWIGEX0_DATE << ")";
     _title = sstr.str();
   }
 }
@@ -130,6 +130,11 @@ Fibo::Fibo(int n, const std::string& title)
  */
 Fibo::~Fibo()
 {
+}
+
+Fibo* Fibo::create(int n)
+{
+  return new Fibo(n);
 }
 
 /**
@@ -192,6 +197,7 @@ std::string Fibo::getTitle() const
 {
   return _title;
 }
+
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <windows.h>
