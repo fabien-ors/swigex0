@@ -2,6 +2,7 @@
   #include <iostream>
   #include "swigex0_export.hpp"
   #include "fibo.hpp"
+  #include "myfibo.hpp"
 %}
 
 ////////////////////////////
@@ -17,10 +18,10 @@
 
 // Note : Before including this file :
 //        - fiboFromCpp functions must be defined in FromCpp fragment
+//        - fiboFromCppCreate function for Specific methods
 
 %typemap(out, fragment="FromCpp") Fibo
 {
-  std::cout << "%typemap(out) Fibo" << std::endl;
   int errcode = fiboFromCpp(&($result), $1);
   if (!SWIG_IsOK(errcode))
     SWIG_exception_fail(SWIG_ArgError(errcode), "in method $symname, wrong return value: $type");
@@ -28,8 +29,15 @@
 
 %typemap(out, fragment="FromCpp") Fibo*, Fibo&
 {
-  std::cout << "%typemap(out) Fibo*, Fibo&" << std::endl;
   int errcode = fiboFromCpp(&($result), *$1);
   if (!SWIG_IsOK(errcode))
     SWIG_exception_fail(SWIG_ArgError(errcode), "in method $symname, wrong return value: $type");
 }
+
+%typemap(out, fragment="FromCpp") Fibo* Fibo::create 
+{
+  int errcode = fiboFromCppCreate(&($result), *$1);
+  if (!SWIG_IsOK(errcode))
+    SWIG_exception_fail(SWIG_ArgError(errcode), "in method $symname, wrong return value: $type");
+}
+

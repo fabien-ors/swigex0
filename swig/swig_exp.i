@@ -8,6 +8,7 @@
 %include swigex0_export.hpp // Do not forget this file in priority (for SWIG preprocessor)
 
 %include fibo.hpp
+%include myfibo.hpp
 
 // For suppressing SWIG warning due to -keyword option (if used)
 #pragma SWIG nowarn=511

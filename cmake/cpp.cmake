@@ -32,7 +32,7 @@ set(INCLUDES
     ${PROJECT_SOURCE_DIR}/include/)
 # C++ source path (prevent using GLOB)
 set(SOURCES
-    ${PROJECT_SOURCE_DIR}/src/fibo.cpp)
+    ${PROJECT_SOURCE_DIR}/src/fibo.cpp ${PROJECT_SOURCE_DIR}/src/myfibo.cpp)
 
 # Generation folder (into Release or Debug)
 if (NOT IS_MULTI_CONFIG)

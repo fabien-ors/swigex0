@@ -1,9 +1,9 @@
-import swigex0
+import swigex0 as sw
 
-f1 = swigex0.Fibo(50)
+f1 = sw.Fibo.create(50)
 f1.display(False)
-f2 = swigex0.Fibo(100, "Test 100")
+f2 = sw.Fibo.create(100, "Test 100")
 f2.display()
 
-vec = swigex0.fib(40)
+vec = sw.fib(40)
 print(vec)

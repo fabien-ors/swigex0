@@ -1,0 +1,169 @@
+Ce document résume les différentes actions à accomplir pour mettre en place des typemaps.
+
+On illustre le propos en considérant la classe Fibo pour laquelle on souhaite installer
+une conversion systématique de la classe en sortie.
+
+On doit pour cela:
+1) Déclarer ce typemap qui ne concerne que le "fragment" OUT
+2) Eviter de pratiquer cette conversion pour une méthode en particulier
+3) Déclarer, dans un fichier .i relatif au langage cible, la bout de code en C spécifique
+4) Dans le cas du langage cible R, ajouter un bout de code en R particulier
+Ces étapes sont explicitéées dans le reste de cette note.
+
+1) Déclarer un type map pour le fragment "out"
+
+Cette action est réalisée en plaçcant du code dans le fichier /swig/swig_inc.i
+
+Exemple:
+Les deux paragraphes suivants permettent de "convertir" des objets de la classe "Fibo" en sortie
+(d'où le nom du fragment "FromCpp") dans un format spécifique. 
+A noter qu'on a généralement besoin de définir cette conversion suivant que l'objet est
+défini comme tel, ou par référence ou par pointeur. 
+
+%typemap(out, fragment="FromCpp") Fibo
+{
+  std::cout << "%typemap(out) Fibo (standard)" << std::endl;
+  int errcode = fiboFromCpp(&($result), $1);
+  if (!SWIG_IsOK(errcode))
+    SWIG_exception_fail(SWIG_ArgError(errcode), "in method $symname, wrong return value: $type");
+}
+
+%typemap(out, fragment="FromCpp") Fibo*, Fibo&
+{
+  std::cout << "%typemap(out) Fibo*, Fibo& (standard)" << std::endl;
+  int errcode = fiboFromCpp(&($result), *$1);
+  if (!SWIG_IsOK(errcode))
+    SWIG_exception_fail(SWIG_ArgError(errcode), "in method $symname, wrong return value: $type");
+}
+
+Dans tous les cas, on utilisera une fonction nommée "fiboFromCpp" qui sera rédigee
+dans le langage cible (voir paragraphe suivant)
+
+2) Eviter la conversion du typemap pour une méthode en particulier
+
+Si on veut déroger à la règle de conversion automatique pour la méthode "create" 
+d'un objet de la classe "Fibo", il faut ajouter un paragraphe complémentaire comme suit:
+
+%typemap(out, fragment="FromCpp") Fibo* Fibo::create 
+{
+  std::cout << "%typemap(out) Fibo* (specifique)" << std::endl;
+  int errcode = fiboFromCppCreate(&($result), *$1);
+  if (!SWIG_IsOK(errcode))
+    SWIG_exception_fail(SWIG_ArgError(errcode), "in method $symname, wrong return value: $type");
+}
+
+On y trouve que, pour la méthode particulière incriminée, on utilisera plutôt le fonction
+nommée "fiboFromCppCreate" (rédigée dans le langage cible).
+
+3) Dans le fichier .i du langage cible, implémenter les fonctions de conversion
+
+Les codes qui seront décrits ci-après se trouvent dans les fichiers:
+- /python/pyswigex0.i pour ce qui concerne le langage python
+- /r/rswigexo0.i pour ce qui concerne le langage R
+
+Nous donnerons ici l'exemple en Python.
+
+Il faut faire inclure un paragraphe concernant les fragments de type "FromCpp" comme suit:
+
+%fragment("FromCpp", "header")
+{
+...
+}
+qui pourra contenir plusieurs fonctions de conversion.
+
+Dans notre exemple, on retrouve "fiboFromCpp" et "fiboFromCppCreate". 
+Nous ne décrirons pas plus avant la syntaxe de cette conversion ... qui dépend intimement 
+du langage cible.
+
+%fragment("FromCpp", "header") 
+{
+  int fiboFromCpp(PyObject** obj, const Fibo& fib)
+  {
+    // Type definitions
+    int myres = SWIG_TypeError;
+    
+    // Conversion to 1D NumPy array of integers
+
+    std::vector<int> vec = fib.getVector(); // Copy
+    npy_intp dims[1] = { (npy_intp)vec.size() };
+    PyArray_Descr* descr = PyArray_DescrFromType(NPY_INT_TYPE);
+    *obj = PyArray_NewFromDescr(&PyArray_Type, descr, 1, dims, NULL, NULL, 0, NULL);
+    if (*obj != NULL)
+    {
+      NPY_INT_OUT_TYPE* array_ptr = (NPY_INT_OUT_TYPE*) PyArray_DATA((PyArrayObject*)(*obj));
+      std::copy(vec.cbegin(), vec.cend(), array_ptr);
+      myres = SWIG_OK;
+    }
+    return myres;
+  }
+
+  int fiboFromCppCreate(PyObject** obj, const Fibo& fib)
+  {
+    *obj = SWIG_NewPointerObj((void*) new Fibo(fib), SWIGTYPE_p_Fibo, 0);
+    int myres = (*obj) == NULL ? SWIG_TypeError : SWIG_OK;
+    return myres;
+  }
+}
+
+Retenons simplement que le second filtre "fiboFromCppCreate" consiste simplement à transférer
+le pointeur su l'objet "fib" (passé par référence en argument) dans le premier argument
+de type "PyObject". Il acquiert ainsi un statut neutre de "pointeur externe".
+
+
+4) Particularité de l'interface en R
+
+Dans le cas d'une méthode equi évite d'utiliser le typemap systématiquement appliqué
+à un objet de la classe "Fibo" (la méthode "create" dans notre cas), il est nécessaire
+de rajouter une petite correction complémentaire.
+Cette correction doit être incluse à la fin du fichier "/r/rswigexo0.i" dans une section
+spéciale comprise entre les balises
+
+%insert(s) %{
+...
+}
+
+Ce code permet de modifier le comportement du logiciel en présence du pointeur externe.
+Notre code viendra se substituer au code généré automatiquement par SWIG.
+
+Dans notre cas, la méthode "create" a été imaginée avec deux arguments "n" et "title"
+munis de valeurs par défaut. Il est connu que SWIG génère autant d'entrées qu'il y a de 
+possibilités de présence (ou pas) d'arguments.
+Il suffit de ré-écrire le code correspondant à la présence de tous les arguments, généralement
+attaché au suffixe SWIG_0.
+
+%insert(s) %{
+
+`Fibo_create__SWIG_0` = function(n, title)
+{
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  title = as(title, "character"); 
+  ;ans = .Call('R_swig_Fibo_create__SWIG_0', n, title, PACKAGE='swigex0');
+  ans <- if (is.null(ans)) ans
+  else new("_p_Fibo", ref=ans);
+  
+  ans
+  
+}
+
+attr(`Fibo_create__SWIG_0`, 'returnType') = '_p_Fibo'
+attr(`Fibo_create__SWIG_0`, "inputTypes") = c('integer', 'character')
+class(`Fibo_create__SWIG_0`) = c("SWIGFunction", class('Fibo_create__SWIG_0'))
+
+%}
+
+Le code présenté ci-dessus permet, pour le cas particulier de la méthode "create", 
+d'éviter la conversion automatique par le typemap.
+
+NOTE IMPORTANTE: ce code de substitution doit remplacer EXACTEMENT le code
+que générerait SWIG par défaut, en ce qui concerne la liste exhaustive des arguments.
+En conséquence, si on fait évoluer le prototype de la fonction "create" (en C++),
+il ne faut pas oublier de faire suivre cette modification dans cette portion de code.
+PS: il semblerait que ce paragraphe puisse être remplacé par une option placée
+dans le fichier spécifique de SWIG utilisé pour réaliser les conversions de C++ en R:
+cette option n'a pas encore été élucidée pour le moment.
+

@@ -53,6 +53,13 @@
     }
     return myres;
   }
+
+  int fiboFromCppCreate(PyObject** obj, const Fibo& fib)
+  {
+    *obj = SWIG_NewPointerObj((void*) new Fibo(fib), SWIGTYPE_p_Fibo, 0);
+    int myres = (*obj) == NULL ? SWIG_TypeError : SWIG_OK;
+    return myres;
+  }
 }
 
 //////////////////////////////////////////////////////////////

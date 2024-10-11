@@ -102,7 +102,6 @@ std::vector<int> fib(int n)
  * Default constructor of a class which handle Fibonacci integers list up to n
  *
  * @param n     Strict positive Integer
- * @param title Title to be printed (optional)
  */
 Fibo::Fibo(int n, const std::string& title)
   : _n(n)
@@ -132,18 +131,14 @@ Fibo::~Fibo()
 {
 }
 
-Fibo* Fibo::create(int n)
-{
-  return new Fibo(n);
-}
-
 /**
  * Reset the Fibonacci list from another one
  * (In order to test class argument as value)
  *
+
  * @param fibo Source Fibonacci list
  */
-void Fibo::resetFromFiboVal(Fibo fibo)
+void Fibo::resetFromFiboVal(Fibo& fibo)
 {
   _title = fibo._title;
   _n     = fibo._n;
