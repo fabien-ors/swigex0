@@ -1,0 +1,21 @@
+[1] "######################################"
+[1] "        R Version                     "
+[1] "######################################"
+[1] "=========== Essai sur la classe MyFibo"
+[1] "--- Constructeur: n'a pas de conversion par typemap"
+MyFibo : Valeur de n = 3
+MyFibo : Valeur de n = 12
+[1] "--- Methode create: pointeur preserve"
+MyFibo : Valeur de n = 5
+MyFibo : Valeur de n = 12
+[1] "--- Work in place: necessite le pointeur preserve"
+MyFibo : Valeur de n = 5
+MyFibo : Valeur de n = 27
+MyFibo : Valeur de n = 38
+[1] "=========== Essai sur la class Fibo"
+[1] "--- Constructeur: implique la conversion par typemap"
+[1] "integer"
+[1] 0 1 1 2
+[1] "--- Methode create: pointeur preserve"
+Fibonacci List (0.3.3 - 2024-10-11 14:24:18 +0200): 0 1 1 2 3 
+Fibonacci List (0.3.3 - 2024-10-11 14:24:18 +0200): 0 1 1 2 3 5 8 13 

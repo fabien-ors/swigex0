@@ -1,0 +1,38 @@
+print("######################################")
+print("        R Version                     ")
+print("######################################")
+
+library(swigex0)
+
+print("=========== Essai sur la classe MyFibo")
+print("--- Constructeur: n'a pas de conversion par typemap")
+ff = MyFibo()
+err = ff$display()
+err = ff$setValue(12)
+err = ff$display()
+
+print("--- Methode create: pointeur preserve")
+ff = MyFibo_create()
+err = ff$display()
+err = ff$setValue(12)
+err = ff$display()
+
+print("--- Work in place: necessite le pointeur preserve")
+ff = MyFibo_create()
+err = ff$display()
+err = MyFibo_workInPlacePtr(22, ff)
+err = ff$display()
+err = MyFibo_workInPlaceRef(11, ff)
+err = ff$display()
+
+print("=========== Essai sur la class Fibo")
+print("--- Constructeur: implique la conversion par typemap")
+fp = Fibo()
+print(class(fp))
+print(fp)
+
+print("--- Methode create: pointeur preserve")
+fp = Fibo_create()
+err = fp$display()
+err = fp$setValue(14)
+err = fp$display()

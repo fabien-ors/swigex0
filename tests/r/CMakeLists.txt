@@ -3,7 +3,9 @@ if(NOT BUILD_R)
 endif()
 
 # Test sources
-set(TEST_SOURCES testFibo.r)
+set(TEST_SOURCES 
+  testFibo.r
+  test2.r)
 
 # Generation folder
 if (IS_MULTI_CONFIG)

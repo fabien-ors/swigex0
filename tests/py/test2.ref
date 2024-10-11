@@ -1,0 +1,21 @@
+######################################
+        Python Version                
+######################################
+=========== Essai sur la classe MyFibo
+--- Constructeur: n'a pas de conversion par typemap
+MyFibo : Valeur de n = 3
+MyFibo : Valeur de n = 12
+--- Methode create: pointeur preserve
+MyFibo : Valeur de n = 5
+MyFibo : Valeur de n = 12
+--- Work in place: necessite le pointeur preserve
+MyFibo : Valeur de n = 5
+MyFibo : Valeur de n = 16
+MyFibo : Valeur de n = 38
+=========== Essai sur la class Fibo
+--- Constructeur: implique la conversion par typemap
+<class 'swigex0.Fibo'>
+<swigex0.Fibo; proxy of array([0, 1, 1, 2]) >
+--- Methode create: pointeur preserve
+Fibonacci List (0.3.3 - 2024-10-11 14:24:18 +0200): 0 1 1 2 3 
+Fibonacci List (0.3.3 - 2024-10-11 14:24:18 +0200): 0 1 1 2 3 5 8 13 
