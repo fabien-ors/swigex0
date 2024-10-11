@@ -2,7 +2,6 @@
 
 #include "swigex0_export.hpp"
 #include <string>
-#include <vector>
 
 class SWIGEX0_EXPORT MyFibo
 {
