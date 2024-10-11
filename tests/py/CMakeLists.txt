@@ -3,7 +3,9 @@ if(NOT BUILD_PYTHON)
 endif()
 
 # Test sources
-set(TEST_SOURCES testFibo.py)
+set(TEST_SOURCES 
+  testFibo.py
+  test2.py)
 
 # Look for Python3 (needed here because Python3_EXECUTABLE not populated everywhere)
 find_package(Python3 REQUIRED)
