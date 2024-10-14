@@ -17,5 +17,5 @@ MyFibo : Valeur de n = 38
 [1] "integer"
 [1] 0 1 1 2
 [1] "--- Methode create: pointeur preserve"
-Fibonacci List (0.3.3 - 2024-10-11 14:24:18 +0200): 0 1 1 2 3 
-Fibonacci List (0.3.3 - 2024-10-11 14:24:18 +0200): 0 1 1 2 3 5 8 13 
+Fibonacci List (0.3.3 - 2024-10-11 17:20:54 +0200): 0 1 1 2 3 
+Fibonacci List (0.3.3 - 2024-10-11 17:20:54 +0200): 0 1 1 2 3 5 8 13 
