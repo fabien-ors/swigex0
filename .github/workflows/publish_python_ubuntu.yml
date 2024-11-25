@@ -32,16 +32,16 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        # Python version + Numpy version
+        # Python version
         python: [
           # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "3.8",  nu: 1.20.3},
-            {py: "3.9",  nu: 1.20.3},
-            {py: "3.10", nu: 1.22.4},
-            {py: "3.11", nu: 1.23.5},
-            {py: "3.12", nu: 1.26.3}
+            {py: "3.9"},
+            {py: "3.10"},
+            {py: "3.11"},
+            {py: "3.12"},
+            {py: "3.13"}
           ]
-        # Only one old Linux and a generic platform name BUILD_PLAT
+        # Only one "old" Linux and a generic platform name BUILD_PLAT
         os: [ubuntu-20.04]
 
     steps:
@@ -61,7 +61,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install numpy==${{matrix.python.nu}}
+        python -m pip install numpy
         python -m pip install build
 
     - name : Configure build directory
@@ -104,7 +104,7 @@ jobs:
         password: ${{secrets.TWINE_PYPI_PWD}}
         pattern: ubuntu-python-package-*
 
-    # Delete the artifacts (for freeing storage space under github)
+    # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v5
       with:
         name: ubuntu-python-package-*

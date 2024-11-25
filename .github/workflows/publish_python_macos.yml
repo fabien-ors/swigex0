@@ -66,7 +66,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install numpy==${{matrix.python.nu}} twine build
+        python -m pip install numpy twine build
 
     - name : Configure build directory
       run : |
@@ -109,7 +109,7 @@ jobs:
         password: ${{secrets.TWINE_PYPI_PWD}}
         pattern: macos-python-package-*
 
-    # Delete the artifacts (for freeing storage space under github)
+    # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v5
       with:
         name: macos-python-package-*
