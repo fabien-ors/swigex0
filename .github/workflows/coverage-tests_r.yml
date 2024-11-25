@@ -43,7 +43,7 @@ jobs:
 
     # https://github.com/r-lib/actions/issues/948
     - name: Uninstall pkgconfig due to setup-R error
-      if: ${{ vars.RUNNER == "macos-14" }}
+      if: ${{ vars.RUNNER == 'macos-14' }}
       run: |
         brew uninstall pkg-config@0.29.2
 
