@@ -79,7 +79,7 @@ jobs:
       run : |
         cd ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
-        python -m build --wheel -C="--build-option=--plat-name=${{env.BUILD_PLAT}}"
+        python3 -m build --wheel -C="--build-option=--plat-name=${{env.BUILD_PLAT}}"
         cd ../../..
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}/dist/*)" >> "$GITHUB_ENV"
 
@@ -89,14 +89,50 @@ jobs:
         name: ubuntu-python-package-${{matrix.os}}-${{matrix.python.py}}
         path: ${{env.MY_PKG}}
 
-  publish:
+  test:
     needs: build
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        python: [
+        # Double quote for version is needed otherwise 3.10 => 3.1
+            {py: "3.9"},
+            {py: "3.10"},
+            {py: "3.11"},
+            {py: "3.12"},
+            {py: "3.13"}
+          ]
+        os: [ubuntu-20.04]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: ubuntu-python-package-${{matrix.os}}-${{matrix.python.py}}
+
+    - name: Setup Python Version
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{matrix.python.py}}
+
+    - name: Install Python package
+      run: pip install ./$(ls *.whl)
+
+    - name: Test installed Python package
+      run: |
+        python -c "import swigex0 as sw"
+        python tests/py/test_Fibo.py
+
+  publish:
+    needs: test
     if: ${{inputs.dry_publish == false}}
 
     # Only ubuntu can upload via ssh
     runs-on: ubuntu-latest
 
     steps:
+    # Upload packages to pypi
     - uses: fabien-ors/pypi-publish-action@v2
       with:
         repo: pypi
