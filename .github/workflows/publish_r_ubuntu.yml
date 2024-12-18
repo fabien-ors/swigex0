@@ -98,7 +98,7 @@ jobs:
     - name: Test installed R package
       run: |
         Rscript -e "library('swigex0')"
-        Rscript tests/r/test_Fibo.r
+        Rscript tests/r/testFibo.r
 
   publish:
     needs: test

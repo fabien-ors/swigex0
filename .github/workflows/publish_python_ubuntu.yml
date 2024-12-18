@@ -122,7 +122,7 @@ jobs:
     - name: Test installed Python package
       run: |
         python -c "import swigex0 as sw"
-        python tests/py/test_Fibo.py
+        python tests/py/testFibo.py
 
   publish:
     needs: test
