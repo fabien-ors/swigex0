@@ -27,7 +27,7 @@ env:
   CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
   CMAKE_GENERATOR : "MSYS Makefiles"
-  SWIG_ROOT : ${{github.workspace}}\swig_420b
+  SWIG_ROOT : ${{github.workspace}}\swig
 
 jobs:
 
