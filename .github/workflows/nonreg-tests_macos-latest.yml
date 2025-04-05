@@ -23,7 +23,6 @@ env:
   PYTHON_VERSION : "3.11"
   R_VERSION : "4.3.2"
   SWIG_ROOT : ${{github.workspace}}/swig
-  LLVM_ROOT : /opt/homebrew
 
 jobs:
   build:
