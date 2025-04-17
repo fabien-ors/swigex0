@@ -25,38 +25,35 @@ on:
 env:
   CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
-  BUILD_PLAT : manylinux1_x86_64
+  BUILD_PLAT : manylinux_2_28_x86_64
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/pypa/manylinux_2_28_x86_64
+      image: quay.io/pypa/${{env.BUILD_PLAT}}
     strategy:
       matrix:
         # Python version
         python: [
           # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "3.9"},
-            {py: "3.10"},
-            {py: "3.11"},
-            {py: "3.12"}
-            # {py: "3.13"} # Not compatible with GLIBC 2.28
+            {py: "cp39-cp39"},
+            {py: "cp310-cp310"},
+            {py: "cp311-cp311"},
+            {py: "cp312-cp312"},
+            {py: "cp313-cp313"}
           ]
 
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install Python dependencies
     - run: |
-        curl -sSf https://sshx.io/get | sh -s run
+        echo "/opt/python/${{matrix.python.py}}/bin" >> $GITHUB_PATH
+        python -m pip install numpy
 
     - name : Configure build directory
       run : |
-        PYBIN0=$(file /opt/python/${{matrix.python.py}}.*/bin)
-        echo "PYBIN0=$PYBIN0"
-        PYBIN=$(cat $PYBIN0 | tr ":" "\n" | head -1)
-        echo "PYBIN=$PYBIN"
-        export PATH=$PYBIN:$PATH
         cmake \
           -B${{ env.BUILD_DIR }} \
           -DBUILD_PYTHON=ON \
@@ -64,9 +61,6 @@ jobs:
 
     - name : Build the package
       run : |
-        PYBIN=$(file /opt/python/${{matrix.python.py}}.*/bin | tr ":" "\n" | head -1)
-        echo "PYBIN=$PYBIN"
-        export PATH=$PYBIN:$PATH
         cmake --build ${{ env.BUILD_DIR }} --parallel 3 --target python_build
 
     - name : Create Wheel
