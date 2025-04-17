@@ -41,6 +41,7 @@ jobs:
             {py: "3.10"},
             {py: "3.11"},
             {py: "3.12"}
+            # {py: "3.13"} # Not compatible with GLIBC 2.28
           ]
 
     steps:
@@ -51,20 +52,11 @@ jobs:
         dnf --assumeyes update
         dnf --assumeyes install swig
 
-    - name: Setup Python Version
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{matrix.python.py}}
-
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install numpy
-        python -m pip install build
-
     - name : Configure build directory
       run : |
-        export PATH=/opt/python/${{matrix.python}}/bin:$PATH
+        PYBIN=$(file /opt/python/${{matrix.python.py}}.*/bin | tr ":" "\n" | head -1)
+        echo "PYBIN=$PYBIN"
+        export PATH=$PYBIN:$PATH
         cmake \
           -B${{ env.BUILD_DIR }} \
           -DBUILD_PYTHON=ON \
@@ -72,15 +64,18 @@ jobs:
 
     - name : Build the package
       run : |
-        cmake --build ${{env.BUILD_DIR}} --parallel 3 --target python_build
+        PYBIN=$(file /opt/python/${{matrix.python.py}}.*/bin | tr ":" "\n" | head -1)
+        echo "PYBIN=$PYBIN"
+        export PATH=$PYBIN:$PATH
+        cmake --build ${{ env.BUILD_DIR }} --parallel 3 --target python_build
 
     - name : Create Wheel
       run : |
-        cd ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}
+        cd ${{ env.BUILD_DIR }}/python/${{env.CMAKE_BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
-        python3 -m build --wheel -C="--build-option=--plat-name=${{env.BUILD_PLAT}}"
+        python3 -m build --wheel -C="--build-option=--plat-name=${{ env.BUILD_PLAT }}"
         cd ../../..
-        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}/dist/*)" >> "$GITHUB_ENV"
+        echo "MY_PKG=$(ls ${{ env.BUILD_DIR }}/python/${{ env.CMAKE_BUILD_TYPE }}/dist/*)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v4
       # Use specific artifact identifier for publishing all versions
@@ -98,8 +93,8 @@ jobs:
             {py: "3.9"},
             {py: "3.10"},
             {py: "3.11"},
-            {py: "3.12"},
-            {py: "3.13"}
+            {py: "3.12"}
+            #{py: "3.13"}
           ]
 
     steps:
