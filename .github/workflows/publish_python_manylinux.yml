@@ -36,11 +36,11 @@ jobs:
         # Python version
         python: [
           # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "cp39-cp39"},
-            {py: "cp310-cp310"},
-            {py: "cp311-cp311"},
-            {py: "cp312-cp312"},
-            {py: "cp313-cp313"}
+            "cp39-cp39",
+            "cp310-cp310",
+            "cp311-cp311",
+            "cp312-cp312",
+            "cp313-cp313"
           ]
         image: [
            manylinux_2_28_x86_64
@@ -51,8 +51,8 @@ jobs:
 
     - name: Register the python version
       run: |
-        echo "/opt/python/${{matrix.python.py}}/bin" >> $GITHUB_PATH
-        
+        echo "/opt/python/${{ matrix.python }}/bin" >> $GITHUB_PATH
+
     - name: Install Python dependencies
       run: |
         python -m pip install numpy
@@ -70,7 +70,7 @@ jobs:
 
     - name : Create Wheel
       run : |
-        cd ${{ env.BUILD_DIR }}/python/${{env.CMAKE_BUILD_TYPE}}
+        cd ${{ env.BUILD_DIR }}/python/${{ env.CMAKE_BUILD_TYPE }}
         # Note: wheel must be declared not pure (see setup.py)
         python3 -m build --wheel -C="--build-option=--plat-name=${{ matrix.image }}"
         cd ../../..
@@ -79,37 +79,42 @@ jobs:
     - uses: actions/upload-artifact@v4
       # Use specific artifact identifier for publishing all versions
       with:
-        name: ubuntu-python-package-${{ matrix.image }}-${{matrix.python.py}}
+        name: ubuntu-python-package-${{ matrix.image }}-${{ matrix.python }}
         path: ${{env.MY_PKG}}
 
   test:
     needs: build
     runs-on: ubuntu-latest
+    container:
+      image: quay.io/pypa/${{ matrix.image }}
     strategy:
       matrix:
+        # Python version
         python: [
-        # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "3.9"},
-            {py: "3.10"},
-            {py: "3.11"},
-            {py: "3.12"}
-            #{py: "3.13"}
+          # Double quote for version is needed otherwise 3.10 => 3.1
+            "cp39-cp39",
+            "cp310-cp310",
+            "cp311-cp311",
+            "cp312-cp312",
+            "cp313-cp313"
           ]
+        image: [
+           manylinux_2_28_x86_64
+        ]
 
     steps:
     - uses: actions/checkout@v4
 
     - uses: actions/download-artifact@v4
       with:
-        name: ubuntu-python-package-${{ matrix.image }}-${{matrix.python.py}}
+        name: ubuntu-python-package-${{ matrix.image }}-${{ matrix.python }}
 
-    - name: Setup Python Version
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{matrix.python.py}}
+    - name: Register the python version
+      run: |
+        echo "/opt/python/${{ matrix.python }}/bin" >> $GITHUB_PATH
 
     - name: Install Python package
-      run: pip install ./$(ls *.whl)
+      run: python -m pip install ./$(ls *.whl)
 
     - name: Test installed Python package
       run: |
@@ -129,7 +134,7 @@ jobs:
       with:
         repo: pypi
         username: __token__
-        password: ${{secrets.TWINE_PYPI_PWD}}
+        password: ${{ secrets.TWINE_PYPI_PWD }}
         pattern: ubuntu-python-package-*
 
     # Delete the artifacts (for freeing storage space under github)
