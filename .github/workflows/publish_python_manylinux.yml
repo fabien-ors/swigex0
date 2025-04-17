@@ -48,7 +48,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install Python dependencies
-    - run: |
+      run: |
         echo "/opt/python/${{matrix.python.py}}/bin" >> $GITHUB_PATH
         python -m pip install numpy
 
