@@ -49,8 +49,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        dnf update
-        dnf install -yq swig
+        dnf --assumeyes update
+        dnf --assumeyes install swig
 
     - name: Setup Python Version
       uses: actions/setup-python@v5
