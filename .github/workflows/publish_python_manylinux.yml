@@ -54,7 +54,9 @@ jobs:
 
     - name : Configure build directory
       run : |
-        PYBIN=$(file /opt/python/${{matrix.python.py}}.*/bin | tr ":" "\n" | head -1)
+        PYBIN0=$(file /opt/python/${{matrix.python.py}}.*/bin)
+        echo "PYBIN0=$PYBIN0"
+        PYBIN=$(cat $PYBIN0 | tr ":" "\n" | head -1)
         echo "PYBIN=$PYBIN"
         export PATH=$PYBIN:$PATH
         cmake \
