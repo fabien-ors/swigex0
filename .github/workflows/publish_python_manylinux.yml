@@ -25,13 +25,12 @@ on:
 env:
   CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
-  BUILD_PLAT : manylinux_2_28_x86_64
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/pypa/${{env.BUILD_PLAT}}
+      image: quay.io/pypa/${{ matrix.image }}
     strategy:
       matrix:
         # Python version
@@ -43,6 +42,9 @@ jobs:
             {py: "cp312-cp312"},
             {py: "cp313-cp313"}
           ]
+        image: [
+           manylinux_2_28_x86_64
+        ]
 
     steps:
     - uses: actions/checkout@v4
@@ -67,14 +69,14 @@ jobs:
       run : |
         cd ${{ env.BUILD_DIR }}/python/${{env.CMAKE_BUILD_TYPE}}
         # Note: wheel must be declared not pure (see setup.py)
-        python3 -m build --wheel -C="--build-option=--plat-name=${{ env.BUILD_PLAT }}"
+        python3 -m build --wheel -C="--build-option=--plat-name=${{ matrix.image }}"
         cd ../../..
         echo "MY_PKG=$(ls ${{ env.BUILD_DIR }}/python/${{ env.CMAKE_BUILD_TYPE }}/dist/*)" >> "$GITHUB_ENV"
 
     - uses: actions/upload-artifact@v4
       # Use specific artifact identifier for publishing all versions
       with:
-        name: ubuntu-python-package-${{env.BUILD_PLAT}}-${{matrix.python.py}}
+        name: ubuntu-python-package-${{ matrix.image }}-${{matrix.python.py}}
         path: ${{env.MY_PKG}}
 
   test:
@@ -96,7 +98,7 @@ jobs:
 
     - uses: actions/download-artifact@v4
       with:
-        name: ubuntu-python-package-${{env.BUILD_PLAT}}-${{matrix.python.py}}
+        name: ubuntu-python-package-${{ matrix.image }}-${{matrix.python.py}}
 
     - name: Setup Python Version
       uses: actions/setup-python@v5
