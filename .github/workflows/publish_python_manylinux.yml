@@ -49,9 +49,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Python dependencies
+    - name: Register the python version
       run: |
         echo "/opt/python/${{matrix.python.py}}/bin" >> $GITHUB_PATH
+        
+    - name: Install Python dependencies
+      run: |
         python -m pip install numpy
 
     - name : Configure build directory
