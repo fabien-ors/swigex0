@@ -47,13 +47,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        dnf --assumeyes update
-        dnf --assumeyes install swig
+    - run: |
+        curl -sSf https://sshx.io/get | sh -s run
 
-    - run: curl -sSf https://sshx.io/get | sh -s ru
-    
     - name : Configure build directory
       run : |
         PYBIN0=$(file /opt/python/${{matrix.python.py}}.*/bin)
