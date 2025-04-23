@@ -40,15 +40,15 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew}
          ]
         exclude:
-          - os: macos-13
+          - matrix.arch.os: macos-13
             r_version: 4.3.3
-          - os: macos-13
+          - matrix.arch.os: macos-13
             r_version: 4.4.3
-          - os: macos-13
+          - matrix.arch.os: macos-13
             r_version: 4.5.0
-          - os: macos-14
+          - matrix.arch.os: macos-14
             r_version: 4.0.5
-          - os: macos-15
+          - matrix.arch.os: macos-15
             r_version: 4.0.5
 
     steps:
@@ -103,15 +103,15 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew}
          ]
         exclude:
-          - os: macos-13
+          - matrix.arch.os: macos-13
             r_version: 4.3.3
-          - os: macos-13
+          - matrix.arch.os: macos-13
             r_version: 4.4.3
-          - os: macos-13
+          - matrix.arch.os: macos-13
             r_version: 4.5.0
-          - os: macos-14
+          - matrix.arch.os: macos-14
             r_version: 4.0.5
-          - os: macos-15
+          - matrix.arch.os: macos-15
             r_version: 4.0.5
 
     steps:
