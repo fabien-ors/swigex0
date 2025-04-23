@@ -2,7 +2,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13343739.svg)](https://doi.org/10.5281/zenodo.13343739)
 
-*swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
+* Author: Fabien Ors (MINES Paris - PSL University) 
+* Date: April 2025
+
+The *swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
 * Simple C++ class export (Fibonacci list - see Fibo class)
 * C++ static and shared library compilation and local installation
 * Python and R packages local installation through CMake and SWIG
@@ -25,7 +28,7 @@ When using **swigex0**, please, cite us by using our [![DOI](https://zenodo.org/
 From a shell command prompt:
 
     pip install swigex0
-    
+
 ### R Package
 From an R command prompt:
 
@@ -54,7 +57,7 @@ But the main goal of *swigex0* is to provide a **complete cross-platform CMake/S
 
 ### Prerequisites
 
-This library/packages has been successfully compiled with Ubuntu 18/20/22 LTS and Windows 10 (MacOS: not yet tested).
+This library has been successfully tested with Ubuntu 20/22/24 LTS, Windows 10 and MacOS.
 
 For compiling and installing *swigex0* C++ Library, the following tools must be available (See [required tools installation](#required-tools-installation) instructions below):
 
@@ -370,4 +373,4 @@ make install
 ## License
 MIT
 
-2024 Fabien Ors
+2025 Fabien Ors

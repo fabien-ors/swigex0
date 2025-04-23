@@ -1,3 +1,9 @@
+####################################################################
+#
+#               C++ Library and Packages Example
+#
+####################################################################
+#
 # This Makefile is just a shortcut to cmake commands
 # for make users (Linux-GCC, MacOS-clang or Windows-Rtools)
 #
@@ -46,23 +52,6 @@
 #  make check N_PROC=2
 #
 
-ifndef BUILD_PYTHON
-  BUILD_PYTHON = 0
-endif
-ifeq ($(BUILD_PYTHON), 1)
-  BUILD_PYTHON = ON
- else
-  BUILD_PYTHON = OFF 
-endif
-
-ifndef BUILD_R
-  BUILD_R = 0
-endif
-ifeq ($(BUILD_R), 1)
-  BUILD_R = ON
- else
-  BUILD_R = OFF 
-endif
 
 ifeq ($(OS),Windows_NT)
   # Assume MinGW (via RTools) => so MSYS Makefiles
@@ -75,7 +64,6 @@ else
     # Standard GNU UNIX Makefiles otherwise
     GENERATOR = -G "Ninja"
   endif
-  
   # Set OS also for Linux or Darwin
   OS := $(shell uname -s)
 endif
@@ -83,7 +71,7 @@ endif
 ifeq ($(DEBUG), 1)
   BUILD_TYPE = Debug
  else
-  BUILD_TYPE = Release 
+  BUILD_TYPE = Release
 endif
 
 ifndef BUILD_DIR
@@ -105,25 +93,26 @@ ifdef N_PROC
 else
   N_PROC_OPT = -j1 | tee /dev/null
 endif
-# Add  "| tee /dev/null" because Ninja prints output in a signe line :
+# Add  "| tee /dev/null" because Ninja prints output in a single line :
 # https://stackoverflow.com/questions/46970462/how-to-enable-multiline-logs-instead-of-single-line-progress-logs
 
+CMAKE_DEFINES := -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
 
 .PHONY: all cmake cmake-python cmake-r cmake-python-r print_version static shared build_tests install uninstall
 
 all: shared install
 
 cmake:
-	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=$(BUILD_R)
+	@cmake -B$(BUILD_DIR) -S. $(GENERATOR) $(CMAKE_DEFINES)
 
 cmake-python:
-	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=$(BUILD_R)
+	@cmake -B$(BUILD_DIR) -S. $(GENERATOR) $(CMAKE_DEFINES) -DBUILD_PYTHON=ON
 
 cmake-r:
-	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=$(BUILD_PYTHON) -DBUILD_R=ON
+	@cmake -B$(BUILD_DIR) -S. $(GENERATOR) $(CMAKE_DEFINES) -DBUILD_R=ON
 
 cmake-python-r:
-	@cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -B$(BUILD_DIR) -S. $(GENERATOR) -DBUILD_PYTHON=ON              -DBUILD_R=ON
+	@cmake -B$(BUILD_DIR) -S. $(GENERATOR) $(CMAKE_DEFINES) -DBUILD_PYTHON=ON -DBUILD_R=ON
 
 print_version: cmake
 	@cmake --build $(BUILD_DIR) --target print_version --

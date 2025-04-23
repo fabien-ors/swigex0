@@ -61,7 +61,6 @@ set_property(SOURCE ${SRC} PROPERTY
 
 # SWIG flags
 set(CMAKE_SWIG_FLAGS -keyword) # Use -keyword option to activate kwargs
-# Note: Cannot use -doxygen feature because all documentation is in C++ body files
 # Note: Use -E option for seeing SWIG preprocessor output
 
 # SWIG target (generate wrapper & python script then build [so,pyd] library)
