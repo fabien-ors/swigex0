@@ -40,16 +40,11 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew}
          ]
         exclude:
-          - matrix.arch.os: macos-13
-            r_version: 4.3.3
-          - matrix.arch.os: macos-13
-            r_version: 4.4.3
-          - matrix.arch.os: macos-13
-            r_version: 4.5.0
-          - matrix.arch.os: macos-14
-            r_version: 4.0.5
-          - matrix.arch.os: macos-15
-            r_version: 4.0.5
+          - {arch: {os: macos-13}, r_version: 4.3.3}
+          - {arch: {os: macos-13}, r_version: 4.4.3}
+          - {arch: {os: macos-13}, r_version: 4.5.0}
+          - {arch: {os: macos-14}, r_version: 4.0.5}
+          - {arch: {os: macos-15}, r_version: 4.0.5}
 
     steps:
     - uses: actions/checkout@v4
