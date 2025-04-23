@@ -40,15 +40,15 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew}
          ]
         exclude:
-          - arch.os: macos-13
+          - os: macos-13
             r_version: 4.3.3
-          - arch.os: macos-13
+          - os: macos-13
             r_version: 4.4.3
-          - arch.os: macos-13
+          - os: macos-13
             r_version: 4.5.0
-          - arch.os: macos-14
+          - os: macos-14
             r_version: 4.0.5
-          - arch.os: macos-15
+          - os: macos-15
             r_version: 4.0.5
 
     steps:
@@ -103,15 +103,15 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew}
          ]
         exclude:
-          - arch.os: macos-13
+          - os: macos-13
             r_version: 4.3.3
-          - arch.os: macos-13
+          - os: macos-13
             r_version: 4.4.3
-          - arch.os: macos-13
+          - os: macos-13
             r_version: 4.5.0
-          - arch.os: macos-14
+          - os: macos-14
             r_version: 4.0.5
-          - arch.os: macos-15
+          - os: macos-15
             r_version: 4.0.5
 
     steps:
