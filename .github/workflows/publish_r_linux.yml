@@ -1,0 +1,96 @@
+name: publish_r_linux
+
+on:
+  # Permit calling the workflow from outside (https://github.com/actions/runner/discussions/1884)
+  workflow_call:
+    inputs:
+      dry_publish:
+        description: 'Dry publish (no upload)'
+        type: boolean
+        required: false
+        default: true
+  # Permit manual trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Manual'
+        required: false
+        default: ''
+      dry_publish:
+        description: 'Dry publish (no upload)'
+        type: boolean
+        required: false
+        default: false
+
+env:
+  CMAKE_BUILD_TYPE : Release
+  BUILD_DIR : build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: fabienors/almalinux-8-swigex0-r
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name : Configure build directory
+      run : |
+        cmake \
+          -B${{ env.BUILD_DIR }} \
+          -DBUILD_PYTHON=OFF \
+          -DBUILD_R=ON \
+          -DSWIG_EXECUTABLE=${{env.SWIG_ROOT}}/bin/swig
+
+    - name : Build the package and save generated file name in the environment
+      run : |
+        cmake --build ${{env.BUILD_DIR}} --parallel 3 --target r_install
+        echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.CMAKE_BUILD_TYPE}}/swigex0_*.tar.gz)" >> "$GITHUB_ENV"
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux-r-package
+        path: ${{env.MY_PKG}}
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: fabienors/almalinux-8-swigex0-r
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: linux-r-package
+
+    - name: Install R package
+      run: Rscript -e "install.packages(\"$(ls *.tar.gz)\", repos=NULL, type='source')"
+
+    - name: Test installed R package
+      run: |
+        Rscript -e "library('swigex0')"
+        Rscript tests/r/testFibo.r
+
+  publish:
+    needs: test
+    if: ${{inputs.dry_publish == false}}
+    
+    # Only ubuntu can upload to CRAN easily (ssh)
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Publish packages to our CRAN
+    - uses: fabien-ors/cran-publish-action@v4
+      with:
+        host: ${{secrets.CG_HOST}}
+        username: ${{secrets.CG_USR}}
+        password: ${{secrets.CG_PWD}}
+        repo-path: "/var/www/html/cran"
+
+    # Delete the artifacts (for freeing storage space under github)
+    - uses: geekyeggo/delete-artifact@v5
+      with:
+        name: linux-r-package
