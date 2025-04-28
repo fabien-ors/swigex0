@@ -52,7 +52,6 @@ jobs:
     - name: Register the python version
       run: |
         echo "/opt/python/${{ matrix.python }}/bin" >> $GITHUB_PATH
-        git config --global --add safe.directory .
 
     - name: Install Python dependencies
       run: |
@@ -60,6 +59,7 @@ jobs:
 
     - name : Configure build directory
       run : |
+        git config --global --add safe.directory .
         cmake \
           -B${{ env.BUILD_DIR }} \
           -DBUILD_PYTHON=ON \
