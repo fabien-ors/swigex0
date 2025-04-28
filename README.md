@@ -3,7 +3,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13343739.svg)](https://doi.org/10.5281/zenodo.13343739)
 
 * Author: Fabien Ors (MINES Paris - PSL University) 
-* Date: April 2025
+* Date: May 2025
 
 The *swigex0* is an example of a cross-platform C++ library exported in Python and R using CMake and SWIG. Following features are tested:
 * Simple C++ class export (Fibonacci list - see Fibo class)
