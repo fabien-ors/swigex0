@@ -90,6 +90,10 @@ endif()
 message(STATUS "BUILD_PYTHON=" ${BUILD_PYTHON})
 message(STATUS "BUILD_R="      ${BUILD_R})
 
+message(STATUS "VERSION="      ${PROJECT_VERSION})
+message(STATUS "DATE="         ${${PROJECT_NAME}_DATE})
+message(STATUS "COMMIT="       ${${PROJECT_NAME}_COMMIT})
+
 ####################################################
 ## BUILD & INSTALL
 
