@@ -52,6 +52,7 @@ jobs:
     - name: Register the python version
       run: |
         echo "/opt/python/${{ matrix.python }}/bin" >> $GITHUB_PATH
+        git config --global --add safe.directory /__w/swigex0/swigex0
 
     - name: Install Python dependencies
       run: |
@@ -59,7 +60,6 @@ jobs:
 
     - name : Configure build directory
       run : |
-        git config --global --add safe.directory .
         cmake \
           -B${{ env.BUILD_DIR }} \
           -DBUILD_PYTHON=ON \
