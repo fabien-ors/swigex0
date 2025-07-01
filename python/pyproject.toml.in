@@ -23,7 +23,7 @@ classifiers = [
 ]
 dependencies = [
     # from the oldest supported numpy to the next major version of the
-    # numpy install used in building gstlearn
+    # numpy install used in building swigex0
     "numpy>=1.24,<@Python3_NumPy_NEXT_MAJOR@",
 ]
 
