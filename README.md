@@ -77,7 +77,7 @@ The following tools must be available for compiling and installing Python packag
 * Python 3 or higher with *pip* module installed
 
 The following tools must be available for compiling and installing R package:
-* SWIG 4.2.0 **customized by Fabien Ors** (not the official version!)
+* SWIG 4.3.0 **customized by Fabien Ors** (not the official version!)
 * R 4 or higher
 * RTools 4 for Windows user
 
@@ -246,7 +246,7 @@ sudo apt install pcre2-devel # Ubuntu 16/18
 sudo apt install libpcre2-dev # Ubuntu 20+
 ````
 
-3. In a folder of your own, compile and install SWIG 4.2.0 [customized] by executing following commands:
+3. In a folder of your own, compile and install SWIG 4.3.0 [customized] by executing following commands:
 
 ````
 git clone https://github.com/fabien-ors/swig.git
@@ -277,7 +277,7 @@ brew install pcre2-devel
 brew install python3
 ````
 
-3. In a folder of your own, compile and install SWIG 4.2.0 [customized] by executing following commands:
+3. In a folder of your own, compile and install SWIG 4.3.0 [customized] by executing following commands:
 
 ````
 git clone https://github.com/fabien-ors/swig.git
@@ -355,9 +355,9 @@ pacman -Sy bison
 pacman -Sy mingw-w64-x86_64-pcre2
 ````
 
-#### Install customized SWIG 4.2.0
+#### Install customized SWIG 4.3.0
 
-In a directory of your own, compile and install SWIG 4.2.0 [customized] by executing following commands from the *mingw64* shell command prompt:
+In a directory of your own, compile and install SWIG 4.3.0 [customized] by executing following commands from the *mingw64* shell command prompt:
 
 ````
 git clone https://github.com/fabien-ors/swig.git

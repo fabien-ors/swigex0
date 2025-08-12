@@ -16,8 +16,8 @@ if(NOT R_FOUND)
   message(FATAL_ERROR "R not found")
 endif()
 
-# Look for SWIG 4.2.0 [customized]
-find_package(SWIG 4.2.0 REQUIRED)
+# Look for SWIG 4.3.0 [customized]
+find_package(SWIG 4.3.0 REQUIRED)
 message(STATUS "Found SWIG: " ${SWIG_EXECUTABLE} " (found version \"" ${SWIG_VERSION} "\")")
 include(${SWIG_USE_FILE})
 
