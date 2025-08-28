@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <filesystem>
 
 #define DEFAULT_TITLE "Fibonacci List"
 #define LONG_SIZE     10000
@@ -39,6 +40,15 @@ std::string getExecPath()
     dir = std::string(buffer);
 #endif
   return dir;
+}
+
+/*!
+ * Cross platform way to get executable directory.
+ * Returned directory contains trailing separator
+ */
+std::string getCurrentPath()
+{
+  return std::filesystem::current_path().string();
 }
 
 /**
@@ -170,6 +180,8 @@ void Fibo::display(bool showTitle) const
     std::cout << i << ' ';
   std::cout << std::endl;
   // std::cout << "Executable path: " << getExecPath() << std::endl;
+  // std::cout << "Current path: " << getCurrentPath() << std::endl;
+  (void)getCurrentPath();
 }
 
 /**

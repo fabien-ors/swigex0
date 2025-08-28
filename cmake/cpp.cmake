@@ -11,8 +11,8 @@ if(NOT IS_MULTI_CONFIG)
   message(STATUS "BUILD_TYPE=" ${CMAKE_BUILD_TYPE})
 endif()
 
-# Add c++11 support whatever the compiler
-set(CMAKE_CXX_STANDARD 11)
+# Add c++20 support whatever the compiler
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Warning fiesta!
@@ -72,6 +72,16 @@ foreach(FLAVOR ${FLAVORS})
     POSITION_INDEPENDENT_CODE 1
   )
 
+  if(CMAKE_COMPILER_IS_GNUCC)
+    # Use of std::filesystem needs at least GCC 8.0
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+      message(SEND_ERROR "GCC>=8.0 is needed to build gstlearn")
+    elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+      # GCC 8.0 doesn't link automatically to std::filesystem
+      target_link_libraries(${FLAVOR} PUBLIC stdc++fs)
+    endif()
+  endif()
+  
   # Rename the output library name
   set_target_properties(${FLAVOR} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
   
