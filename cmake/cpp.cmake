@@ -90,7 +90,9 @@ foreach(FLAVOR ${FLAVORS})
   
   # Rename the output library name
   set_target_properties(${FLAVOR} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
-  
+  # append a 'd' to the output file name of the debug build targets
+  set_target_properties(${FLAVOR} PROPERTIES DEBUG_POSTFIX "d")
+
   # Set library version
   set_target_properties(${FLAVOR} PROPERTIES VERSION ${PROJECT_VERSION})
   
@@ -140,6 +142,5 @@ set_target_properties(static PROPERTIES
 # we need a specific name for the static library otherwise Ninja on
 # Windows not happy...
 if (WIN32 AND CMAKE_GENERATOR MATCHES "Ninja")
-  message(STATUS "Set specific name for static library")
   set_target_properties(static PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_static)
 endif()
