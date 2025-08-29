@@ -35,8 +35,8 @@ jobs:
     - name: Install dependencies
       run: |
         sudo rm /etc/apt/sources.list.d/microsoft-prod.list
-        sudo apt-get update
-        sudo apt-get install -yq libboost-dev
+        sudo apt update
+        sudo apt install -yq libboost-all-dev
 
     - name: Setup uv
       uses: astral-sh/setup-uv@v6
