@@ -32,6 +32,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install dependencies
+      run: |
+        echo '{
+          "dependencies": [ "boost-math", "boost-filesystem" ],
+          "builtin-baseline": "d5ec528843d29e3a52d745a64b469f810b2cedbf"
+        }' > vcpkg.json
+        vcpkg install
+
     - name: Setup uv
       uses: astral-sh/setup-uv@v6
       with:

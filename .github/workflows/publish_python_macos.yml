@@ -57,6 +57,7 @@ jobs:
     - name: Install dependencies
       run: |
         brew install swig
+        brew install boost
 
     - name: Setup Python Version
       uses: actions/setup-python@v5

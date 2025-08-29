@@ -46,6 +46,14 @@ jobs:
       with:
         r-version: ${{matrix.r_version}}
 
+    - name: Install dependencies
+      run: |
+        echo '{
+          "dependencies": [ "boost-math", "boost-filesystem" ],
+          "builtin-baseline": "d5ec528843d29e3a52d745a64b469f810b2cedbf"
+        }' > vcpkg.json
+        vcpkg install
+
     - name: Install the customized SWIG from source
       uses: fabien-ors/install-swig-windows-action@v2
       with:
