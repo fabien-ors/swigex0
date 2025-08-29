@@ -142,5 +142,5 @@ set_target_properties(static PROPERTIES
 # we need a specific name for the static library otherwise Ninja on
 # Windows not happy...
 if (WIN32 AND CMAKE_GENERATOR MATCHES "Ninja")
-  set_target_properties(static PROPERTIES OUTPUT_NAME ${PROJECT_NAME}_static)
+  set_target_properties(static PROPERTIES ARCHIVE_OUTPUT_NAME ${PROJECT_NAME}_static)
 endif()
