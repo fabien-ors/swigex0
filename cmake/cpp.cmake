@@ -22,16 +22,10 @@ endif()
 
 # Look for Boost
 #set(Boost_DEBUG 1)
+if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+  set(Boost_USE_STATIC_LIBS ON) # mandatory for GCC < 9 (provided that boost is -fPIC)
+endif()
 find_package(Boost REQUIRED COMPONENTS filesystem system)
-#if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
-#  # GCC 8.0 link statically to boost for cross-platform consideration (RHLE 8 vs Ubuntu 22)
-#  set(Boost_USE_STATIC_LIBS ON)
-#  find_package(Boost REQUIRED COMPONENTS filesystem system)
-#else()
-#  find_package(Boost REQUIRED)
-#endif()
-# TODO : If Boost not found, fetch it from the web ?
-
 
 # Warning fiesta!
 # https://cmake.org/cmake/help/latest/command/add_compile_options.html
@@ -91,7 +85,7 @@ foreach(FLAVOR ${FLAVORS})
   )
 
   # Link to Boost
-  target_link_libraries(${FLAVOR} PRIVATE Boost::boost Boost::filesystem Boost::system)
+  target_link_libraries(${FLAVOR} PRIVATE ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
   
   # Rename the output library name
   set_target_properties(${FLAVOR} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
