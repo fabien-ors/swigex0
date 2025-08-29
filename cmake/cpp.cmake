@@ -25,12 +25,8 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
   set(Boost_USE_STATIC_LIBS ON) # mandatory for GCC < 9 (provided that boost is -fPIC)
 endif()
-if (MSVC)
-  find_package(Boost REQUIRED)
-else()
-  find_package(Boost REQUIRED CONFIG COMPONENTS filesystem system)
-  message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS} (found version \"${Boost_VERSION}\")")
-endif()
+find_package(Boost REQUIRED CONFIG COMPONENTS filesystem system)
+message(STATUS "Found Boost: ${Boost_INCLUDE_DIRS} (found version \"${Boost_VERSION}\")")
 
 # Warning fiesta!
 # https://cmake.org/cmake/help/latest/command/add_compile_options.html
