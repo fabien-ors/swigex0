@@ -19,10 +19,11 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE : Release
+  CMAKE_BUILD_TYPE : Release
   BUILD_DIR : build
-  CMAKE_GENERATOR : "Visual Studio 17 2022"
+  CMAKE_GENERATOR : Ninja
   PYTHON_VERSION : "3.13.3"
+  CMAKE_TOOLCHAIN_FILE : C:\vcpkg\scripts\buildsystems\vcpkg.cmake
   
 jobs:
 
@@ -50,6 +51,9 @@ jobs:
       run: |
         uv pip install numpy
 
+    - name: Set up Visual Studio shell
+      uses: egor-tensin/vs-shell@v2
+
     - name: Configure build directory
       run: |
         cmake `
@@ -58,11 +62,11 @@ jobs:
 
     - name: Build the package
       run: |
-        cmake --build ${{env.BUILD_DIR}} --parallel 3 --config ${{env.BUILD_TYPE}}
+        cmake --build ${{env.BUILD_DIR}} --parallel 3
 
     - name: Install packages and execute non-regression tests
       run: |
-        cmake --build ${{env.BUILD_DIR}} --config ${{env.BUILD_TYPE}} --target check
+        cmake --build ${{env.BUILD_DIR}} --target check
 
     - name: Compress output logs
       if: success() || failure()
