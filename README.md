@@ -74,7 +74,7 @@ For compiling and installing *swigex0* C++ Library, the following tools must be 
 
 The following tools must be available for compiling and installing Python package:
 * SWIG 4 or higher
-* Python 3 or higher with *pip* module installed
+* Python 3 or higher with *uv* and *numpy* module installed
 
 The following tools must be available for compiling and installing R package:
 * SWIG 4.3.0 **customized by Fabien Ors** (not the official version!)
@@ -244,6 +244,7 @@ sudo apt install python3-pip
 sudo apt install bison
 sudo apt install pcre2-devel # Ubuntu 16/18
 sudo apt install libpcre2-dev # Ubuntu 20+
+python3 -m pip install numpy uv
 ````
 
 3. In a folder of your own, compile and install SWIG 4.3.0 [customized] by executing following commands:
@@ -275,6 +276,7 @@ brew install r
 brew install bison
 brew install pcre2-devel
 brew install python3
+python3 -m pip install numpy uv
 ````
 
 3. In a folder of your own, compile and install SWIG 4.3.0 [customized] by executing following commands:
@@ -297,13 +299,19 @@ Notes:
 
 These requirements are also recommended to people who wants to compile *swigex0* Python package. If you want to compile *swigex0* R package under Windows, you should look at the next section.
 
-Download and install the following tools using default options during installation:
+1. Download and install the following tools using default options during installation:
 
-* Git client [from here](https://gitforwindows.org) (*Setup program* [exe])
-* CMake tool [from here](https://cmake.org/download) (*Windows Installer* [msi], check the *'Add CMake to the system PATH for all users'* option during installation)
-* Microsoft Visual Studio (Community) [from here](https://visualstudio.microsoft.com/fr/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false) (*VisualStudioSetup.exe* - only select the *Visual Studio Desktop C++* component)
-* Python 3+ [from here](https://www.python.org/downloads) (*Windows installer* [exe] - check 'Add python.exe to PATH' in the first panel)
-* SWIG 4+ [from here](http://www.swig.org/download.html) (*swigwin archive* [zip], Archive file [zip] to be extracted in a folder of your own - and remind that folder)
+    * Git client [from here](https://gitforwindows.org) (*Setup program* [exe])
+    * CMake tool [from here](https://cmake.org/download) (*Windows Installer* [msi], check the *'Add CMake to the system PATH for all users'* option during installation)
+    * Microsoft Visual Studio (Community) [from here](https://visualstudio.microsoft.com/fr/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false) (*VisualStudioSetup.exe* - only select the *Visual Studio Desktop C++* component)
+    * Python 3+ [from here](https://www.python.org/downloads) (*Windows installer* [exe] - check 'Add python.exe to PATH' in the first panel)
+    * SWIG 4+ [from here](http://www.swig.org/download.html) (*swigwin archive* [zip], Archive file [zip] to be extracted in a folder of your own - and remind that folder)
+
+2. Then, install additional Python modules by running following instructions in a command prompt:
+
+````
+python -m pip install numpy uv
+````
 
 Notes:
 

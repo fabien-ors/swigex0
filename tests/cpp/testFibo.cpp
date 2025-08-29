@@ -3,17 +3,22 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 int main()
 {
   StdoutRedirect sr("testFibo.out");
 
   Fibo f1(50);
-  f1.display(false);
+  f1.display(false, true);
   Fibo f2(100, "Test 100");
-  f2.display();
+  f2.display(true, true);
   std::vector<int> vec = fib(40);
   for(auto v : vec) std::cout << v << " ";
   std::cout << std::endl;
 
+  // Check that the test can link to Boost filesystem
+  (void)boost::filesystem::current_path().string();
+  
   return 0;
 }

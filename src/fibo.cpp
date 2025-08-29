@@ -1,9 +1,11 @@
 #include "fibo.hpp"
 #include "version.h"
 
+#include <boost/filesystem/operations.hpp>
 #include <iostream>
-#include <sstream>
-#include <filesystem>
+#include <boost/filesystem.hpp>
+#include <boost/dll.hpp>
+#include <boost/math/special_functions/legendre.hpp>
 
 #define DEFAULT_TITLE "Fibonacci List"
 #define LONG_SIZE     10000
@@ -22,24 +24,12 @@
  * Cross platform way to get executable directory.
  * Returned directory contains trailing separator
  */
-std::string getExecPath()
+std::string getExecPath(const std::string& relativeTo = "")
 {
-  // TODO boost::filesystem::path program_location
-  std::string dir("");
-#if defined(_WIN32) || defined(_WIN64)
-  char buffer[LONG_SIZE] = "";
-  if (GetModuleFileName(NULL, buffer, LONG_SIZE) != 0)
-    dir = std::string(buffer);
-#elif __APPLE__
-  char buffer[LONG_SIZE] = "";
-  uint32_t bufsize       = LONG_SIZE;
-  if (!_NSGetExecutablePath(buffer, &bufsize)) dir = std::string(buffer);
-#else // __linux__
-  char buffer[LONG_SIZE] = "";
-  if (readlink("/proc/self/exe", buffer, LONG_SIZE) != -1)
-    dir = std::string(buffer);
-#endif
-  return dir;
+  std::string abspath = boost::dll::program_location().parent_path().string();
+  if (!relativeTo.empty())
+    return boost::filesystem::relative(abspath, relativeTo).string();
+  return abspath;
 }
 
 /*!
@@ -48,7 +38,15 @@ std::string getExecPath()
  */
 std::string getCurrentPath()
 {
-  return std::filesystem::current_path().string();
+  return boost::filesystem::current_path().string();
+}
+
+/*!
+ * Return the Legendre value (-1. < v < 1.)
+ */
+double getLegendreValue(int n, double v)
+{
+  return boost::math::legendre_p<double>(n, v);
 }
 
 /**
@@ -171,7 +169,7 @@ void Fibo::resetFromFiboRef(const Fibo& fibo)
  *
  * @param showTitle Flag for printing the title
  */
-void Fibo::display(bool showTitle) const
+void Fibo::display(bool showTitle, bool showExec) const
 {
   if (showTitle)
     std::cout << _title << ": ";
@@ -179,9 +177,11 @@ void Fibo::display(bool showTitle) const
   for (const auto& i: res)
     std::cout << i << ' ';
   std::cout << std::endl;
-  // std::cout << "Executable path: " << getExecPath() << std::endl;
-  // std::cout << "Current path: " << getCurrentPath() << std::endl;
-  (void)getCurrentPath();
+  if (showExec)
+  {
+    std::cout << "Executable path: " << getExecPath(getCurrentPath()) << std::endl;
+    std::cout << "Legendre value: " << getLegendreValue(3, 0.5) << std::endl;
+  }
 }
 
 /**

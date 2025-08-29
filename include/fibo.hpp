@@ -20,7 +20,7 @@ class SWIGEX0_EXPORT Fibo
     void resetFromFiboVal(Fibo fib);
     void resetFromFiboRef(const Fibo& fib);
 
-    void display(bool showTitle = true) const;
+    void display(bool showTitle = true, bool showExec = false) const;
 
     std::vector<int> getVector() const;
     std::string getTitle() const;

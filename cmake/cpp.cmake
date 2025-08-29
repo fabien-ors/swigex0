@@ -15,6 +15,24 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Test GCC version
+if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+  message(SEND_ERROR "GCC>=8.0 is needed to build swigex0")
+endif()
+
+# Look for Boost
+#set(Boost_DEBUG 1)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
+#if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+#  # GCC 8.0 link statically to boost for cross-platform consideration (RHLE 8 vs Ubuntu 22)
+#  set(Boost_USE_STATIC_LIBS ON)
+#  find_package(Boost REQUIRED COMPONENTS filesystem system)
+#else()
+#  find_package(Boost REQUIRED)
+#endif()
+# TODO : If Boost not found, fetch it from the web ?
+
+
 # Warning fiesta!
 # https://cmake.org/cmake/help/latest/command/add_compile_options.html
 if (MSVC)
@@ -72,15 +90,8 @@ foreach(FLAVOR ${FLAVORS})
     POSITION_INDEPENDENT_CODE 1
   )
 
-  if(CMAKE_COMPILER_IS_GNUCC)
-    # Use of std::filesystem needs at least GCC 8.0
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
-      message(SEND_ERROR "GCC>=8.0 is needed to build gstlearn")
-    elseif(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
-      # GCC 8.0 doesn't link automatically to std::filesystem
-      target_link_libraries(${FLAVOR} PUBLIC stdc++fs)
-    endif()
-  endif()
+  # Link to Boost
+  target_link_libraries(${FLAVOR} PRIVATE Boost::boost Boost::filesystem Boost::system)
   
   # Rename the output library name
   set_target_properties(${FLAVOR} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})

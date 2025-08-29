@@ -168,10 +168,13 @@ file(GENERATE
 ######################################
 # INSTALLATION
 
+# Find for UV
+find_program(UV NAMES uv REQUIRED DOC "Python package and project manager")
+
 # Add a custom target for python package installation
 # TODO: Do also installation each time README and below files are modified
 add_custom_target(python_install
-  COMMAND ${Python3_EXECUTABLE} -m pip install ${PYTHON_PACKAGE_ROOT_FOLDER}
+  COMMAND ${UV} pip install ${PYTHON_PACKAGE_ROOT_FOLDER}
   COMMENT "Installing python package"
   VERBATIM
 )
@@ -179,3 +182,11 @@ add_custom_target(python_install
 # Tell to CMake that python package must be built before installation
 add_dependencies(python_install python_build)
 
+if(NOT DEFINED ENV{VIRTUAL_ENV})
+  add_custom_target(python_create_venv
+    COMMAND ${UV} venv
+    COMMENT "Creating a new venv with uv"
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  )
+  add_dependencies(python_install python_create_venv)
+endif()

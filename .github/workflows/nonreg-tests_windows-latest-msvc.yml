@@ -32,15 +32,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Python Version
-      uses: actions/setup-python@v5
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
       with:
         python-version: ${{env.PYTHON_VERSION}}
+        activate-environment: true
 
     - name: Install python dependencies
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install numpy
+        uv pip install numpy
 
     - name: Configure build directory
       run: |

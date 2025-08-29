@@ -5,9 +5,6 @@ endif()
 # Test sources
 set(TEST_SOURCES testFibo.py)
 
-# Look for Python3 (needed here because Python3_EXECUTABLE not populated everywhere)
-find_package(Python3 REQUIRED)
-
 # Generation folder
 if (IS_MULTI_CONFIG)
   cmake_path(APPEND CMAKE_CURRENT_BINARY_DIR $<CONFIG>
@@ -27,6 +24,9 @@ add_custom_target(check_py
 
 # Add dependency for check_py
 add_dependencies(check_py python_install)
+
+# Look for Python3 (needed here because Python3_EXECUTABLE not populated everywhere)
+find_package(Python3 REQUIRED)
 
 # Python script test runner path
 cmake_path(APPEND CMAKE_SOURCE_DIR python run_test_py.py
