@@ -88,8 +88,6 @@ foreach(FLAVOR ${FLAVORS})
   # Link to Boost
   target_link_libraries(${FLAVOR} PRIVATE ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
   
-  # Rename the output library name
-  set_target_properties(${FLAVOR} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
   # append a 'd' to the output file name of the debug build targets
   set_target_properties(${FLAVOR} PROPERTIES DEBUG_POSTFIX "d")
 
@@ -132,6 +130,12 @@ set_target_properties(shared PROPERTIES
   SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
+# Rename the output library name
+set_target_properties(shared PROPERTIES
+       OUTPUT_NAME ${PROJECT_NAME}
+       ARCHIVE_OUTPUT_NAME ${PROJECT_NAME}_shared
+       RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
+
 ###################### Static library specific options
 
 # Prevent from using _declspec when static
@@ -139,8 +143,13 @@ set_target_properties(static PROPERTIES
   COMPILE_FLAGS -D${PROJECT_NAME_UP}_STATIC_DEFINE
 )
 
+# Rename the output library name
+set_target_properties(static PROPERTIES
+      OUTPUT_NAME ${PROJECT_NAME}_static
+      ARCHIVE_OUTPUT_NAME ${PROJECT_NAME}_static)
+
 # we need a specific name for the static library otherwise Ninja on
 # Windows not happy...
-if (WIN32 AND CMAKE_GENERATOR MATCHES "Ninja")
-  set_target_properties(static PROPERTIES ARCHIVE_OUTPUT_NAME ${PROJECT_NAME}_static)
-endif()
+#if (WIN32 AND CMAKE_GENERATOR MATCHES "Ninja")
+#  set_target_properties(static PROPERTIES ARCHIVE_OUTPUT_NAME ${PROJECT_NAME}_static)
+#endif()
