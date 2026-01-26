@@ -92,7 +92,7 @@ jobs:
             {ar: arm64,  os: macos-15},
             {ar: x86_64, os: macos-15-intel},
             {ar: arm64,  os: macos-26},
-        ]
+          ]
 
     steps:
     - uses: actions/checkout@v4

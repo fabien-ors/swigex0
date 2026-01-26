@@ -45,7 +45,7 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew},
             {ar: x86_64, os: macos-15-intel, pat: /usr/local},
             {ar: arm64,  os: macos-26, pat: /opt/homebrew},
-        ]
+          ]
 
     steps:
     - uses: actions/checkout@v4
