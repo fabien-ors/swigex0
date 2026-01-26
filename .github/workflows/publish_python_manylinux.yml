@@ -122,7 +122,8 @@ jobs:
         echo "/opt/python/${{ matrix.python }}/bin" >> $GITHUB_PATH
 
     - name: Install Python package
-      run: python -m pip install ./$(ls *.whl)
+      run: |
+        python -m pip install ./$(ls *.whl)
 
     - name: Test installed Python package
       run: |

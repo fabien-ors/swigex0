@@ -35,7 +35,6 @@ jobs:
         # Python version
         python: [
           # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "3.9"},
             {py: "3.10"},
             {py: "3.11"},
             {py: "3.12"},
@@ -99,7 +98,6 @@ jobs:
       matrix:
         python: [
         # Double quote for version is needed otherwise 3.10 => 3.1
-            {py: "3.9"},
             {py: "3.10"},
             {py: "3.11"},
             {py: "3.12"},
@@ -124,7 +122,8 @@ jobs:
         python-version: ${{matrix.python.py}}
 
     - name: Install Python package
-      run: pip install $(ls *.whl)
+      run: |
+        pip install $(ls *.whl)
 
     - name: Test installed Python package
       run: |

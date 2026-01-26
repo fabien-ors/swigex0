@@ -45,7 +45,7 @@ jobs:
             {ar: arm64,  os: macos-15, pat: /opt/homebrew},
             {ar: x86_64, os: macos-15-intel, pat: /usr/local},
             {ar: arm64,  os: macos-26, pat: /opt/homebrew},
-          ]
+        ]
 
     steps:
     - uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
     - name: Setup Python Version
       uses: actions/setup-python@v5
       with:
-        python-version: ${{matrix.python.py}}
+        python-version: ${{ matrix.python.py }}
 
     - name: Install Python dependencies
       run: |
@@ -120,13 +120,11 @@ jobs:
     - name: Setup Python Version
       uses: actions/setup-python@v5
       with:
-        python-version: ${{matrix.python.py}}
-
-    - name: Install macOS dependencies
-      run: brew install llvm
+        python-version: ${{ matrix.python.py }}
 
     - name: Install Python package
-      run: pip install ./$(ls *.whl)
+      run: |
+       pip install ./$(ls *.whl)
 
     - name: Test installed Python package
       run: |
