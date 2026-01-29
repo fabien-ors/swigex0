@@ -86,10 +86,10 @@ jobs:
       matrix:
         # Last releases from here https://cran.r-project.org/src/base/R-4/
         r_version: [4.2.3, 4.3.3, 4.4.3, 4.5.2]
+        # Only one arm64 and one x86_64 Mac OS version are needed
         arch: [
-            # Only one arm64 and one x86_64 Mac OS version are needed
-            {ar: x86_64, os: macos-15-intel, pat: /usr/local},
-            {ar: arm64,  os: macos-14, pat: /opt/homebrew},
+            {ar: x86_64, os: macos-15-intel},
+            {ar: arm64,  os: macos-14},
           ]
 
     steps:
