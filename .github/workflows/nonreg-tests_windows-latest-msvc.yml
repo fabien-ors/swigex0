@@ -18,8 +18,8 @@ on:
         default: ''
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  CMAKE_BUILD_TYPE : Release
+  # Keep --config in CMake (Mandatory for MSVC)
+  BUILD_TYPE : Release
   BUILD_DIR : build
   CMAKE_GENERATOR : "Visual Studio 17 2022"
   PYTHON_VERSION : "3.14"
@@ -50,11 +50,11 @@ jobs:
 
     - name: Build the package
       run: |
-        cmake --build ${{env.BUILD_DIR}} --parallel 3
+        cmake --build ${{env.BUILD_DIR}} --parallel 3 --config ${{env.BUILD_TYPE}}
 
     - name: Install packages and execute non-regression tests
       run: |
-        cmake --build ${{env.BUILD_DIR}} --target check
+        cmake --build ${{env.BUILD_DIR}} --target check --config ${{env.BUILD_TYPE}}
 
     - name: Compress output logs
       if: success() || failure()
