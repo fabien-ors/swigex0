@@ -127,13 +127,6 @@ Fibo::Fibo(int n, const std::string& title)
 }
 
 /**
- * Destructor
- */
-Fibo::~Fibo()
-{
-}
-
-/**
  * Reset the Fibonacci list from another one
  * (In order to test class argument as value)
  *
