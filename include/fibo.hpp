@@ -26,6 +26,7 @@ class SWIGEX0_EXPORT Fibo
     std::string getTitle() const;
 
   protected:
+    std::fstream _test_file;
     int         _n;     ///< Maximum integer of the list
     std::string _title; ///< Title to be shown when displaying the list
 };

@@ -105,7 +105,8 @@ std::vector<int> fib(int n)
  * @param title Title to be printed (optional)
  */
 Fibo::Fibo(int n, const std::string& title)
-: _n(n)
+: _test_file()
+, _n(n)
 , _title(title)
 {
   if (_n <= 0)
