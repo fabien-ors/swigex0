@@ -1,6 +1,12 @@
 // Keep sync with PYTHON_PACKAGE_NAME in CMakeLists.txt
 %module(directors="1") swigex0
 
+// Use stable Python ABI
+%begin %{
+// use the Python Stable ABI to target several Python versions at once
+#define Py_LIMITED_API 0x030A0000 // Python 3.10 and up
+%}
+
 // Note : Keep order in this file!
 
 //////////////////////////////////////////////////////////////

@@ -35,8 +35,8 @@ jobs:
     runs-on: windows-2022
     strategy:
       matrix:
-        # Last releases from here https://cran.r-project.org/src/base/R-4/
-        r_version: [4.2.3, 4.3.3, 4.4.3, 4.5.2]
+        # Use an old release of R https://cran.r-project.org/src/base/R-4/
+        r_version: [4.2.3]
 
     steps:
     - uses: actions/checkout@v4
@@ -69,7 +69,7 @@ jobs:
     - uses: actions/upload-artifact@v6
       # Use specific artifact identifier for publishing all R versions
       with:
-        name: windows-r-package-${{matrix.r_version}}
+        name: windows-r-package
         path: ${{env.MY_PKG}}
 
   test:
@@ -85,7 +85,7 @@ jobs:
 
     - uses: actions/download-artifact@v7
       with:
-        name: windows-r-package-${{matrix.r_version}}
+        name: windows-r-package
 
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
@@ -120,4 +120,4 @@ jobs:
     # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v5
       with:
-        name: windows-r-package-*
+        name: windows-r-package
