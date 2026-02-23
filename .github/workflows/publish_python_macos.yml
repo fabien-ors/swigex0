@@ -89,7 +89,7 @@ jobs:
         cd ../../..
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/python/${{env.CMAKE_BUILD_TYPE}}/dist/*)" >> "$GITHUB_ENV"
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       # Use specific artifact identifier for publishing all versions
       with:
         name: macos-python-package-${{matrix.arch.os}}-${{matrix.python.py}}
@@ -117,7 +117,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
       with:
         name: macos-python-package-${{matrix.arch.os}}-${{matrix.python.py}}
 
@@ -144,7 +144,7 @@ jobs:
 
     steps:
     # Upload packages to pypi
-    - uses: fabien-ors/pypi-publish-action@v3
+    - uses: fabien-ors/pypi-publish-action@v4
       with:
         repo: pypi
         username: __token__

@@ -55,7 +55,7 @@ jobs:
         cmake --build ${{env.BUILD_DIR}} --parallel 3 --target r_install
         echo "MY_PKG=$(ls ${{env.BUILD_DIR}}/r/${{env.CMAKE_BUILD_TYPE}}/swigex0_*.tar.gz)" >> "$GITHUB_ENV"
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       with:
         name: linux-r-package
         path: ${{env.MY_PKG}}
@@ -71,7 +71,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
       with:
         name: linux-r-package
 
@@ -92,7 +92,7 @@ jobs:
     
     steps:
     # Publish packages to our CRAN
-    - uses: fabien-ors/cran-publish-action@v4
+    - uses: fabien-ors/cran-publish-action@v5
       with:
         host: ${{secrets.CG_HOST}}
         username: ${{secrets.CG_USR}}
