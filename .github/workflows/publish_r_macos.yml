@@ -71,12 +71,11 @@ jobs:
     - name : Build the package and save generated file name in the environment
       env :
         OS_TYPE : ${{matrix.arch.os}}
-        R_VERSION : ${{matrix.r_version}}
       run : |
         cmake --build ${{env.BUILD_DIR}} --parallel 3 --target r_install
         PKG_ARCHIVE=$(ls ${{env.BUILD_DIR}}/r/${{env.CMAKE_BUILD_TYPE}}/swigex0_*.tgz)
         echo "Archive file is $PKG_ARCHIVE and OS_TYPE is $OS_TYPE"
-        if [ "$OS_TYPE" = "macos-14" && "$R_VERSION" = "4.6.0" ]; then
+        if [ "$OS_TYPE" = "macos-14" ]; then
           tar -xzf $PKG_ARCHIVE
           sed -i '' 's/darwin23/darwin20/g' swigex0/DESCRIPTION
           tar -czf $PKG_ARCHIVE swigex0
