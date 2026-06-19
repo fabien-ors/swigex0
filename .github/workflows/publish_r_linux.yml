@@ -86,20 +86,20 @@ jobs:
   publish:
     needs: test
     if: ${{inputs.dry_publish == false}}
-    
+
     # Only ubuntu can upload to CRAN easily (ssh)
     runs-on: ubuntu-latest
-    
-    steps:
-    # Publish packages to our CRAN
-    - uses: fabien-ors/cran-publish-action@v5
-      with:
-        host: ${{secrets.CG_HOST}}
-        username: ${{secrets.CG_USR}}
-        password: ${{secrets.CG_PWD}}
-        repo-path: "/var/www/html/cran"
 
-    # Delete the artifacts (for freeing storage space under github)
-    - uses: geekyeggo/delete-artifact@v5
-      with:
-        name: linux-r-package
+    steps:
+      # Publish packages to our CRAN
+      - uses: fabien-ors/cran-publish-action@v5
+        with:
+          host: ${{secrets.CG_HOST}}
+          username: ${{secrets.CG_USR}}
+          password: ${{secrets.CG_PWD}}
+          repo-path: "/var/www/html/cran"
+
+      # Delete the artifacts (for freeing storage space under github)
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: linux-r-package

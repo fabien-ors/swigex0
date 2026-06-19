@@ -11,7 +11,7 @@
 #
 # Information:
 #  - print_version  Display project name, version and date
-# 
+#
 # C++ Library:
 #  - shared         Build shared library
 #  - static         Build static library
@@ -126,7 +126,7 @@ static shared build_tests install uninstall: cmake
 python_build: cmake-python
 	@cmake --build $(BUILD_DIR) --target python_build -- $(N_PROC_OPT)
 
-python_install: python_build
+python_install: cmake-python
 	@cmake --build $(BUILD_DIR) --target python_install -- $(N_PROC_OPT)
 
 
@@ -135,7 +135,7 @@ python_install: python_build
 r_build: cmake-r
 	@cmake --build $(BUILD_DIR) --target r_build -- $(N_PROC_OPT)
 
-r_install: r_build
+r_install: cmake-r
 	@cmake --build $(BUILD_DIR) --target r_install -- $(N_PROC_OPT)
 
 
@@ -158,7 +158,7 @@ check_test: cmake-python-r
 
 .PHONY: clean clean_all
 
-clean: 
+clean:
 	@cmake --build $(BUILD_DIR) --target clean -- $(N_PROC_OPT)
 
 clean_all:

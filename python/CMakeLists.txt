@@ -25,7 +25,7 @@ include(${SWIG_USE_FILE})
 # WRAPPER GENERATION & BUILD
 
 # Python package interface file
-set(SRC pyswigex0.i) 
+set(SRC pyswigex0.i)
 
 # Generation folders
 if (IS_MULTI_CONFIG)
@@ -113,7 +113,7 @@ target_include_directories(python_build PRIVATE ${Python3_INCLUDE_DIRS})
 
 if (MSVC OR APPLE)
   # Link to python's libraries (needed for MSVC and MacOS)
-  # Prefer using Python3::Module (which works for MacOS) in place of ${Python3_LIBRARIES}
+  # Prefer using Python3::SABIModule (which works for MacOS) in place of ${Python3_LIBRARIES}
   # https://gitlab.kitware.com/cmake/cmake/-/issues/17664
   target_link_libraries(python_build PRIVATE Python3::SABIModule)
 endif()

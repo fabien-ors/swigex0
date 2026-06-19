@@ -32,14 +32,11 @@ env:
 jobs:
 
   build:
-    runs-on: ${{matrix.arch.os}}
+    runs-on: windows-2025
     strategy:
       matrix:
         # Last releases from here https://cran.r-project.org/src/base/R-4/
         r_version: [4.2.3, 4.3.3, 4.4.3, 4.5.3, 4.6.0]
-        arch: [
-            {gen: "Visual Studio 18 2026", os: windows-2025}
-         ]
 
     steps:
     - uses: actions/checkout@v4
@@ -48,7 +45,7 @@ jobs:
       uses: fabien-ors/install-swig-windows-action@v3
       with:
         swig-root: ${{env.SWIG_ROOT}}
-        generator: ${{matrix.arch.gen}}
+        generator: "Visual Studio 18 2026"
 
     - name: Setup R Version
       uses: r-lib/actions/setup-r@v2
@@ -77,12 +74,11 @@ jobs:
 
   test:
     needs: build
-    runs-on: ${{matrix.os}}
+    runs-on: windows-2025
     strategy:
       matrix:
         # Last releases from here https://cran.r-project.org/src/base/R-4/
         r_version: [4.2.3, 4.3.3, 4.4.3, 4.5.3, 4.6.0]
-        os: [windows-2025]
 
     steps:
     - uses: actions/checkout@v4

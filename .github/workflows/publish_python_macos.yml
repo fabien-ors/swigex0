@@ -152,5 +152,5 @@ jobs:
     # Delete the artifacts (for freeing storage space under github)
     - uses: geekyeggo/delete-artifact@v5
       with:
-        name: macos-python-package
+        name: macos-python-package-*
 
