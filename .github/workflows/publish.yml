@@ -40,7 +40,7 @@ jobs:
 
   call-test:
     needs: [call-python-macos, call-python-windows, call-python-linux, call-r-macos, call-r-windows, call-r-linux]
-    
+
     runs-on: ubuntu-latest
     
     steps:
@@ -49,7 +49,7 @@ jobs:
           host: ${{ secrets.CG_HOST }}
           username: ${{ secrets.CG_USR }}
           password: ${{ secrets.CG_PWD }}
-          dest-path: "/var/www/html/test"
+          dest-path: "/var/www/html/swigex/test"
           pattern: "*-package*"
 
   call-python-publish:
